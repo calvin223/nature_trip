@@ -1,0 +1,4 @@
+1:"$Sreact.fragment"
+2:I[39756,["/nature_trip/preview-premium-v/_next/static/chunks/ff1a16fafef87110.js","/nature_trip/preview-premium-v/_next/static/chunks/173d385d1bdc29f8.js"],"default"]
+3:I[37457,["/nature_trip/preview-premium-v/_next/static/chunks/ff1a16fafef87110.js","/nature_trip/preview-premium-v/_next/static/chunks/173d385d1bdc29f8.js"],"default"]
+0:{"buildId":"ZHJLw1lRmM6kDXYG_FoiF","rsc":["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]]}],"loading":null,"isPartial":false}
