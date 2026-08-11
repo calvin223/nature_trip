@@ -98,27 +98,27 @@ export default function HomeHero() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div className="max-w-2xl fade-up">
               <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/25 rounded-full px-4 py-1.5 text-xs md:text-sm font-semibold uppercase tracking-wider mb-6">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#b5651d]" />
-                25+ years of India wildlife expeditions
+                <span className="w-1.5 h-1.5 rounded-full bg-[#b5651d] animate-pulse" />
+                25+ years in the field · groups cap at 10-12
               </span>
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight mb-6">
-                Experience India&apos;s Wild Places with Expert Naturalists
+                India&apos;s Wild Places, Found By People Who Never Stopped Looking
               </h1>
               <p className="text-base md:text-xl text-white/85 max-w-xl mb-9 leading-relaxed">
-                Small-group, guided journeys into tiger forests, Himalayan birding trails, wetlands and rainforests — led by naturalists who know this land.
+                Small-group, expert-led journeys into tiger forests, Himalayan trails, monsoon rainforests and desert skies. 25+ years of field experience means you see more than a checklist — and our best departures fill months out.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/trips"
                   className="bg-[#b5651d] hover:bg-[#8f4e14] transition-colors text-white px-8 py-4 rounded-full text-base md:text-lg font-semibold shadow-lg shadow-black/30"
                 >
-                  View Upcoming Trips
+                  See Trips With Spots Open
                 </Link>
                 <Link
                   href="#checklist"
                   className="bg-white/10 backdrop-blur border border-white/30 hover:bg-white/20 transition-colors text-white px-8 py-4 rounded-full text-base md:text-lg font-semibold"
                 >
-                  Download Sample Itinerary
+                  Get a Free Sample Itinerary
                 </Link>
               </div>
             </div>

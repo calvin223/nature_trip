@@ -60,11 +60,14 @@ export default function Home() {
       {/* Why We're Different */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 max-w-3xl mx-auto">
             <p className="text-[#b5651d] font-semibold uppercase tracking-wide text-sm mb-2">Why travel with us</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#33361f]">
-              Guided, Enjoyable, and Deeply Local
+            <h2 className="text-3xl md:text-4xl font-bold text-[#33361f] mb-4">
+              Most Wildlife Trips Rush You. This One Doesn&apos;t.
             </h2>
+            <p className="text-gray-600">
+              A packed checklist and a driver watching the clock is how most people &ldquo;see&rdquo; India&apos;s wildlife — long drives, distant blurs, and a guide who&apos;s already thinking about the next stop. We built Wildora around the opposite idea: unhurried field time, capped group sizes, and naturalists who slow down for the sighting that matters.
+            </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
@@ -126,7 +129,7 @@ export default function Home() {
       <section className="py-20 bg-[#f3eedf]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <p className="text-[#b5651d] font-semibold uppercase tracking-wide text-sm mb-2">Upcoming departures</p>
+            <p className="text-[#b5651d] font-semibold uppercase tracking-wide text-sm mb-2">Upcoming departures — filling now</p>
             <h2 className="text-3xl md:text-4xl font-bold text-[#33361f]">Featured Trips</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -170,7 +173,7 @@ export default function Home() {
                       <span className="text-2xl font-bold text-[#33361f]">{trip.price}</span>
                     </div>
                     <Link href={`/trips/${trip.id}`} className="block text-center bg-[#b5651d] text-white px-4 py-3 rounded-lg hover:bg-[#8f4e14] transition-colors font-semibold">
-                      View Itinerary
+                      {typeof trip.spotsLeft === 'number' && trip.spotsLeft <= 6 ? 'Check Availability' : 'View Itinerary'}
                     </Link>
                   </div>
                 </div>
@@ -346,9 +349,9 @@ export default function Home() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100 grid md:grid-cols-5 gap-8 items-center">
             <div className="md:col-span-3">
-              <p className="text-[#b5651d] font-semibold uppercase tracking-wide text-sm mb-2">Free download</p>
+              <p className="text-[#b5651d] font-semibold uppercase tracking-wide text-sm mb-2">Free download — no strings attached</p>
               <h2 className="text-2xl md:text-3xl font-bold text-[#33361f] mb-3">The India Wildlife Trip-Planning Checklist</h2>
-              <p className="text-gray-600 mb-4">Get our expert-curated checklist for India wildlife routes, target species, seasons, and region choices. A practical trip-planning companion.</p>
+              <p className="text-gray-600 mb-4">The same route-planning notes our guides use, in one place: target species, seasons, and region choices, so you book the right trip the first time.</p>
               <ul className="text-sm text-gray-600 space-y-1 mb-2">
                 <li className="flex items-center gap-2"><Check /> Safaris, birding, wetlands, mountains and rainforests</li>
                 <li className="flex items-center gap-2"><Check /> Seasonal timing guide</li>
@@ -371,13 +374,13 @@ export default function Home() {
       <section className="py-20 hero-canopy text-white relative overflow-hidden">
         <div className="absolute inset-0 leaf-texture opacity-50"></div>
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Explore Wild India?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Go Where the Wild Things Are?</h2>
           <p className="text-xl mb-8 text-green-50/90">
-            Join a small group or ask for a private guided programme in one of the world&apos;s most biodiverse regions.
+            Groups are capped at 10-12 guests, and our most-requested routes lock in months ahead. Claim your season, or tell us what you&apos;re after and we&apos;ll build a private programme around it.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/trips" className="bg-[#b5651d] text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-[#8f4e14] transition-colors shadow-lg">
-              Browse All Trips
+              Browse Trips With Spots Open
             </Link>
             <Link href="/contact" className="bg-white/10 backdrop-blur border border-white/40 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white/20 transition-colors">
               Ask About Dates

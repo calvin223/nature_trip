@@ -47,6 +47,11 @@ export default async function TripDetailPage({ params }: { params: Promise<{ id:
           ) : null;
         })()}
         <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
+          {typeof trip.spotsLeft === 'number' && trip.spotsLeft <= 6 && (
+            <span className="inline-block bg-[#9a3324] text-white text-xs font-semibold px-3 py-1 rounded-full mb-4">
+              Only {trip.spotsLeft} spots left{trip.nextDeparture ? ` for ${trip.nextDeparture}` : ''}
+            </span>
+          )}
           <h1 className="text-5xl font-bold mb-4">{trip.title}</h1>
           <p className="text-xl text-gray-100">{trip.description}</p>
         </div>
@@ -208,19 +213,21 @@ export default async function TripDetailPage({ params }: { params: Promise<{ id:
       {/* Pricing & Booking */}
       <section className="py-12 bg-[#33361f] text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Book?</h2>
+          <h2 className="text-3xl font-bold mb-4">Secure Your Spot</h2>
           <div className="mb-6">
             <div className="text-4xl font-bold text-[#b5651d]">{trip.price}</div>
           </div>
           <p className="text-lg mb-8 text-gray-200">
-            Secure your spot for an unforgettable guided wildlife holiday in India
+            {typeof trip.spotsLeft === 'number' && trip.spotsLeft <= 6
+              ? `Only ${trip.spotsLeft} places remain${trip.nextDeparture ? ` for the ${trip.nextDeparture} departure` : ''}. Groups are capped at ${trip.groupSize.toLowerCase()}, so seats go fast.`
+              : `Groups are capped at ${trip.groupSize.toLowerCase()} — reserve early to lock in your preferred dates.`}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/contact"
               className="bg-[#b5651d] text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-[#8f4e14] transition-colors"
             >
-              Book This Trip
+              Reserve My Spot
             </Link>
             <Link
               href="/practical"

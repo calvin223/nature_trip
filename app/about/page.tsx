@@ -11,10 +11,28 @@ export default function AboutPage() {
     <div className="min-h-screen">
       <section className="bg-gradient-to-r from-[#33361f] to-[#5b6b3a] text-white py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl font-bold mb-6">About Wild India</h1>
+          <h1 className="text-5xl font-bold mb-6">About Wildora Expeditions</h1>
           <p className="text-xl text-gray-100">
-            One country, many wild worlds: rainforests, tiger forests, deserts, wetlands, mountains, mangroves, grasslands, and coastlines.
+            One country, many wild worlds: rainforests, tiger forests, deserts, wetlands, mountains, mangroves, grasslands, and coastlines — and guides who&apos;ve spent decades in every one of them.
           </p>
+        </div>
+      </section>
+
+      {/* Origin story / trust builder */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold mb-6 text-[#33361f]">Why Wildora Exists</h2>
+          <div className="bg-white rounded-lg p-6 md:p-8 border-l-4 border-[#5b6b3a] shadow-sm space-y-4 text-gray-700">
+            <p>
+              Long before Wildora Expeditions had a name, our guides were already in the field — tracking Striped Hyena through Sanjay Dubri, documenting butterfly diversity in the Eastern Ghats, teaching tropical ecology at Bishop Heber College, and leading birdwatching walks through Ramsar wetlands. Tour guiding came later. The field time came first.
+            </p>
+            <p>
+              We started Wildora because too many wildlife trips are run by logistics companies that hire a driver and call it a safari. We wanted the opposite: routes built by the same naturalists, researchers, and educators who&apos;d spend their own free weekend doing exactly this — just with better vehicles, better timing, and a lot less rushing.
+            </p>
+            <p>
+              That&apos;s still how every itinerary gets built today: by people who know which waterhole the leopard actually uses, not just which one is on the map.
+            </p>
+          </div>
         </div>
       </section>
 

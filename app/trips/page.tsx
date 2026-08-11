@@ -14,9 +14,9 @@ export default function TripsPage() {
       {/* Hero */}
       <section className="bg-gradient-to-r from-[#33361f] to-[#5b6b3a] text-white py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl font-bold mb-6">Guided Trips & Itineraries</h1>
+          <h1 className="text-5xl font-bold mb-6">Choose Your India Wildlife Adventure</h1>
           <p className="text-xl text-gray-100">
-            Leisure-paced wildlife holidays led by expert naturalists across India
+            Small-group departures across India&apos;s wildest habitats, led by expert naturalists. Groups are capped at 10-12 — check availability before you plan your dates.
           </p>
         </div>
       </section>
@@ -34,6 +34,11 @@ export default function TripsPage() {
                     /* Re-cropped photos are framed head-first, so anchor to the top rather than the centre. */
                     return <img src={img(p.wide ?? p.src)} alt={p.name} loading="lazy" decoding="async" className={`absolute inset-0 w-full h-full object-cover ${p.wide ? 'object-top' : ''}`} />;
                   })()}
+                  {typeof trip.spotsLeft === 'number' && trip.spotsLeft <= 6 && (
+                    <span className="absolute top-3 left-3 bg-[#9a3324] text-white text-xs font-semibold px-3 py-1 rounded-full">
+                      Only {trip.spotsLeft} spots left
+                    </span>
+                  )}
                 </div>
                 <div className="p-6">
                   <h3 className="text-2xl font-semibold mb-3 text-[#33361f]">{trip.title}</h3>
@@ -82,7 +87,7 @@ export default function TripsPage() {
                     href={`/trips/${trip.id}`}
                     className="block text-center bg-[#b5651d] text-white px-4 py-3 rounded hover:bg-[#8f4e14] transition-colors font-semibold"
                   >
-                    View Guided Itinerary
+                    {typeof trip.spotsLeft === 'number' && trip.spotsLeft <= 6 ? 'Check Availability' : 'View Guided Itinerary'}
                   </Link>
                 </div>
               </div>
@@ -94,15 +99,15 @@ export default function TripsPage() {
       {/* Custom Trips CTA */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-6 text-[#33361f]">Need a Custom Guided Tour?</h2>
+          <h2 className="text-3xl font-bold mb-6 text-[#33361f]">Don&apos;t See Your Dates? We&apos;ll Build a Route Around Them.</h2>
           <p className="text-lg text-gray-700 mb-8">
-            We design private routes for families, international visitors, photographers, companies, schools, universities, and wildlife clubs. Tell us your dates, group size, target species, and comfort level.
+            We design private routes for families, international visitors, photographers, companies, schools, universities, and wildlife clubs. Tell us your dates, group size, target species, and comfort level — most quotes go out within 24 hours.
           </p>
           <Link
             href="/contact"
             className="inline-block bg-[#b5651d] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#8f4e14] transition-colors"
           >
-            Request Custom Programme
+            Request My Custom Programme
           </Link>
         </div>
       </section>

@@ -187,13 +187,13 @@ export default function SpeciesPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold mb-6">See These Species in the Wild</h2>
           <p className="text-lg mb-8 text-gray-200">
-            Join a guided India wildlife trip designed around the right region, habitat, and season
+            Join a guided India wildlife trip built around the right region, habitat, and season — small groups, so nobody misses the sighting.
           </p>
           <Link
             href="/trips"
             className="inline-block bg-[#b5651d] text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-[#8f4e14] transition-colors"
           >
-            Browse Our Trips
+            Browse Trips With Spots Open
           </Link>
         </div>
       </section>

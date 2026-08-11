@@ -10,7 +10,7 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-1">Wildora Expeditions</h3>
             <p className="text-[#b5651d] text-sm font-medium mb-4">Discover Nature. Experience the wild.</p>
             <p className="text-gray-300 text-sm">
-              Leisure-first guided wildlife holidays across India, covering forests, deserts, wetlands, mountains, rainforests, coasts, and custom group routes.
+              Small-group, expert-led wildlife holidays across India, covering forests, deserts, wetlands, mountains, rainforests, coasts, and custom group routes. 25+ years in the field.
             </p>
           </div>
 
@@ -72,7 +72,7 @@ export default function Footer() {
               <li>WhatsApp: +91 94431 61606</li>
               <li className="pt-2">
                 <Link href="/contact" className="text-[#b5651d] hover:text-[#8f4e14] font-medium">
-                  Send us a message -&gt;
+                  Check availability -&gt;
                 </Link>
               </li>
             </ul>

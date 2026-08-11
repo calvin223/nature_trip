@@ -40,9 +40,9 @@ export default function ContactPage() {
       {/* Hero */}
       <section className="bg-gradient-to-r from-[#33361f] to-[#5b6b3a] text-white py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl font-bold mb-6">Plan Your Guided Tour</h1>
+          <h1 className="text-5xl font-bold mb-6">Let&apos;s Plan Your Trip</h1>
           <p className="text-xl text-gray-100">
-            Tell us your dates, group size, interests, and comfort level. We&apos;ll shape the right India wildlife route.
+            Tell us your dates, group size, interests, and comfort level. We reply within 24 hours with a route and quote — no obligation.
           </p>
         </div>
       </section>
@@ -160,7 +160,7 @@ export default function ContactPage() {
                   type="submit"
                   className="w-full bg-[#b5651d] text-white px-8 py-4 rounded-md text-lg font-semibold hover:bg-[#8f4e14] transition-colors"
                 >
-                  Send Message
+                  Send My Enquiry
                 </button>
               </form>
             </div>

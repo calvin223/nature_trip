@@ -177,13 +177,13 @@ export default function PracticalPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold mb-6">Still Have Questions?</h2>
           <p className="text-lg mb-8 text-gray-200">
-            We&apos;re here to help you prepare for your India wildlife adventure
+            We reply within 24 hours — ask us anything before you commit to dates.
           </p>
           <a
             href="/contact"
             className="inline-block bg-[#b5651d] text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-[#8f4e14] transition-colors"
           >
-            Contact Us
+            Ask Us Anything
           </a>
         </div>
       </section>

@@ -189,13 +189,13 @@ export default function CustomGroupsPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold mb-6">Tell Us What Your Group Wants</h2>
           <p className="text-lg mb-8 text-gray-200">
-            Share your dates, group size, interests, budget range, and comfort level. We will suggest a route and guided programme.
+            Share your dates, group size, interests, budget range, and comfort level. Most groups get a suggested route and quote within 24 hours.
           </p>
           <Link
             href="/contact"
             className="inline-block bg-[#b5651d] text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-[#8f4e14] transition-colors"
           >
-            Request a Custom Plan
+            Get My Custom Plan
           </Link>
         </div>
       </section>

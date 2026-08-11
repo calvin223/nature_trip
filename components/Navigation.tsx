@@ -46,7 +46,7 @@ export default function Navigation() {
               href="/contact"
               className="bg-[#b5651d] text-white px-4 py-2 rounded-md hover:bg-[#8f4e14] transition-colors"
             >
-              Plan a Tour
+              Check Availability
             </Link>
           </div>
 
@@ -54,7 +54,7 @@ export default function Navigation() {
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-700 hover:text-[#33361f] focus:outline-none"
+              className="text-gray-700 hover:text-[#33361f] focus:outline-none p-2 -mr-2"
               aria-label="Toggle menu"
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -73,32 +73,32 @@ export default function Navigation() {
       {isOpen && (
         <div className="md:hidden bg-white border-t">
           <div className="px-2 pt-2 pb-3 space-y-1">
-            <Link href="/" className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md">
+            <Link href="/" className="block px-3 py-3 text-gray-700 hover:bg-gray-50 rounded-md">
               Home
             </Link>
-            <Link href="/about" className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md">
+            <Link href="/about" className="block px-3 py-3 text-gray-700 hover:bg-gray-50 rounded-md">
               About Wild India
             </Link>
-            <Link href="/trips" className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md">
+            <Link href="/trips" className="block px-3 py-3 text-gray-700 hover:bg-gray-50 rounded-md">
               Trips
             </Link>
-            <Link href="/when-to-visit" className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md">
+            <Link href="/when-to-visit" className="block px-3 py-3 text-gray-700 hover:bg-gray-50 rounded-md">
               When to Visit
             </Link>
-            <Link href="/experts" className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md">
+            <Link href="/experts" className="block px-3 py-3 text-gray-700 hover:bg-gray-50 rounded-md">
               Our Experts
             </Link>
-            <Link href="/species" className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md">
+            <Link href="/species" className="block px-3 py-3 text-gray-700 hover:bg-gray-50 rounded-md">
               Species
             </Link>
-            <Link href="/schools" className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md">
+            <Link href="/schools" className="block px-3 py-3 text-gray-700 hover:bg-gray-50 rounded-md">
               Custom Groups
             </Link>
-            <Link href="/practical" className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md">
+            <Link href="/practical" className="block px-3 py-3 text-gray-700 hover:bg-gray-50 rounded-md">
               Practical Info
             </Link>
-            <Link href="/contact" className="block px-3 py-2 bg-[#b5651d] text-white rounded-md hover:bg-[#8f4e14]">
-              Plan a Tour
+            <Link href="/contact" className="block px-3 py-3 bg-[#b5651d] text-white rounded-md hover:bg-[#8f4e14] font-semibold text-center">
+              Check Availability
             </Link>
           </div>
         </div>
