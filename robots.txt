@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /
+
+Sitemap: https://calvin223.github.io/nature_trip/sitemap.xml

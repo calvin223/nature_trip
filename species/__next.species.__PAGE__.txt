@@ -1,9 +1,0 @@
-1:"$Sreact.fragment"
-2:I[47257,["/nature_trip/_next/static/chunks/ff1a16fafef87110.js","/nature_trip/_next/static/chunks/247eb132b7f7b574.js"],"ClientPageRoot"]
-3:I[39037,["/nature_trip/_next/static/chunks/cdc20de4e38c03b2.js","/nature_trip/_next/static/chunks/335fd4ec987951ce.js"],"default"]
-6:I[97367,["/nature_trip/_next/static/chunks/ff1a16fafef87110.js","/nature_trip/_next/static/chunks/247eb132b7f7b574.js"],"OutletBoundary"]
-7:"$Sreact.suspense"
-0:{"buildId":"ZZK6oZX-pmOXHGunmCGVt","rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],[["$","script","script-0",{"src":"/nature_trip/_next/static/chunks/335fd4ec987951ce.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"loading":null,"isPartial":false}
-4:{}
-5:{}
-8:null
