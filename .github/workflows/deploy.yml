@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Departure dates are computed at build time (lib/schedule.ts) from today's date, or
+  # SITE.launchDate if later. A weekly rebuild keeps the listed dates from going stale.
+  schedule:
+    - cron: '30 0 * * 1' # Mondays 00:30 UTC = 06:00 IST
 
 permissions:
   contents: write

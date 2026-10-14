@@ -1,134 +1,257 @@
 import Link from 'next/link';
+import type { CSSProperties } from 'react';
 import type { Metadata } from 'next';
+import { CONFIRMED_AT_BOOKING, trips, wildlifeDisclaimer, type Trip } from '@/lib/data';
+import { describeDepartureRule } from '@/lib/schedule';
+import { waLink } from '@/lib/site';
+import { WhatsAppIcon } from '@/components/FloatingCTA';
 
-export const metadata: Metadata = {
-  title: 'When to Visit India for Wildlife | Wildora Expeditions',
-  description: 'A month-by-month guide to the best time to visit India for tiger safaris, birding, wetlands, deserts, Himalayan wildlife, rainforests, frogs, reptiles and butterflies.',
-};
+/* Everything seasonal on this page is computed from each trip's `seasonMonths`, `season` and
+   `seasonNote` in lib/data.ts, so it cannot drift from the trip pages and departure dates. */
 
-type Level = 3 | 2 | 1;
-const rows: { month: string; safaris: Level; birds: Level; rainforests: Level; mountains: Level; note: string }[] = [
-  { month: 'January', safaris: 2, birds: 3, rainforests: 1, mountains: 2, note: 'Excellent wetlands, desert birding, cool safaris, and lower Himalayan birding.' },
-  { month: 'February', safaris: 2, birds: 3, rainforests: 1, mountains: 2, note: 'Still prime for birds; forests are comfortable and many routes are easy for families.' },
-  { month: 'March', safaris: 3, birds: 2, rainforests: 2, mountains: 3, note: 'Tiger season strengthens; Himalayan spring begins; butterflies become active in many regions.' },
-  { month: 'April', safaris: 3, birds: 2, rainforests: 2, mountains: 3, note: 'Strong big-cat viewing in dry forests and good Himalayan birding; heat rises in central India.' },
-  { month: 'May', safaris: 3, birds: 1, rainforests: 2, mountains: 3, note: 'Hot but productive for many safaris; mountain and highland trips remain attractive.' },
-  { month: 'June', safaris: 2, birds: 1, rainforests: 3, mountains: 2, note: 'Monsoon begins; rainforest frogs, reptiles, waterfalls, and green landscapes come alive.' },
-  { month: 'July', safaris: 1, birds: 1, rainforests: 3, mountains: 1, note: 'Many major parks close or change access; specialist monsoon rainforest trips peak.' },
-  { month: 'August', safaris: 1, birds: 1, rainforests: 3, mountains: 1, note: 'Best for frogs, reptiles, macro subjects, forest soundscapes, and lush monsoon routes.' },
-  { month: 'September', safaris: 1, birds: 2, rainforests: 3, mountains: 2, note: 'Rains ease in many regions; herping remains strong and migration begins to build.' },
-  { month: 'October', safaris: 2, birds: 3, rainforests: 2, mountains: 3, note: 'Many parks reopen; pleasant weather returns; strong month for mixed wildlife routes.' },
-  { month: 'November', safaris: 2, birds: 3, rainforests: 2, mountains: 3, note: 'Excellent for birding, safaris, wetlands, deserts, and comfortable family travel.' },
-  { month: 'December', safaris: 2, birds: 3, rainforests: 1, mountains: 2, note: 'Peak winter birding, cool safaris, desert landscapes, wetlands, and easy travel conditions.' },
+const MONTH_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as const;
+const MONTH_LONG = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+] as const;
+
+/** Our home ground leads; the rest keep their lib/data.ts order. */
+const HOME_TRIP_ID = 'western-ghats-endemics';
+const ordered: Trip[] = [
+  ...trips.filter((t) => t.id === HOME_TRIP_ID),
+  ...trips.filter((t) => t.id !== HOME_TRIP_ID),
 ];
 
-function Cell({ level }: { level: Level }) {
-  const map = {
-    3: { c: 'bg-[#5b6b3a] text-white', t: 'Prime' },
-    2: { c: 'bg-[#e3dcc3] text-[#33361f]', t: 'Good' },
-    1: { c: 'bg-gray-100 text-gray-400', t: 'Limited' },
-  } as const;
-  const m = map[level];
-  return <span className={`inline-block w-full text-center text-xs font-semibold py-1.5 rounded ${m.c}`}>{m.t}</span>;
+/* Why-notes for trips that carry no `seasonNote`, taken from the FAQ answer
+   "When is the best time to go?" in lib/data.ts. */
+const EXTRA_NOTE: Record<string, string> = {
+  'monsoon-rainforest-nights':
+    'It runs in the south-west monsoon, when frogs and reptiles are most active and the forest is at its greenest.',
+};
+
+const seasonLabel = (t: Trip) => t.season.replace(/\s*\(.*\)\s*$/, '');
+
+export const metadata: Metadata = {
+  title: 'When to Visit',
+  description:
+    'When each Wildora trip runs, month by month, and why. ' +
+    ordered.map((t) => `${t.title}: ${seasonLabel(t)}`).join('; ') +
+    '.',
+};
+
+function MonthStrip({ months }: { months: number[] }) {
+  const on = new Set(months);
+  return (
+    <ol className="grid grid-cols-12 gap-1" aria-hidden="true">
+      {MONTH_SHORT.map((m, i) => {
+        const inSeason = on.has(i + 1);
+        return (
+          <li
+            key={m}
+            className={`rounded-md py-2 text-center text-[0.62rem] sm:text-[0.7rem] font-semibold tracking-wide transition-colors ${
+              inSeason
+                ? 'bg-wd-lime text-wd-night shadow-[0_0_16px_-2px_rgba(154,209,75,0.55)]'
+                : 'bg-wd-ink/[0.04] text-wd-faint border border-wd-ink/5'
+            }`}
+          >
+            <span className="sm:hidden">{m[0]}</span>
+            <span className="hidden sm:inline">{m}</span>
+          </li>
+        );
+      })}
+    </ol>
+  );
 }
 
 export default function WhenToVisitPage() {
+  const home = ordered.find((t) => t.id === HOME_TRIP_ID);
+  if (!home) throw new Error(`when-to-visit/page.tsx: trip "${HOME_TRIP_ID}" not found in lib/data.ts`);
+  const confirmedLater = ordered.filter(
+    (t) => t.startPoint === CONFIRMED_AT_BOOKING || t.endPoint === CONFIRMED_AT_BOOKING,
+  );
+
+  const byMonth = MONTH_LONG.map((name, i) => ({
+    name,
+    running: ordered.filter((t) => t.seasonMonths.includes(i + 1)),
+  }));
+
   return (
-    <div className="min-h-screen">
-      <section className="hero-canopy text-white py-20 relative overflow-hidden">
-        <div className="absolute inset-0 leaf-texture opacity-50"></div>
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">When to Visit India for Wildlife</h1>
-          <p className="text-xl text-green-50/90">
-            India is not one season or one habitat. Tiger forests, wetlands, deserts, mountains, rainforests, and coasts each peak at different times.
+    <>
+      <section className="wd-page-head">
+        <div className="wd-wrap wd-wrap--narrow text-center">
+          <p className="eyebrow">When to visit</p>
+          <h1 className="h-display mb-5">
+            The right trip for <span className="accent-text">the month you can travel</span>
+          </h1>
+          <p className="lede">
+            Each of our trips runs only in the months that suit its wildlife, its weather and the parks&apos; rules. Here
+            is when each one departs, and why.
           </p>
         </div>
       </section>
 
-      <section className="py-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-4 gap-6">
-          {[
-            { label: 'Safaris', title: 'Big Cats & Forests', window: 'October - June', body: 'Central and western forest safaris run strongest outside the heavy monsoon, with dry months often best for big-cat movement.' },
-            { label: 'Birds', title: 'Birding & Wetlands', window: 'October - March', body: 'Winter brings migrants, comfortable weather, wetland spectacle, desert birds, raptors, cranes, and strong all-round birding.' },
-            { label: 'Rainforest', title: 'Frogs & Monsoon Life', window: 'June - September', body: 'Rainforest routes peak during the monsoon for frogs, reptiles, insects, waterfalls, and lush forest atmosphere.' },
-            { label: 'Mountains', title: 'Himalayan Wildlife', window: 'March - May / Oct - Nov', body: 'Spring and autumn are usually best for Himalayan birds, forest walks, mountain views, and comfortable travel.' },
-          ].map((c) => (
-            <div key={c.title} className="bg-white border border-gray-100 rounded-2xl p-6 card-lift text-center">
-              <div className="text-xs font-bold uppercase tracking-wide text-[#b5651d] mb-3">{c.label}</div>
-              <h2 className="text-xl font-bold text-[#33361f] mb-1">{c.title}</h2>
-              <p className="text-[#b5651d] font-semibold text-sm mb-3">{c.window}</p>
-              <p className="text-gray-600 text-sm">{c.body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="py-8 bg-[#f3eedf]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-[#33361f] mb-2 text-center">Month-by-Month India Wildlife Chart</h2>
-          <p className="text-center text-gray-600 mb-8 text-sm">Indicative guide. Exact timing depends on park rules, rainfall, altitude, target species, and travel style.</p>
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[780px] bg-white rounded-2xl overflow-hidden shadow-sm">
-              <thead>
-                <tr className="bg-[#33361f] text-white text-sm">
-                  <th className="text-left px-4 py-3 font-semibold">Month</th>
-                  <th className="px-3 py-3 font-semibold">Safaris</th>
-                  <th className="px-3 py-3 font-semibold">Birding</th>
-                  <th className="px-3 py-3 font-semibold">Rainforests</th>
-                  <th className="px-3 py-3 font-semibold">Mountains</th>
-                  <th className="text-left px-4 py-3 font-semibold">Notes</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((r, i) => (
-                  <tr key={r.month} className={i % 2 ? 'bg-gray-50/50' : ''}>
-                    <td className="px-4 py-3 font-semibold text-[#33361f] whitespace-nowrap">{r.month}</td>
-                    <td className="px-3 py-3 w-24"><Cell level={r.safaris} /></td>
-                    <td className="px-3 py-3 w-24"><Cell level={r.birds} /></td>
-                    <td className="px-3 py-3 w-24"><Cell level={r.rainforests} /></td>
-                    <td className="px-3 py-3 w-24"><Cell level={r.mountains} /></td>
-                    <td className="px-4 py-3 text-sm text-gray-600">{r.note}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      <section className="wd-section !pt-0">
+        <div className="wd-wrap">
+          <div className="wd-head reveal">
+            <p className="eyebrow">At a glance</p>
+            <h2 className="h-section">Trip seasons</h2>
+            <p>Highlighted months are the months each trip runs. Every departure starts and finishes inside them.</p>
           </div>
-          <div className="flex items-center justify-center gap-6 mt-6 text-sm text-gray-600">
-            <span className="flex items-center gap-2"><span className="w-4 h-4 rounded bg-[#5b6b3a] inline-block"></span> Prime</span>
-            <span className="flex items-center gap-2"><span className="w-4 h-4 rounded bg-[#e3dcc3] inline-block"></span> Good</span>
-            <span className="flex items-center gap-2"><span className="w-4 h-4 rounded bg-gray-100 border inline-block"></span> Limited</span>
+
+          <div className="grid gap-5 float-grid">
+            {ordered.map((t, i) => {
+              const note = t.seasonNote ?? EXTRA_NOTE[t.id];
+              return (
+                <article
+                  key={t.id}
+                  className="glass card-3d reveal glass-pad grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)] lg:items-center"
+                  style={{ '--d': `${i * 90}ms` } as CSSProperties}
+                  aria-labelledby={`season-${t.id}`}
+                >
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2 mb-3">
+                      {t.id === HOME_TRIP_ID && <span className="chip chip-sun">Our home ground</span>}
+                      {t.region && <span className="text-xs font-semibold uppercase tracking-[0.18em] text-wd-lime">{t.region}</span>}
+                    </div>
+                    <h3 id={`season-${t.id}`} className="h-card mb-3">
+                      <Link href={`/trips/${t.id}/`} className="hover:text-wd-leaf transition-colors">
+                        {t.title}
+                      </Link>
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="chip">{t.season}</span>
+                      <span className="chip">{t.duration}</span>
+                      <span className="chip">{t.difficulty}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-3">
+                    <MonthStrip months={t.seasonMonths} />
+                    <p className="text-sm text-wd-ink">{describeDepartureRule(t)}.</p>
+                    {note && <p className="text-sm text-wd-muted leading-relaxed">{note}</p>}
+                    <Link href={`/trips/${t.id}/`} className="link-arrow text-sm self-start">
+                      Trip details &amp; next dates
+                    </Link>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      <section className="py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white border border-gray-100 rounded-2xl p-8 shadow-sm">
-            <h2 className="text-2xl font-bold text-[#33361f] mb-4">Planning from abroad?</h2>
-            <ul className="space-y-3 text-gray-700">
-              <li className="flex gap-3"><span className="text-[#b5651d] font-bold">-</span> International guests typically book 6-12 months ahead for safaris and specialist routes.</li>
-              <li className="flex gap-3"><span className="text-[#b5651d] font-bold">-</span> We plan around major gateways such as Delhi, Mumbai, Bengaluru, Kochi, Chennai, Kolkata, Jaipur, Guwahati, and Nagpur.</li>
-              <li className="flex gap-3"><span className="text-[#b5651d] font-bold">-</span> Tell us your target species, comfort level, and available dates. We&apos;ll recommend the right region and season.</li>
-              <li className="flex gap-3"><span className="text-[#b5651d] font-bold">-</span> Weather honesty matters: tiger months can be hot, monsoon routes are wet, and high mountains need layers and patience.</li>
+      <section className="wd-section">
+        <div className="wd-wrap">
+          <div className="wd-head reveal">
+            <p className="eyebrow">Month by month</p>
+            <h2 className="h-section">What runs when</h2>
+            <p>Pick the month you can travel.</p>
+          </div>
+          <div className="grid gap-4 grid-cols-1 min-[420px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 float-grid">
+            {byMonth.map((m, i) => (
+              <article
+                key={m.name}
+                className="glass glass-pad card-3d reveal flex flex-col gap-3"
+                style={{ '--d': `${(i % 4) * 70}ms` } as CSSProperties}
+              >
+                <h3 className="font-display text-xl font-semibold text-white flex items-center justify-between gap-2">
+                  {m.name}
+                  <span className="text-xs font-sans font-semibold text-wd-faint tabular-nums">
+                    {m.running.length} trip{m.running.length === 1 ? '' : 's'}
+                  </span>
+                </h3>
+                {m.running.length > 0 ? (
+                  <ul className="space-y-2 text-sm">
+                    {m.running.map((t) => (
+                      <li key={t.id} className="flex gap-2.5">
+                        <span
+                          className={`mt-1.5 w-2 h-2 rounded-full flex-none ${t.id === HOME_TRIP_ID ? 'bg-wd-sun' : 'bg-wd-lime'}`}
+                          aria-hidden="true"
+                        />
+                        <Link href={`/trips/${t.id}/`} className="text-wd-muted hover:text-white transition-colors">
+                          {t.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-sm text-wd-faint">No fixed departures. Ask us about a private trip.</p>
+                )}
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="wd-section">
+        <div className="wd-wrap wd-wrap--narrow">
+          <div className="glass glass-strong glass-pad reveal">
+            <p className="eyebrow">Before you book</p>
+            <h2 className="h-section mb-6">Planning your dates</h2>
+            <ul className="space-y-4 text-wd-muted leading-relaxed">
+              <li className="flex gap-3">
+                <span className="mt-2.5 w-1.5 h-1.5 rounded-full bg-wd-lime flex-none" aria-hidden="true" />
+                <span>
+                  <span className="text-wd-ink font-semibold">{home.title}.</span> Starts at {home.startPoint} Ends at{' '}
+                  {home.endPoint}
+                </span>
+              </li>
+              {confirmedLater.length > 0 && (
+                <li className="flex gap-3">
+                  <span className="mt-2.5 w-1.5 h-1.5 rounded-full bg-wd-lime flex-none" aria-hidden="true" />
+                  <span>
+                    For the {confirmedLater.map((t) => t.title).join(', ').replace(/, ([^,]*)$/, ' and $1')}, we confirm the
+                    start and end points when you book.
+                  </span>
+                </li>
+              )}
+              <li className="flex gap-3">
+                <span className="mt-2.5 w-1.5 h-1.5 rounded-full bg-wd-lime flex-none" aria-hidden="true" />
+                <span>
+                  You arrange your own travel to the start and home from the end, including flights, trains and your
+                  visa.
+                </span>
+              </li>
+              <li className="flex gap-3">
+                <span className="mt-2.5 w-1.5 h-1.5 rounded-full bg-wd-lime flex-none" aria-hidden="true" />
+                <span>
+                  Be ready for the weather: late-May days in central India can pass 40&nbsp;°C, monsoon trips are wet,
+                  and early mornings at altitude are cold.
+                </span>
+              </li>
             </ul>
+            <Link href="/practical/" className="link-arrow mt-6">
+              Plan &amp; prepare
+            </Link>
           </div>
         </div>
       </section>
 
-      <section className="py-16 bg-[#33361f] text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Not sure where to go?</h2>
-          <p className="text-green-50/90 mb-8">Send us your wish-list species, dates, budget range, and travel style. We&apos;ll suggest the right India wildlife route.</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/contact" className="bg-[#b5651d] text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-[#8f4e14] transition-colors">
-              Ask Our Experts
-            </Link>
-            <Link href="/trips" className="bg-white/10 border border-white/40 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white/20 transition-colors">
-              See All Trips
-            </Link>
+      <section className="wd-section">
+        <div className="wd-wrap wd-wrap--narrow">
+          <div className="glass glass-pad text-center reveal">
+            <h2 className="h-section mb-4">Not sure which month suits you?</h2>
+            <p className="lede mb-6 max-w-2xl mx-auto">
+              Send us your dates and the wildlife you hope to see. We will tell you which trip fits, or whether a private
+              trip would suit better.
+            </p>
+            <p className="wd-note text-left max-w-2xl mx-auto mb-8">{wildlifeDisclaimer}</p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <a
+                href={waLink("Hello Wildora, could you help me choose the right month for a trip?")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-wa btn-lg"
+              >
+                <WhatsAppIcon /> Ask on WhatsApp
+              </a>
+              <Link href="/trips/" className="btn btn-primary btn-lg">
+                See trips &amp; dates
+              </Link>
+            </div>
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 }

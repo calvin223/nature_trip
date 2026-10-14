@@ -1,89 +1,89 @@
 import Link from 'next/link';
+import { SITE, waLink } from '@/lib/site';
+import LeafMark from './LeafMark';
+import { WhatsAppIcon } from './FloatingCTA';
+
+const COLS = [
+  {
+    title: 'Explore',
+    links: [
+      { href: '/trips/', label: 'Trips & departures' },
+      { href: '/experts/', label: 'Our naturalists' },
+      { href: '/species/', label: 'Species gallery' },
+      { href: '/when-to-visit/', label: 'When to visit' },
+      { href: '/about/', label: 'About the Western Ghats' },
+    ],
+  },
+  {
+    title: 'Before you travel',
+    links: [
+      { href: '/practical/', label: 'Plan & prepare' },
+      { href: '/faq/', label: 'FAQ' },
+      { href: '/schools/', label: 'Custom groups & schools' },
+      { href: '/credits/', label: 'Photo & map credits' },
+    ],
+  },
+];
 
 export default function Footer() {
+  const social = [
+    SITE.social.facebook && { name: 'Facebook', url: SITE.social.facebook },
+    SITE.social.instagram && { name: 'Instagram', url: SITE.social.instagram },
+  ].filter(Boolean) as { name: string; url: string }[];
+
   return (
-    <footer className="bg-[#33361f] text-white mt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* About */}
-          <div>
-            <h3 className="text-lg font-semibold mb-1">Wildora Expeditions</h3>
-            <p className="text-[#b5651d] text-sm font-medium mb-4">Discover Nature. Experience the wild.</p>
-            <p className="text-gray-300 text-sm">
-              Leisure-first guided wildlife holidays across India, covering forests, deserts, wetlands, mountains, rainforests, coasts, and custom group routes.
-            </p>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/about" className="text-gray-300 hover:text-white transition-colors">
-                  About Wild India
-                </Link>
-              </li>
-              <li>
-                <Link href="/trips" className="text-gray-300 hover:text-white transition-colors">
-                  Our Trips
-                </Link>
-              </li>
-              <li>
-                <Link href="/experts" className="text-gray-300 hover:text-white transition-colors">
-                  Our Experts
-                </Link>
-              </li>
-              <li>
-                <Link href="/species" className="text-gray-300 hover:text-white transition-colors">
-                  Species Gallery
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Resources */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Resources</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/schools" className="text-gray-300 hover:text-white transition-colors">
-                  Custom Groups
-                </Link>
-              </li>
-              <li>
-                <Link href="/practical" className="text-gray-300 hover:text-white transition-colors">
-                  Practical Info & FAQ
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="text-gray-300 hover:text-white transition-colors">
-                  Contact Us
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact Info */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Get in Touch</h3>
-            <ul className="space-y-2 text-sm text-gray-300">
-              <li>Email: info@wildoraexpeditions.com</li>
-              <li>Phone: +91 98765 43210</li>
-              <li>WhatsApp: +91 94431 61606</li>
-              <li className="pt-2">
-                <Link href="/contact" className="text-[#b5651d] hover:text-[#8f4e14] font-medium">
-                  Send us a message -&gt;
-                </Link>
-              </li>
-            </ul>
-          </div>
+    <footer className="site-footer no-print mt-10 border-t border-[var(--wd-line)] bg-[#050f09]/92">
+      <div className="wd-wrap py-14 grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
+        <div>
+          <Link href="/" className="inline-flex items-center gap-2.5">
+            <LeafMark className="w-9 h-9" id="wdfoot" />
+            <span className="font-display text-2xl font-semibold text-white">Wildora Expeditions</span>
+          </Link>
+          <p className="mt-4 text-sm leading-relaxed text-wd-muted max-w-sm">
+            Small-group nature journeys in the Western Ghats and beyond, guided by doctorate-holding naturalists. Walk slowly, look closely, travel lightly.
+          </p>
+          {social.length > 0 && (
+            <div className="mt-5 flex gap-3">
+              {social.map((s) => (
+                <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" className="chip">{s.name}</a>
+              ))}
+            </div>
+          )}
         </div>
 
-        <div className="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-300">
-          <p>&copy; {new Date().getFullYear()} Wildora Expeditions. All rights reserved.</p>
-          <p className="mt-2">
-            Committed to ethical wildlife tourism, local expertise, and low-impact travel.
+        {COLS.map((col) => (
+          <div key={col.title}>
+            <h3 className="text-sm font-sans font-semibold uppercase tracking-[0.18em] text-wd-lime mb-4">{col.title}</h3>
+            <ul className="space-y-2.5 text-sm">
+              {col.links.map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="text-wd-muted hover:text-white transition-colors">{l.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+
+        <div>
+          <h3 className="text-sm font-sans font-semibold uppercase tracking-[0.18em] text-wd-lime mb-4">Talk to us</h3>
+          <a href={waLink("Hello Wildora! I'd like to plan a nature trip.")} target="_blank" rel="noopener noreferrer" className="btn btn-wa w-full sm:w-auto">
+            <WhatsAppIcon /> {SITE.whatsapp.display}
+          </a>
+          {SITE.email && (
+            <p className="mt-4 text-sm">
+              <a href={`mailto:${SITE.email}`} className="text-wd-muted hover:text-white underline underline-offset-4">{SITE.email}</a>
+            </p>
+          )}
+          <p className="mt-4 text-sm text-wd-faint leading-relaxed">
+            Messages are answered by our team in India (IST, UTC+5:30).
           </p>
+          <Link href="/contact/" className="link-arrow text-sm mt-3">Send an enquiry</Link>
+        </div>
+      </div>
+      <div className="border-t border-white/5">
+        <div className="wd-wrap py-6 flex flex-col md:flex-row gap-2 md:items-center md:justify-between text-xs text-wd-faint">
+          <p>&copy; {new Date().getFullYear()} Wildora Expeditions. Ethical, low-impact wildlife travel.</p>
+          <p>Wildlife sightings are never guaranteed: nature keeps its own schedule.</p>
         </div>
       </div>
     </footer>

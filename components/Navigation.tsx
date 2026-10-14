@@ -1,108 +1,91 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import LeafMark from './LeafMark';
+
+const PRIMARY = [
+  { href: '/trips/', label: 'Trips' },
+  { href: '/experts/', label: 'Naturalists' },
+  { href: '/species/', label: 'Species' },
+  { href: '/when-to-visit/', label: 'When to Visit' },
+  { href: '/practical/', label: 'Plan & Prepare' },
+  { href: '/faq/', label: 'FAQ' },
+];
+const SECONDARY = [
+  { href: '/about/', label: 'About the Western Ghats' },
+  { href: '/schools/', label: 'Custom Groups & Schools' },
+];
 
 export default function Navigation() {
-  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname() ?? '/';
+  /* The menu is open for the path it was opened on, so navigating closes it without an effect. */
+  const [openOn, setOpenOn] = useState<string | null>(null);
+  const open = openOn === pathname;
+  const isActive = (href: string) => pathname === href || pathname === href.replace(/\/$/, '') || (href !== '/' && pathname.startsWith(href));
+
+  useEffect(() => {
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+    return () => { document.documentElement.style.overflow = ''; };
+  }, [open]);
 
   return (
-    <nav className="bg-white shadow-sm sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex items-center">
-            <Link href="/" className="text-xl font-bold tracking-tight" style={{ color: 'var(--forest-green)' }}>
-              Wildora Expeditions
-            </Link>
-          </div>
+    <header className="site-nav no-print">
+      <nav className="wd-wrap flex items-center justify-between h-16 md:h-[72px]" aria-label="Main">
+        <Link href="/" className="flex items-center gap-2.5 group" aria-label="Wildora Expeditions — home">
+          <LeafMark className="w-8 h-8 transition-transform duration-500 group-hover:rotate-[-12deg]" id="wdnav" />
+          <span className="leading-none">
+            <span className="block font-display text-[1.35rem] font-semibold tracking-wide text-white">Wildora</span>
+            <span className="block text-[0.6rem] uppercase tracking-[0.32em] text-wd-lime mt-0.5">Expeditions</span>
+          </span>
+        </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-gray-700 hover:text-[#33361f] transition-colors">
-              Home
+        <div className="hidden lg:flex items-center gap-7">
+          {PRIMARY.map((l) => (
+            <Link key={l.href} href={l.href} className="nav-link" aria-current={isActive(l.href) ? 'page' : undefined}>
+              {l.label}
             </Link>
-            <Link href="/about" className="text-gray-700 hover:text-[#33361f] transition-colors">
-              About Wild India
-            </Link>
-            <Link href="/trips" className="text-gray-700 hover:text-[#33361f] transition-colors">
-              Trips
-            </Link>
-            <Link href="/when-to-visit" className="text-gray-700 hover:text-[#33361f] transition-colors">
-              When to Visit
-            </Link>
-            <Link href="/experts" className="text-gray-700 hover:text-[#33361f] transition-colors">
-              Our Experts
-            </Link>
-            <Link href="/species" className="text-gray-700 hover:text-[#33361f] transition-colors">
-              Species
-            </Link>
-            <Link href="/schools" className="text-gray-700 hover:text-[#33361f] transition-colors">
-              Custom Groups
-            </Link>
-            <Link href="/practical" className="text-gray-700 hover:text-[#33361f] transition-colors">
-              Practical Info
-            </Link>
-            <Link
-              href="/contact"
-              className="bg-[#b5651d] text-white px-4 py-2 rounded-md hover:bg-[#8f4e14] transition-colors"
-            >
-              Plan a Tour
-            </Link>
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-700 hover:text-[#33361f] focus:outline-none"
-              aria-label="Toggle menu"
-            >
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                {isOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
-            </button>
-          </div>
+          ))}
+          <Link href="/contact/" className="btn btn-primary !py-2.5 !px-5 text-sm">Plan a Trip</Link>
         </div>
-      </div>
 
-      {/* Mobile Navigation */}
-      {isOpen && (
-        <div className="md:hidden bg-white border-t">
-          <div className="px-2 pt-2 pb-3 space-y-1">
-            <Link href="/" className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md">
-              Home
-            </Link>
-            <Link href="/about" className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md">
-              About Wild India
-            </Link>
-            <Link href="/trips" className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md">
-              Trips
-            </Link>
-            <Link href="/when-to-visit" className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md">
-              When to Visit
-            </Link>
-            <Link href="/experts" className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md">
-              Our Experts
-            </Link>
-            <Link href="/species" className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md">
-              Species
-            </Link>
-            <Link href="/schools" className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md">
-              Custom Groups
-            </Link>
-            <Link href="/practical" className="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md">
-              Practical Info
-            </Link>
-            <Link href="/contact" className="block px-3 py-2 bg-[#b5651d] text-white rounded-md hover:bg-[#8f4e14]">
-              Plan a Tour
-            </Link>
+        <button
+          type="button"
+          onClick={() => setOpenOn(open ? null : pathname)}
+          className="lg:hidden relative w-11 h-11 grid place-items-center rounded-full border border-white/20 bg-black/20 text-white"
+          aria-label={open ? 'Close menu' : 'Open menu'}
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+        >
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            {open ? (
+              <path strokeLinecap="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            ) : (
+              <path strokeLinecap="round" strokeWidth={2} d="M4 7h16M4 12h16M4 17h10" />
+            )}
+          </svg>
+        </button>
+      </nav>
+
+      {open && (
+        <div id="mobile-menu" className="lg:hidden fixed inset-x-0 top-16 bottom-0 bg-[#06120b]/97 border-t border-[var(--wd-line)] overflow-y-auto fade-up">
+          <div className="wd-wrap py-6 flex flex-col gap-1">
+            {[...PRIMARY, ...SECONDARY].map((l, i) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                onClick={() => setOpenOn(null)}
+                className={`font-display text-2xl py-3 border-b border-white/5 ${isActive(l.href) ? 'text-wd-lime' : 'text-white'}`}
+                style={{ animationDelay: `${i * 30}ms` }}
+              >
+                {l.label}
+              </Link>
+            ))}
+            <Link href="/contact/" onClick={() => setOpenOn(null)} className="btn btn-primary btn-lg mt-6">Plan a Trip</Link>
           </div>
         </div>
       )}
-    </nav>
+    </header>
   );
 }

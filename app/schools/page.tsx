@@ -1,204 +1,282 @@
-import Link from 'next/link';
 import type { Metadata } from 'next';
+import type { CSSProperties } from 'react';
+import Link from 'next/link';
+import { WhatsAppIcon } from '@/components/FloatingCTA';
+import { wildlifeDisclaimer } from '@/lib/data';
+import { waLink } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Custom Group Programmes | Wildora Expeditions',
-  description: 'Tailor-made guided India wildlife programmes for families, private groups, international visitors, photographers, companies, schools and universities.',
+  title: 'Custom Groups & Schools',
+  description:
+    'Tailor-made guided nature programmes in India for families, friends, private groups, clubs, companies, international visitors, schools and universities.',
 };
 
-const groupTypes = [
+const GROUP_TYPES = [
   {
-    title: 'Families & Friends',
-    body: 'Easy-paced nature days with safaris, short walks, birding, viewpoints, local food, and enough downtime for mixed ages.'
+    title: 'Families',
+    body: 'Gentle-paced nature days with safaris, short walks, birding, viewpoints, local food and enough downtime for mixed ages.',
   },
   {
-    title: 'International Visitors',
-    body: 'Airport transfers, currency-friendly quotes, route notes, comfort planning, and guided wildlife time shaped around flight schedules.'
+    title: 'Friends & private groups',
+    body: 'Your own departure on your dates, with a dedicated guide, a route shaped around your interests and a daily rhythm you choose.',
   },
   {
-    title: 'Birding & Photography Groups',
-    body: 'Target birds, mammals, macro subjects, big cats, low-light rainforest sessions, and patient field support for small specialist groups.'
+    title: 'Clubs & societies',
+    body: 'Birding, photography and natural-history groups: target birds, mammals, butterflies or macro subjects, low-light rainforest sessions and patient field support.',
   },
   {
-    title: 'Clubs, Companies & Retreats',
-    body: 'Nature immersion, team days, light conservation activities, lodge-based wildlife, landscape trails, and guided forest experiences.'
+    title: 'Companies & retreats',
+    body: 'Nature immersion, team days, lodge-based wildlife, landscape trails and guided forest walks, planned around your schedule.',
   },
   {
-    title: 'Schools & Universities',
-    body: 'Academic modules, student camps, field methods, and curriculum-linked sessions remain available when requested.'
+    title: 'International visitors',
+    body: 'Route notes, comfort planning and guided wildlife time shaped around your flights. Airport or rail pick-up can be discussed for private programmes.',
   },
   {
-    title: 'Private Naturalist Tours',
-    body: 'A dedicated guide, custom route, flexible daily rhythm, and a species list shaped around your personal interests.'
-  }
+    title: 'Schools & universities',
+    body: 'Field modules, student camps, field methods and curriculum-linked sessions, built as custom programmes on request.',
+  },
 ];
 
-const customOptions = [
-  'Target species: tigers, leopards, elephants, hornbills, pheasants, frogs, reptiles, butterflies, mammals, orchids, or habitat specialities',
-  'Trip style: relaxed holiday, safari-focused, photography-focused, adventurous monsoon, family-friendly, or academic',
-  'Activities: jeep safaris, birding, night walks, wetland visits, desert drives, waterfall stops, mountain trails, local markets, and checklist sessions',
-  'Comfort: lodge category, safari intensity, walking difficulty, rooming preferences, food needs, transport, and airport pick-up',
-  'Length: half-day guiding, weekend breaks, 4-7 day tours, or longer multi-region routes'
+const CUSTOM_OPTIONS: [string, string][] = [
+  ['Target species', 'Tigers, leopards, elephants, hornbills, Western Ghats endemics, pheasants, frogs, reptiles, butterflies, orchids or other habitat specialities. We plan for the best chance, never a guarantee.'],
+  ['Trip style', 'Relaxed holiday, safari-focused, photography-focused, adventurous monsoon, family-friendly or academic.'],
+  ['Activities', 'Jeep safaris, birding, night walks where rules allow, wetland visits, waterfall stops, mountain trails, local markets and checklist sessions.'],
+  ['Comfort', 'Lodge category, safari intensity, walking difficulty, rooming preferences, food needs, transport and pick-up arrangements.'],
+  ['Length', 'Half-day guiding, weekend breaks, 4–7 day tours or longer multi-region routes.'],
 ];
+
+const SAMPLE_DAY: [string, string][] = [
+  ['06:00–09:00', 'Guided safari, birding, wetland or forest walk while wildlife is most active'],
+  ['09:00–11:00', 'Breakfast, checklist notes and free time'],
+  ['11:00–13:00', 'Village, landscape, river, forest, tea, spice or viewpoint visit, depending on the region'],
+  ['13:00–15:30', 'Lunch and rest through the hottest or wettest part of the day'],
+  ['15:30–18:00', 'Forest-edge walk, safari drive, photography session, wetland visit or scenic drive'],
+  ['After dinner', 'Optional night walk for frogs, reptiles, owls, moths and rainforest sounds, where rules allow'],
+];
+
+const ACADEMIC = [
+  {
+    title: 'Short modules',
+    body: 'Three to five day programmes introducing tropical ecology, species observation and conservation through time in the field.',
+  },
+  {
+    title: 'Field courses',
+    body: 'Longer programmes for colleges and universities, with field methods, data recording, student projects and review sessions.',
+  },
+  {
+    title: 'Youth camps',
+    body: 'Structured camps with age-appropriate nature walks, activities, observation skills and guided group reflection.',
+  },
+];
+
+const LOGISTICS = [
+  'Airport or rail pick-up, where practical',
+  'Transport between field sites',
+  'Accommodation matched to your comfort and budget',
+  'Dietary planning, with vegetarian-friendly meals',
+  'Park permits and access coordination',
+  'Route notes, packing guidance and target-species lists',
+];
+
+const GROUP_ENQUIRY =
+  'Hello Wildora, I would like to plan a custom trip for our group.\n' +
+  'Type of group: \nNumber of people: \nAges: \nPreferred dates: \nInterests: ';
+
+const delay = (ms: number) => ({ '--d': `${ms}ms` }) as CSSProperties;
+
+function InfoIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="w-5 h-5 flex-none mt-px" fill="none" stroke="currentColor" strokeWidth={1.8}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 11v5M12 7.5v.01" strokeLinecap="round" />
+    </svg>
+  );
+}
 
 export default function CustomGroupsPage() {
   return (
-    <div className="min-h-screen">
-      <section className="bg-gradient-to-r from-[#33361f] to-[#5b6b3a] text-white py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl font-bold mb-6">Custom Guided Programmes</h1>
-          <p className="text-xl text-gray-100">
-            Tailor-made India wildlife experiences for private groups, families, visitors from abroad, photographers, companies, schools and universities.
-          </p>
+    <>
+      <section className="wd-page-head">
+        <div className="wd-wrap">
+          <div className="max-w-3xl fade-up">
+            <p className="eyebrow">Custom groups &amp; schools</p>
+            <h1 className="h-display mb-5">
+              A trip built around <span className="accent-text">your group</span>
+            </h1>
+            <p className="lede">
+              Families, friends, clubs, companies, visitors from abroad, schools and universities: tell us who is coming
+              and what you want to experience, and we will design a guided programme around your dates, pace,
+              interests and comfort.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a href={waLink(GROUP_ENQUIRY)} target="_blank" rel="noopener noreferrer" className="btn btn-wa btn-lg">
+                <WhatsAppIcon /> Plan on WhatsApp
+              </a>
+              <Link href="/contact/" className="btn btn-ghost btn-lg">Send an enquiry</Link>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-lg text-gray-700 mb-6">
-            Our default style is not a classroom-style field course. We design guided programmes around what your group wants to experience: safaris, birds, mammals, forests, deserts, wetlands, mountains, night trails, local food, photography time, and comfortable travel.
-          </p>
-          <p className="text-lg text-gray-700">
-            If you need an academic version, we can still build one. But for most groups, the priority is a memorable, well-guided nature holiday with expert interpretation in the field.
-          </p>
-        </div>
-      </section>
-
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold mb-12 text-center text-[#33361f]">Who We Build For</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {groupTypes.map((group) => (
-              <div key={group.title} className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
-                <h3 className="text-xl font-semibold mb-3 text-[#5b6b3a]">{group.title}</h3>
-                <p className="text-gray-700 text-sm leading-relaxed">{group.body}</p>
-              </div>
+      <section className="wd-section">
+        <div className="wd-wrap">
+          <div className="wd-head reveal">
+            <p className="eyebrow">Who we build for</p>
+            <h2 className="h-section">Every kind of group</h2>
+            <p>
+              Our default is a well-guided nature holiday, not a classroom field course. If you need an academic
+              version, we build that too.
+            </p>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 float-grid">
+            {GROUP_TYPES.map((g, i) => (
+              <article key={g.title} className="glass glass-pad card-3d reveal" style={delay((i % 3) * 100)}>
+                <h3 className="h-card">{g.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-wd-muted">{g.body}</p>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-16">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold mb-8 text-[#33361f]">What Can Be Customized</h2>
-          <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
-            <ul className="space-y-4">
-              {customOptions.map((option) => (
-                <li key={option} className="flex items-start gap-3 text-gray-700">
-                  <svg className="w-5 h-5 text-[#b5651d] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>{option}</span>
-                </li>
+      <section className="wd-section">
+        <div className="wd-wrap">
+          <div className="wd-head reveal">
+            <p className="eyebrow">Your programme</p>
+            <h2 className="h-section">What can be customised</h2>
+            <p>
+              We shape the programme around what your group wants: safaris, birds, mammals, forests, wetlands,
+              mountains, night trails, local food, photography time and comfortable travel.
+            </p>
+          </div>
+          <div className="glass glass-pad card-3d reveal">
+            <dl className="grid gap-x-10 gap-y-6 md:grid-cols-2">
+              {CUSTOM_OPTIONS.map(([term, detail]) => (
+                <div key={term} className="flex items-start gap-3">
+                  <span aria-hidden="true" className="mt-1 text-wd-lime">✓</span>
+                  <div>
+                    <dt className="font-semibold text-white">{term}</dt>
+                    <dd className="mt-1 text-sm leading-relaxed text-wd-muted">{detail}</dd>
+                  </div>
+                </div>
               ))}
-            </ul>
+            </dl>
           </div>
         </div>
       </section>
 
-      <section className="py-16 bg-[#f3eedf]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold mb-8 text-[#33361f]">Sample Leisure Group Day</h2>
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <section className="wd-section">
+        <div className="wd-wrap wd-wrap--narrow">
+          <div className="wd-head reveal">
+            <p className="eyebrow">An example only</p>
+            <h2 className="h-section">A sample group day</h2>
+            <p>The rhythm changes with the season, weather, permits, ages and the group’s energy.</p>
+          </div>
+          <div className="glass glass-strong card-3d reveal overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead className="bg-[#33361f] text-white">
-                  <tr>
-                    <th className="p-4">Time</th>
-                    <th className="p-4">Experience</th>
+              <table className="w-full text-left text-sm">
+                <caption className="sr-only-wd">A sample day on a custom group programme</caption>
+                <thead>
+                  <tr className="border-b border-[var(--wd-line-strong)] text-xs uppercase tracking-[0.16em] text-wd-lime">
+                    <th scope="col" className="px-5 py-4 font-semibold">Time</th>
+                    <th scope="col" className="px-5 py-4 font-semibold">Experience</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y">
-                  <tr>
-                    <td className="p-4 font-semibold">06:00 - 09:00</td>
-                    <td className="p-4">Guided safari, birding, wetland, or forest walk while wildlife is active</td>
-                  </tr>
-                  <tr className="bg-gray-50">
-                    <td className="p-4 font-semibold">09:00 - 11:00</td>
-                    <td className="p-4">Breakfast, checklist notes, and free time</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4 font-semibold">11:00 - 13:00</td>
-                    <td className="p-4">Village, landscape, river, forest, desert, tea, spice, or viewpoint visit depending on the region</td>
-                  </tr>
-                  <tr className="bg-gray-50">
-                    <td className="p-4 font-semibold">13:00 - 15:30</td>
-                    <td className="p-4">Lunch and rest during the hottest or wettest part of the day</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4 font-semibold">15:30 - 18:00</td>
-                    <td className="p-4">Forest-edge walk, safari drive, photography session, wetland visit, or scenic drive</td>
-                  </tr>
-                  <tr className="bg-gray-50">
-                    <td className="p-4 font-semibold">After dinner</td>
-                    <td className="p-4">Optional night walk for frogs, reptiles, owls, moths, and rainforest sounds</td>
-                  </tr>
+                <tbody>
+                  {SAMPLE_DAY.map(([time, what]) => (
+                    <tr key={time} className="border-b border-[var(--wd-line)] last:border-0">
+                      <th scope="row" className="px-5 py-4 font-semibold text-white whitespace-nowrap align-top">{time}</th>
+                      <td className="px-5 py-4 text-wd-muted">{what}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
           </div>
-          <p className="text-sm text-gray-600 mt-4">
-            The rhythm changes with season, weather, permits, age range, and group energy.
-          </p>
         </div>
       </section>
 
-      <section className="py-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold mb-8 text-center text-[#33361f]">Academic Options When Needed</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-gray-50 rounded-lg p-6">
-              <h3 className="text-xl font-semibold mb-3 text-[#5b6b3a]">Short Modules</h3>
-              <p className="text-gray-700 text-sm">Three to five day programmes introducing tropical ecology, species observation, and conservation stories through field time.</p>
-            </div>
-            <div className="bg-gray-50 rounded-lg p-6">
-              <h3 className="text-xl font-semibold mb-3 text-[#5b6b3a]">Field Courses</h3>
-              <p className="text-gray-700 text-sm">Longer programmes for colleges and universities with field methods, data recording, student projects, and review sessions.</p>
-            </div>
-            <div className="bg-gray-50 rounded-lg p-6">
-              <h3 className="text-xl font-semibold mb-3 text-[#5b6b3a]">Youth Camps</h3>
-              <p className="text-gray-700 text-sm">Safe, structured camps with age-appropriate nature walks, activities, observation skills, and guided group reflection.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold mb-8 text-[#33361f]">Safety & Logistics</h2>
-          <div className="space-y-4 text-gray-700">
+      <section className="wd-section">
+        <div className="wd-wrap">
+          <div className="wd-head reveal">
+            <p className="eyebrow">Schools &amp; universities</p>
+            <h2 className="h-section">Academic options when you need them</h2>
             <p>
-              Every custom programme is planned around group size, age range, walking ability, weather, forest access, transport time, food needs, and safe wildlife observation.
+              Our naturalists include past and present environmental-science lecturers at Bishop Heber College,
+              Tiruchirappalli, with experience of nature camps and field-based learning for schools and colleges.{' '}
+              <Link href="/experts/" className="link-arrow">Meet the naturalists</Link>
             </p>
-            <div className="bg-white border-l-4 border-[#5b6b3a] p-4">
-              <h3 className="font-semibold text-[#33361f] mb-2">We can arrange:</h3>
-              <ul className="space-y-1 text-sm">
-                <li>- Airport or rail pick-up where practical</li>
-                <li>- Internal transport between field sites</li>
-                <li>- Accommodation matched to comfort and budget</li>
-                <li>- Dietary planning and vegetarian-friendly meals</li>
-                <li>- Local permits and access coordination</li>
-                <li>- Route notes, packing guidance, and target species lists</li>
-              </ul>
-            </div>
+          </div>
+          <div className="grid gap-5 md:grid-cols-3 float-grid">
+            {ACADEMIC.map((a, i) => (
+              <article key={a.title} className="glass glass-pad card-3d reveal" style={delay(i * 100)}>
+                <h3 className="h-card">{a.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-wd-muted">{a.body}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="py-16 bg-[#33361f] text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-6">Tell Us What Your Group Wants</h2>
-          <p className="text-lg mb-8 text-gray-200">
-            Share your dates, group size, interests, budget range, and comfort level. We will suggest a route and guided programme.
+      <section className="wd-section">
+        <div className="wd-wrap">
+          <div className="wd-head reveal">
+            <p className="eyebrow">Planning</p>
+            <h2 className="h-section">Safety &amp; logistics</h2>
+            <p>
+              Every custom programme is planned around group size, ages, walking ability, weather, forest access,
+              travel time, food needs and safe wildlife watching.
+            </p>
+          </div>
+          <div className="grid gap-5 md:grid-cols-2 float-grid">
+            <article className="glass glass-pad card-3d reveal">
+              <h3 className="h-card">What we can arrange</h3>
+              <ul className="mt-4 space-y-2.5">
+                {LOGISTICS.map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-wd-muted">
+                    <span aria-hidden="true" className="mt-2 flex-none w-1.5 h-1.5 rounded-full bg-wd-lime" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+            <article className="glass glass-strong glass-pad card-3d reveal !border-[rgba(242,177,52,0.45)]" style={delay(100)}>
+              <span className="chip chip-sun">Required for every guest</span>
+              <h3 className="h-card mt-4">Health &amp; insurance</h3>
+              <p className="mt-2 text-sm leading-relaxed text-wd-ink/90">
+                Every member of the group, students and staff included, needs comprehensive travel medical insurance
+                and must tell us about any medical condition or allergy before booking. Many routes are remote, and the
+                nearest hospital can be hours away.
+              </p>
+              <Link href="/practical/#health" className="link-arrow text-sm mt-4">Health, insurance &amp; medical information</Link>
+            </article>
+          </div>
+          <p className="wd-note reveal mt-8">
+            <InfoIcon />
+            <span>{wildlifeDisclaimer}</span>
           </p>
-          <Link
-            href="/contact"
-            className="inline-block bg-[#b5651d] text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-[#8f4e14] transition-colors"
-          >
-            Request a Custom Plan
-          </Link>
         </div>
       </section>
-    </div>
+
+      <section className="wd-section">
+        <div className="wd-wrap wd-wrap--narrow">
+          <div className="glass glass-pad card-3d reveal text-center">
+            <p className="eyebrow">Start planning</p>
+            <h2 className="h-section">Tell us what your group wants</h2>
+            <p className="lede mt-4 max-w-2xl mx-auto">
+              Share your dates, group size, ages, interests, budget range and comfort level. We will suggest a route
+              and a guided programme.
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <a href={waLink(GROUP_ENQUIRY)} target="_blank" rel="noopener noreferrer" className="btn btn-wa btn-lg">
+                <WhatsAppIcon /> Plan on WhatsApp
+              </a>
+              <Link href="/contact/" className="btn btn-ghost btn-lg">Send an enquiry</Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
