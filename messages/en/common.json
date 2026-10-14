@@ -1,0 +1,123 @@
+{
+  "siteName": "Wildora Expeditions",
+  "skipToContent": "Skip to content",
+  "meta": {
+    "siteName": "Wildora Expeditions",
+    "title": "Western Ghats Birding & Wildlife Tours | Wildora Expeditions",
+    "description": "Small-group birding and wildlife tours in India's Western Ghats, led by doctorate-holding naturalists: endemic birds, Nilgiri tahr, lion-tailed macaques.",
+    "ogDescription": "Small-group, naturalist-led journeys into the rainforests, shola grasslands and tiger country of South India.",
+    "ogImageAlt": "Lion-tailed macaque in the Western Ghats rainforest"
+  },
+  "jsonLd": {
+    "areaServed": "India: the Western Ghats, Central India and the Himalaya",
+    "description": "Naturalist-led small-group nature and wildlife trips in India, centred on the Western Ghats of South India.",
+    "home": "Home"
+  },
+  "nav": {
+    "label": "Main",
+    "homeLabel": "Wildora Expeditions — home",
+    "planTrip": "Plan a Trip",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "trips": "Trips",
+    "tripsAll": "Trips & departures",
+    "journey": "The 10-day route",
+    "whenToVisit": "When to visit",
+    "customGroups": "Custom groups",
+    "species": "Species",
+    "about": "About",
+    "aboutIndia": "About Wild India",
+    "naturalists": "Our naturalists",
+    "travelInfo": "Travel info",
+    "practical": "Practical info",
+    "faq": "FAQ"
+  },
+  "footer": {
+    "tagline": "Small-group nature journeys in the Western Ghats and beyond, guided by doctorate-holding naturalists. Walk slowly, look closely, travel lightly.",
+    "explore": "Explore",
+    "beforeYouTravel": "Before you travel",
+    "talkToUs": "Talk to us",
+    "replyHours": "Messages are answered by our team in India (IST, UTC+5:30).",
+    "sendEnquiry": "Send an enquiry",
+    "copyright": "© {year} Wildora Expeditions. Ethical, low-impact wildlife travel.",
+    "noGuarantee": "Wildlife sightings are never guaranteed: nature keeps its own schedule.",
+    "legalLabel": "Legal",
+    "links": {
+      "trips": "Trips & departures",
+      "journey": "The 10-day route",
+      "naturalists": "Our naturalists",
+      "species": "Species gallery",
+      "whenToVisit": "When to visit",
+      "about": "About wild India",
+      "practical": "Practical info",
+      "faq": "FAQ",
+      "customGroups": "Custom groups",
+      "contact": "Contact & enquiries"
+    },
+    "legal": {
+      "notice": "Legal notice",
+      "terms": "Booking conditions",
+      "packageTravel": "Package travel information",
+      "privacy": "Privacy",
+      "cookies": "Cookies",
+      "accessibility": "Accessibility",
+      "credits": "Photo & map credits"
+    }
+  },
+  "whatsapp": {
+    "default": "Hello Wildora, I'd like to know more about your guided nature trips.",
+    "footer": "Hello Wildora! I'd like to plan a nature trip.",
+    "floatingLabel": "Chat with us on WhatsApp",
+    "floatingText": "WhatsApp us"
+  },
+  "language": {
+    "label": "Language",
+    "switchTo": "Switch to {language}"
+  },
+  "gallery": {
+    "enlarge": "Enlarge photo: {name}",
+    "previous": "Previous species",
+    "next": "Next species",
+    "carousel": "carousel"
+  },
+  "lightbox": {
+    "hideCaptions": "Hide captions",
+    "showCaptions": "Show captions",
+    "close": "Close",
+    "previous": "Previous",
+    "next": "Next",
+    "dialog": "Lightbox",
+    "carousel": "Carousel",
+    "gallery": "Photo gallery",
+    "slide": "Slide",
+    "slideOf": "{index} of {total}",
+    "caption": "Caption"
+  },
+  "facts": {
+    "size": "Size",
+    "status": "Status",
+    "range": "Range",
+    "endemicTo": "Endemic to",
+    "habitat": "Habitat",
+    "whereWeLook": "Where we look"
+  },
+  "wildlifeDisclaimer": "Wildlife sightings depend on the season, the weather and local conditions on the day of your visit. We plan routes and timings to give you the best chance, but no particular sighting can be guaranteed.",
+  "legal": {
+    "draftNotice": "Draft: this page has not yet been reviewed by a lawyer. Items marked <tbc>[To be confirmed]</tbc> are awaiting details from {siteName}.",
+    "tbc": "[To be confirmed: {hint}]",
+    "lastUpdated": "Last updated: {date}",
+    "contents": "On this page",
+    "englishOnly": "This document is not yet available in your language. The English version is shown below.",
+    "seeAlso": "See also"
+  },
+  "schedule": {
+    "departureRule": "Departs on the {which} {weekday} of {months}",
+    "nth": {
+      "1": "first",
+      "2": "second",
+      "3": "third",
+      "4": "fourth",
+      "-1": "last"
+    }
+  }
+}

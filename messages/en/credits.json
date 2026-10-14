@@ -1,0 +1,29 @@
+{
+  "meta": {
+    "title": "Photo & Map Credits",
+    "description": "Photographers, licences and map data sources used on the Wildora Expeditions website."
+  },
+  "head": {
+    "title": "Photo & map credits",
+    "lede": "We only use images and map data we have the right to use. Here is where each one comes from."
+  },
+  "wildlife": {
+    "heading": "Wildlife and habitat photographs",
+    "body": "Photographs of species and habitats across the site were supplied by the Wildora team. Please do not reuse them without permission."
+  },
+  "landscape": {
+    "heading": "Landscape photographs",
+    "body": "Landscape photographs on <link>the 10-day route</link> and in “Scenery along the way” on the trip pages, from Wikimedia Commons under open licences. Edited versions are shared under the same licence as the original.",
+    "photo": "Photo: {author}, <sourceLink>{source}</sourceLink>, <licenceLink>{licence}</licenceLink>",
+    "changes": "Changes: {changes}."
+  },
+  "maps": {
+    "heading": "Maps",
+    "body": "Maps are drawn from <naturalEarth>Natural Earth</naturalEarth> data, which is in the public domain. India's boundaries follow Natural Earth's India point-of-view dataset. Route lines and stop positions are approximate and for orientation only. Links to individual places open in <osm>OpenStreetMap</osm> (© OpenStreetMap contributors)."
+  },
+  "typefaces": {
+    "heading": "Typefaces",
+    "body": "Hanken Grotesk, under the SIL Open Font License."
+  },
+  "wrongCredit": "Think something here is yours and credited wrongly? <link>Tell us</link> and we will fix or remove it."
+}

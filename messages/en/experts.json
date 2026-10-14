@@ -1,0 +1,35 @@
+{
+  "meta": {
+    "title": "Our Naturalists",
+    "description": "Meet the naturalists who lead Wildora trips: researchers and educators in birds, butterflies, mammals and tropical ecosystems."
+  },
+  "hero": {
+    "title": "Guided by people who <accent>study these forests</accent>",
+    "lede": "Our guides are naturalists, researchers and educators who have spent years studying India's birds, butterflies, mammals and forests. They bring that field knowledge to the trips they lead, while keeping each day relaxed, practical and enjoyable."
+  },
+  "card": {
+    "portraitAlt": "Portrait of {name}",
+    "specialism": "Specialism",
+    "experience": "Experience"
+  },
+  "why": {
+    "title": "Why naturalist guides matter",
+    "items": [
+      {
+        "title": "Finding and naming",
+        "body": "Help spotting what is there, identifying it by sight and by call, and explaining how it lives, from hornbills overhead to frogs by a stream."
+      },
+      {
+        "title": "Explained for everyone",
+        "body": "Clear explanations in the field for first-time visitors and experienced naturalists alike, at a pace that leaves time to look and listen."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Questions about a species or a route?",
+    "lede": "Message us with what you hope to see and when you can travel. We will tell you honestly what is likely and which trip fits.",
+    "whatsappMessage": "Hello Wildora, I have a question for one of your naturalists.",
+    "askWhatsApp": "Ask on WhatsApp",
+    "trips": "See trips & dates"
+  }
+}

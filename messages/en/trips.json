@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "title": "Trips & departure dates",
+    "description": "{count, plural, one {# small-group, naturalist-led nature trip} other {# small-group, naturalist-led nature trips}} in India, from the Western Ghats to the Himalaya: itineraries, route maps and departure dates."
+  },
+  "pageNav": {
+    "label": "On this page"
+  },
+  "head": {
+    "title": "Guided trips, <accent>honest expectations</accent>",
+    "lede": "Small-group nature trips led by naturalists, in the Western Ghats, Central India and the Himalaya. Each trip page has a day-by-day itinerary, a map and the next departure dates."
+  },
+  "nav": {
+    "title": "Trips",
+    "where": "Where we go",
+    "trips": "Trips & dates",
+    "private": "Private trips & day tours"
+  },
+  "where": {
+    "title": "Where our trips run",
+    "body": "The Western Ghats Endemics route runs from lowland forest at Thattekad in Kerala, over the shola country above Munnar and Ooty, to tiger country at Bandipur in Karnataka. Select a region on the map to open its trip."
+  },
+  "list": {
+    "title": "Choose your trip",
+    "intro": "Small groups on set dates. Every date is confirmed when you enquire."
+  },
+  "card": {
+    "duration": "Duration",
+    "difficulty": "Difficulty",
+    "season": "Season",
+    "nextDepartures": "Next departures",
+    "cta": "Itinerary, map & dates"
+  },
+  "private": {
+    "title": "Private trips & day tours",
+    "intro": "Any of these routes can run privately on dates that suit you.",
+    "bestFor": "Best for:",
+    "plan": "Plan a private trip",
+    "whatsappMessage": "Hello Wildora, I'd like to plan a private trip or a day tour. Our dates, group size and interests are: ",
+    "enquiry": "Send an enquiry",
+    "groups": "Planning for a school, university or club?",
+    "groupsLink": "Custom groups & schools"
+  }
+}

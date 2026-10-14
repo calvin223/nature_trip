@@ -1,0 +1,24 @@
+{
+  "meta": {
+    "title": "The 10-day route",
+    "description": "Follow the Western Ghats Endemics Expedition day by day: Thattekad, Munnar and Eravikulam, Chinnar, Valparai, the Nilgiris and Bandipur."
+  },
+  "head": {
+    "title": "Ten days, rainforest to tiger country",
+    "lede": "The {trip}, day by day: from the lowland birds of Thattekad to the cloud grasslands of Munnar and the Nilgiris, then down to Bandipur. Scroll to follow the route."
+  },
+  "story": {
+    "day": "Day {day}",
+    "days": "Days {first}–{last}",
+    "photoCredit": "Photo: {author}, {licence}",
+    "photoNote": "Place photographs from Wikimedia Commons, used under their open licences. <link>Full credits and licences</link>"
+  },
+  "map": {
+    "title": "The route on the map"
+  },
+  "cta": {
+    "title": "Walk it with us",
+    "nextDepartures": "Next departures: {dates}.",
+    "button": "See dates & enquire"
+  }
+}

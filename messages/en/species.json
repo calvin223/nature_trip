@@ -1,0 +1,84 @@
+{
+  "meta": {
+    "title": "Species & Field Gallery",
+    "description": "The wildlife our naturalists look for, from Western Ghats endemics and monsoon frogs to the big cats of the tiger reserves, with field photographs."
+  },
+  "hero": {
+    "title": "The wildlife <accent>we look for</accent>",
+    "lede": "Endemic birds and mammals of the Western Ghats, monsoon frogs and reptiles, butterflies and moths, forest plants, and the big mammals of the tiger reserves. Pick a group to filter {count} field {count, plural, one {photograph} other {photographs}}."
+  },
+  "credits": "Field photographs supplied by the Wildora team. <link>Photo credits</link>",
+  "filter": {
+    "label": "Filter by group"
+  },
+  "tabs": {
+    "All": "All",
+    "Birds": "Birds",
+    "Mammals": "Mammals",
+    "Reptiles": "Reptiles",
+    "Amphibians": "Amphibians",
+    "Butterflies & Moths": "Butterflies & Moths",
+    "Invertebrates": "Invertebrates",
+    "Flora": "Flora"
+  },
+  "categories": {
+    "Birds": "Birds",
+    "Mammals": "Mammals",
+    "Reptiles": "Reptiles",
+    "Amphibians": "Amphibians",
+    "Butterflies": "Butterflies",
+    "Flora": "Flora"
+  },
+  "focus": {
+    "title": "Focus species",
+    "endemic": "Endemic",
+    "threatened": "Threatened",
+    "habitat": "Habitat",
+    "fieldNote": "Field note",
+    "show": "Show {name}",
+    "pause": "Pause autoplay",
+    "resume": "Resume autoplay"
+  },
+  "gallery": {
+    "allTitle": "Field photographs",
+    "count": "{count} {count, plural, one {photograph} other {photographs}}. Select one to enlarge it."
+  },
+  "why": {
+    "title": "Why local specialities matter",
+    "paragraphs": [
+      "Some species are widespread icons; others are tied to one region, habitat, altitude or season. In the Western Ghats, the lion-tailed macaque and the Nilgiri tahr live nowhere else on Earth.",
+      "Endemic and threatened species matter especially because they depend on particular habitats. When those habitats are damaged, there may be no second chance elsewhere.",
+      "On our trips we look for the endemic and locally special species that each route and season make likely, and we keep observation ethical and low-impact."
+    ]
+  },
+  "ethics": {
+    "title": "Ethical wildlife watching",
+    "doTitle": "We do",
+    "do": [
+      "Keep a safe, respectful distance from wildlife",
+      "Photograph ethically, without pressuring animals for a shot",
+      "Teach identification by sight and by sound",
+      "Respect animal behaviour and habitats",
+      "Follow park rules on vehicles, routes and timings"
+    ],
+    "dontTitle": "We don't",
+    "dont": [
+      "Use bird-call playback to lure birds",
+      "Disturb nesting or breeding animals",
+      "Handle, bait or crowd wildlife",
+      "Collect specimens or eggs",
+      "Trample vegetation for photographs"
+    ]
+  },
+  "cta": {
+    "title": "Looking for something in particular?",
+    "lede": "Tell us the species you most hope to see. We will tell you which trip and season give the best chance.",
+    "browseTrips": "Browse trips",
+    "askWhatsApp": "Ask on WhatsApp",
+    "whatsappMessage": "Hello Wildora, I'm hoping to see a particular species. Which trip would suit?"
+  },
+  "index": {
+    "summary": "All {count} photographed species and habitats: names, status and range",
+    "intro": "The notes behind every photograph above, in one list. Status follows the IUCN Red List where one exists."
+  }
+}

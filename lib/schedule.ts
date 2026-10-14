@@ -21,7 +21,10 @@
 // - Invalid input throws. A wrong schedule must break the build, not quietly
 //   publish dates that are out of season.
 
-import type { DepartureRule, Trip } from './data';
+import { createTranslator } from 'next-intl';
+import { DEFAULT_LOCALE, LOCALE_META, type Locale } from '@/i18n/locales';
+import { loadMessages } from '@/messages';
+import { trips as sourceTrips, type DepartureRule, type Trip } from './data';
 import { SITE } from './site';
 
 const DAY_MS = 86_400_000;
@@ -34,7 +37,6 @@ const MONTH_LONG = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December',
 ] as const;
-const ORDINAL: Record<string, string> = { '1': 'first', '2': 'second', '3': 'third', '4': 'fourth', '-1': 'last' };
 
 /** Search horizon. Any valid rule yields a departure well within this. */
 const HORIZON_MONTHS = 60;
@@ -145,13 +147,18 @@ function nthWeekday(y: number, m: number, weekday: number, nth: number): number 
   return first + date - 1;
 }
 
+/* `duration` is display text and may be translated (content overlays), while `durationDays` drives
+   the schedule: check once, on the English source, that the two agree. */
+for (const trip of sourceTrips) {
+  if (!trip.duration.startsWith(`${trip.durationDays} days`)) {
+    throw new Error(`trip "${trip.id}": durationDays (${trip.durationDays}) disagrees with duration "${trip.duration}"`);
+  }
+}
+
 function validateTrip(trip: Trip): void {
   const where = `trip "${trip.id}"`;
   if (!Number.isInteger(trip.durationDays) || trip.durationDays < 1 || trip.durationDays > 27) {
     throw new Error(`${where}: durationDays must be an integer from 1 to 27, got ${trip.durationDays}`);
-  }
-  if (!trip.duration.startsWith(`${trip.durationDays} days`)) {
-    throw new Error(`${where}: durationDays (${trip.durationDays}) disagrees with duration "${trip.duration}"`);
   }
   if (trip.seasonMonths.length === 0) throw new Error(`${where}: seasonMonths is empty`);
   for (const month of trip.seasonMonths) {
@@ -224,16 +231,24 @@ export function departureEnd(trip: Trip, startIso: string): string {
   return addDays(startIso, trip.durationDays - 1);
 }
 
-/** "Sat 5 Dec 2026" (en-GB order, fixed English names; no Intl, so no locale drift). */
-export function formatDate(iso: string): string {
+/* English keeps its fixed names and order (no Intl, so no drift such as "Sept"); other languages
+   use Intl with the locale's own conventions. Dates are calendar days, so formatted in UTC. */
+const DATE_OPTS: Intl.DateTimeFormatOptions = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' };
+const utcDate = (iso: string) => new Date(`${iso}T00:00:00Z`);
+const tag = (locale: Locale) => LOCALE_META[locale].htmlLang;
+
+/** "Sat 5 Dec 2026" in English; the locale's own short date elsewhere ("Sa., 5. Dez. 2026"). */
+export function formatDate(iso: string, locale: Locale = DEFAULT_LOCALE): string {
   const day = toDay(iso, 'formatDate');
+  if (locale !== 'en') return new Intl.DateTimeFormat(tag(locale), DATE_OPTS).format(utcDate(iso));
   const { y, m, d } = ymdOf(day);
   return `${WEEKDAY_SHORT[weekdayOf(day)]} ${d} ${MONTH_SHORT[m - 1]} ${y}`;
 }
 
 /** "Sat 21 Nov – Mon 30 Nov 2026", or with both years when the trip crosses New Year. */
-export function formatDepartureRange(trip: Trip, startIso: string): string {
+export function formatDepartureRange(trip: Trip, startIso: string, locale: Locale = DEFAULT_LOCALE): string {
   const endIso = departureEnd(trip, startIso);
+  if (locale !== 'en') return new Intl.DateTimeFormat(tag(locale), DATE_OPTS).formatRange(utcDate(startIso), utcDate(endIso));
   const start = formatDate(startIso);
   const end = formatDate(endIso);
   if (startIso.slice(0, 4) === endIso.slice(0, 4)) {
@@ -242,12 +257,16 @@ export function formatDepartureRange(trip: Trip, startIso: string): string {
   return `${start} – ${end}`;
 }
 
-/** Plain-English rule, e.g. "Departs on the third Saturday of October, November, December and January". */
-export function describeDepartureRule(trip: Trip): string {
+/** e.g. "Departs on the third Saturday of October, November, December and January" (common.schedule). */
+export function describeDepartureRule(trip: Trip, locale: Locale = DEFAULT_LOCALE): string {
   validateTrip(trip);
   const { weekday, nth } = trip.departureRule;
-  const which = nth.map((n) => ORDINAL[String(n)]).join(' and ');
-  const months = trip.seasonMonths.map((mo) => MONTH_LONG[mo - 1]);
-  const monthList = months.length > 1 ? `${months.slice(0, -1).join(', ')} and ${months[months.length - 1]}` : months[0];
-  return `Departs on the ${which} ${WEEKDAY_LONG[weekday]} of ${monthList}`;
+  const t = createTranslator({ locale, messages: loadMessages(locale), namespace: 'common.schedule' });
+  const list = new Intl.ListFormat(tag(locale), { type: 'conjunction' });
+  const name = (opts: Intl.DateTimeFormatOptions, date: Date) => new Intl.DateTimeFormat(tag(locale), { ...opts, timeZone: 'UTC' }).format(date);
+  /* 4 Jan 1970 was a Sunday: weekday 0. */
+  const weekdayName = locale === 'en' ? WEEKDAY_LONG[weekday] : name({ weekday: 'long' }, new Date(Date.UTC(1970, 0, 4 + weekday)));
+  const months = trip.seasonMonths.map((mo) => (locale === 'en' ? MONTH_LONG[mo - 1] : name({ month: 'long' }, new Date(Date.UTC(2000, mo - 1, 1)))));
+  const which = list.format(nth.map((n) => t(`nth.${String(n) as '1' | '2' | '3' | '4' | '-1'}`)));
+  return t('departureRule', { which, weekday: weekdayName, months: list.format(months) });
 }

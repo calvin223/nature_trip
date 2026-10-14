@@ -1,3 +1,6 @@
+import { overlayEntry } from '@/i18n/content';
+import type { Locale } from '@/i18n/locales';
+
 export interface Photo {
   category: string;
   categoryLabel: string;
@@ -179,6 +182,31 @@ export function findPhoto(slug: string): Photo | undefined {
 /* GitHub Pages serves the site under /nature_trip; <img> src needs the prefix explicitly. */
 export const BASE_PATH = '/nature_trip';
 export const img = (path: string) => `${BASE_PATH}${path}`;
+
+/** A photo's caption name in `locale` where translated (content/<locale>/photos.json, keyed by slug). */
+export const photoName = (p: Photo, locale: Locale): string => overlayEntry<Photo>(locale, 'photos', p.slug)?.name ?? p.name;
+
+/* Thumbnails are 480 or 640 px on the long side (VERIFIED 2026-10-03 across all photos), so the
+   480-px-long-side width used here is a lower bound: the browser never stretches a thumbnail. */
+export function thumbWidth(p: Photo): number {
+  return p.w >= p.h ? 480 : Math.round((480 * p.w) / p.h);
+}
+
+/* "What you might see" strip on each trip page: only species the trip's itinerary, highlights or
+   target list name. A trip with fewer than four matching photos shows no strip. */
+export const tripSpeciesPhotoSlugs: Record<string, string[]> = {
+  'western-ghats-endemics': [
+    'lion-tailed-macaque', 'nilgiri-tahr', 'malabar-trogon', 'nilgiri-flycatcher', 'nilgiri-pipit', 'nilgiri-wood-pigeon',
+    'great-indian-hornbill', 'indian-giant-squirrel', 'indian-star-tortoise', 'indian-gaur', 'asian-elephant-herd',
+  ],
+  'monsoon-rainforest-nights': [
+    'golden-backed-frog', 'bronze-frog', 'malabar-pit-viper', 'large-scaled-pit-viper', 'hump-nosed-pit-viper',
+    'bronze-backed-tree-snake', 'forest-calotes', 'southern-birdwing',
+  ],
+  'central-india-big-cats': [
+    'bengal-tiger', 'tigress-with-cubs', 'indian-leopard', 'indian-wild-dog', 'chital-herd', 'mottled-wood-owl', 'indian-rock-eagle-owl',
+  ],
+};
 
 /* Representative photo for each trip card / trip page hero. */
 export const tripPhotoSlugs: Record<string, string> = {

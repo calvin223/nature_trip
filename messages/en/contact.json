@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "title": "Contact & Enquiries",
+    "description": "Plan a guided nature trip with Wildora Expeditions. Send an enquiry on WhatsApp with your trip, dates, group size and any dietary or medical needs."
+  },
+  "head": {
+    "title": "Plan your trip <accent>with us</accent>",
+    "lede": "Tell us what you would like to see, when you can travel and who is coming."
+  },
+  "enquiryHeading": "Send an enquiry",
+  "reach": {
+    "label": "Other ways to reach us",
+    "whatsapp": "WhatsApp",
+    "startChat": "Start a chat",
+    "email": "Email"
+  },
+  "next": {
+    "heading": "What happens next",
+    "sendForm": "You send the form (or your WhatsApp message).",
+    "sendWhatsApp": "You check the message in WhatsApp and send it.",
+    "reply": "We reply with availability, a suggested plan and how to confirm your place.",
+    "beforeBooking": "Before you book, you tell us about any medical condition or allergy, and arrange travel medical insurance."
+  },
+  "before": {
+    "heading": "Before you write",
+    "body": "Many questions about seasons, fitness, food, insurance and what to bring are already answered.",
+    "trips": "Trips & departure dates",
+    "practical": "Plan & prepare",
+    "faq": "Frequently asked questions"
+  },
+  "form": {
+    "intro": "Fields marked <star>*</star> are required. Fill in as much or as little of the rest as you like.",
+    "optional": "(optional)",
+    "errorSummary": "Please check {count, plural, one {the field} other {the # fields}} marked below.",
+    "fields": {
+      "name": "Your name",
+      "country": "Country you live in",
+      "trip": "Trip of interest",
+      "dates": "Preferred month or dates",
+      "groupSize": "Group size",
+      "childAges": "Ages of any children",
+      "diet": "Dietary needs",
+      "medical": "Medical or mobility notes",
+      "message": "Your message"
+    },
+    "placeholders": {
+      "dates": "e.g. December 2026, or flexible",
+      "childAges": "e.g. 9 and 13",
+      "diet": "e.g. vegan, no spicy food, nut allergy",
+      "message": "What would you like to see or do? Your pace, comfort level, wish-list species, any questions…"
+    },
+    "hints": {
+      "groupSize": "Number of people, including you.",
+      "medical": "We need to know about any medical condition, allergy or mobility limitation before you book. See <link>health & insurance</link>."
+    },
+    "trip": {
+      "choose": "Choose a trip",
+      "ourTrips": "Our trips",
+      "somethingElse": "Something else",
+      "other": ["A private or custom trip", "A guided day tour", "Not sure yet: please help me choose"]
+    },
+    "errors": {
+      "name": "Please enter your name.",
+      "message": "Please write a short message so we know how to help.",
+      "groupSize": "Group size must be a whole number, 1 or more.",
+      "consent": "Please tick the box so we can receive your enquiry."
+    },
+    "consent": "I agree that Wildora Expeditions may use what I have written, including any health or dietary details, to reply to this enquiry. I can withdraw this at any time. See the <link>privacy notice</link>.",
+    "whatsappNotice": "By sending, you agree that Wildora Expeditions may contact you on WhatsApp about this enquiry. This website does not store anything you type: the form only writes the message, and you choose whether to send it from your own WhatsApp. See the <link>privacy notice</link>.",
+    "buttons": {
+      "sending": "Sending…",
+      "send": "Send enquiry",
+      "orWhatsApp": "Or use WhatsApp",
+      "sendWhatsApp": "Send on WhatsApp",
+      "sendEmail": "Send by email instead"
+    },
+    "opensNote": {
+      "form": "WhatsApp opens in a new tab, to {number}.",
+      "whatsapp": "Opens WhatsApp in a new tab, to {number}."
+    },
+    "status": {
+      "ok": "Thank you. Your enquiry has been sent and we will reply with availability and a suggested plan.",
+      "error": "Sorry, your enquiry could not be sent. Nothing was lost: you can try again, or use WhatsApp instead.",
+      "errorWithEmail": "Sorry, your enquiry could not be sent. Nothing was lost: you can try again, or use WhatsApp or email instead.",
+      "sent": "WhatsApp should now be open in a new tab with your message filled in. Press send there to reach us. Nothing opened? <link>Open WhatsApp with my message</link>"
+    }
+  },
+  "message": {
+    "greeting": "Hello Wildora, I would like to enquire about a trip.",
+    "line": "{label}: {value}",
+    "labels": {
+      "name": "Name",
+      "country": "Country",
+      "trip": "Trip of interest",
+      "dates": "Preferred month or dates",
+      "groupSize": "Group size",
+      "childAges": "Ages of any children",
+      "diet": "Dietary needs",
+      "medical": "Medical or mobility notes"
+    },
+    "messageHeading": "Message:",
+    "footer": "(Sent from the enquiry form on the Wildora website)",
+    "subject": "Trip enquiry from {name}"
+  }
+}

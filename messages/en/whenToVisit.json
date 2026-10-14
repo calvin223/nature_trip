@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "title": "When to Visit",
+    "description": "When each Wildora trip runs, month by month, and why: seasons, park closures and the best months for wildlife in the Western Ghats and beyond."
+  },
+  "monthStrip": {
+    "months": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ]
+  },
+  "hero": {
+    "title": "The right trip for the month you can travel",
+    "lede": "Each of our trips runs only in the months that suit its wildlife, its weather and the parks' rules. Here is when each one departs, and why."
+  },
+  "homeGround": "Our home ground",
+  "cta": {
+    "title": "Not sure which month suits you?",
+    "lede": "Send us your dates and the wildlife you hope to see. We will tell you which trip fits, or whether a private trip would suit better.",
+    "whatsappMessage": "Hello Wildora, could you help me choose the right month for a trip?",
+    "askWhatsApp": "Ask on WhatsApp"
+  },
+  "legend": {
+    "label": "Key",
+    "on": "The trip runs: fixed departures that month",
+    "off": "No departures: off season, monsoon or park closure"
+  }
+}

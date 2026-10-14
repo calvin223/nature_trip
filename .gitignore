@@ -47,3 +47,6 @@ cloudflared-tunnel.*.log
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local tool logs (MCP servers), not part of the site
+/logs/

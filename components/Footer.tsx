@@ -1,51 +1,66 @@
-import Link from 'next/link';
-import { SITE, waLink } from '@/lib/site';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
+import type { Messages } from '@/messages';
+import { SITE, socialLinks, waLink } from '@/lib/site';
+import LanguageSwitcher from './LanguageSwitcher';
 import LeafMark from './LeafMark';
 import { WhatsAppIcon } from './FloatingCTA';
 
-const COLS = [
+type LinkKey = keyof Messages['common']['footer']['links'];
+type LegalKey = keyof Messages['common']['footer']['legal'];
+
+const COLS: { title: 'explore' | 'beforeYouTravel'; links: { href: string; label: LinkKey }[] }[] = [
   {
-    title: 'Explore',
+    title: 'explore',
     links: [
-      { href: '/trips/', label: 'Trips & departures' },
-      { href: '/experts/', label: 'Our naturalists' },
-      { href: '/species/', label: 'Species gallery' },
-      { href: '/when-to-visit/', label: 'When to visit' },
-      { href: '/about/', label: 'About the Western Ghats' },
+      { href: '/trips/', label: 'trips' },
+      { href: '/journey/', label: 'journey' },
+      { href: '/experts/', label: 'naturalists' },
+      { href: '/species/', label: 'species' },
+      { href: '/when-to-visit/', label: 'whenToVisit' },
+      { href: '/about/', label: 'about' },
     ],
   },
   {
-    title: 'Before you travel',
+    title: 'beforeYouTravel',
     links: [
-      { href: '/practical/', label: 'Plan & prepare' },
-      { href: '/faq/', label: 'FAQ' },
-      { href: '/schools/', label: 'Custom groups & schools' },
-      { href: '/credits/', label: 'Photo & map credits' },
+      { href: '/practical/', label: 'practical' },
+      { href: '/faq/', label: 'faq' },
+      { href: '/schools/', label: 'customGroups' },
+      { href: '/contact/', label: 'contact' },
     ],
   },
 ];
 
+/* Every legal page, in the bottom bar where people look for them. */
+const LEGAL: { href: string; label: LegalKey }[] = [
+  { href: '/legal/', label: 'notice' },
+  { href: '/terms/', label: 'terms' },
+  { href: '/package-travel/', label: 'packageTravel' },
+  { href: '/privacy/', label: 'privacy' },
+  { href: '/cookies/', label: 'cookies' },
+  { href: '/accessibility/', label: 'accessibility' },
+  { href: '/credits/', label: 'credits' },
+];
+
 export default function Footer() {
-  const social = [
-    SITE.social.facebook && { name: 'Facebook', url: SITE.social.facebook },
-    SITE.social.instagram && { name: 'Instagram', url: SITE.social.instagram },
-  ].filter(Boolean) as { name: string; url: string }[];
+  const t = useTranslations('common.footer');
+  const tw = useTranslations('common.whatsapp');
+  const social = socialLinks();
 
   return (
-    <footer className="site-footer no-print mt-10 border-t border-[var(--wd-line)] bg-[#050f09]/92">
-      <div className="wd-wrap py-14 grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
+    <footer className="site-footer no-print border-t border-[var(--wd-line)] bg-wd-deep">
+      <div className="wd-wrap py-12 grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
         <div>
           <Link href="/" className="inline-flex items-center gap-2.5">
             <LeafMark className="w-9 h-9" id="wdfoot" />
-            <span className="font-display text-2xl font-semibold text-white">Wildora Expeditions</span>
+            <span className="font-display text-2xl font-semibold text-wd-ink">{SITE.name}</span>
           </Link>
-          <p className="mt-4 text-sm leading-relaxed text-wd-muted max-w-sm">
-            Small-group nature journeys in the Western Ghats and beyond, guided by doctorate-holding naturalists. Walk slowly, look closely, travel lightly.
-          </p>
+          <p className="mt-4 text-sm leading-relaxed text-wd-muted max-w-sm">{t('tagline')}</p>
           {social.length > 0 && (
-            <div className="mt-5 flex gap-3">
+            <div className="mt-5 flex gap-5">
               {social.map((s) => (
-                <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" className="chip">{s.name}</a>
+                <a key={s.network} href={s.url} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-wd-ink underline underline-offset-4 decoration-[var(--wd-line-strong)] hover:decoration-current">{s.label}</a>
               ))}
             </div>
           )}
@@ -53,11 +68,11 @@ export default function Footer() {
 
         {COLS.map((col) => (
           <div key={col.title}>
-            <h3 className="text-sm font-sans font-semibold uppercase tracking-[0.18em] text-wd-lime mb-4">{col.title}</h3>
+            <h3 className="font-display text-lg font-semibold text-wd-ink mb-3">{t(col.title)}</h3>
             <ul className="space-y-2.5 text-sm">
               {col.links.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="text-wd-muted hover:text-white transition-colors">{l.label}</Link>
+                  <Link href={l.href} className="text-wd-muted hover:text-wd-ink transition-colors">{t(`links.${l.label}`)}</Link>
                 </li>
               ))}
             </ul>
@@ -65,25 +80,36 @@ export default function Footer() {
         ))}
 
         <div>
-          <h3 className="text-sm font-sans font-semibold uppercase tracking-[0.18em] text-wd-lime mb-4">Talk to us</h3>
-          <a href={waLink("Hello Wildora! I'd like to plan a nature trip.")} target="_blank" rel="noopener noreferrer" className="btn btn-wa w-full sm:w-auto">
-            <WhatsAppIcon /> {SITE.whatsapp.display}
+          <h3 className="font-display text-lg font-semibold text-wd-ink mb-3">{t('talkToUs')}</h3>
+          {/* A quiet link, not a green button: the page's own WhatsApp button stays the one call to action. */}
+          <a href={waLink(tw('footer'))} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 font-semibold text-wd-ink underline underline-offset-4 decoration-[var(--wd-line-strong)] hover:decoration-current">
+            <WhatsAppIcon className="w-5 h-5 text-[#1a9e4b]" /> {SITE.whatsapp.display}
           </a>
           {SITE.email && (
             <p className="mt-4 text-sm">
-              <a href={`mailto:${SITE.email}`} className="text-wd-muted hover:text-white underline underline-offset-4">{SITE.email}</a>
+              <a href={`mailto:${SITE.email}`} className="text-wd-muted hover:text-wd-ink underline underline-offset-4">{SITE.email}</a>
             </p>
           )}
-          <p className="mt-4 text-sm text-wd-faint leading-relaxed">
-            Messages are answered by our team in India (IST, UTC+5:30).
-          </p>
-          <Link href="/contact/" className="link-arrow text-sm mt-3">Send an enquiry</Link>
+          <p className="mt-4 text-sm text-wd-muted leading-relaxed">{t('replyHours')}</p>
+          <Link href="/contact/" className="link-arrow text-sm mt-3">{t('sendEnquiry')}</Link>
         </div>
       </div>
-      <div className="border-t border-white/5">
-        <div className="wd-wrap py-6 flex flex-col md:flex-row gap-2 md:items-center md:justify-between text-xs text-wd-faint">
-          <p>&copy; {new Date().getFullYear()} Wildora Expeditions. Ethical, low-impact wildlife travel.</p>
-          <p>Wildlife sightings are never guaranteed: nature keeps its own schedule.</p>
+      <div className="border-t border-[var(--wd-line)]">
+        <div className="wd-wrap pt-6 pb-10 flex flex-col gap-4 text-xs text-wd-muted">
+          <nav aria-label={t('legalLabel')}>
+            <ul className="flex flex-wrap gap-x-5 gap-y-2">
+              {LEGAL.map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="hover:text-wd-ink transition-colors">{t(`legal.${l.label}`)}</Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <div className="flex flex-col md:flex-row gap-2 md:items-center md:justify-between">
+            <p>{t('copyright', { year: new Date().getFullYear() })}</p>
+            <p>{t('noGuarantee')}</p>
+          </div>
+          <LanguageSwitcher />
         </div>
       </div>
     </footer>

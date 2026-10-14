@@ -25,7 +25,7 @@ Nothing below is a confirmed policy until an owner signs it off.
 | 8 | Do I need travel insurance? | **Essential** (owner-stated). *Added detail to confirm:* cover must include **emergency evacuation** from remote areas, and guests should check it covers their activities, age and pre-existing conditions. | ☐ Confirm details ☐ Change: |
 | 9 | I have allergies. What should I tell you? | Declare at booking (food, stings, medicines). *Added detail to confirm:* **we pass food allergies on to every kitchen on the route**; auto-injector carriers bring a spare and show the guide. | ☐ Confirm ☐ Change: |
 | 10 | I have a medical condition. Do I need to tell you? | Declare before booking (owner-stated). *Added detail to confirm:* guests complete **a short health form**. **A form needs to exist, and someone must decide who reads it and how it is stored.** | ☐ Confirm; form owner: ☐ Change: |
-| 11 | Do you supply toilet paper, soap, toothpaste …? | Lodges normally supply soap and toilet paper in rooms; guests bring their own toothbrush, toothpaste and toiletries plus a small kit for the road (tissues, sanitiser, wipes). *Added detail to confirm:* **our guides carry a basic first-aid kit**. | ☐ Confirm ☐ Change: |
+| 11 | Do you supply toilet paper, soap, toothpaste …? | Lodges normally supply soap and toilet paper in rooms; guests bring their own toothbrush, toothpaste and toiletries plus a small kit for the road (tissues, sanitiser, wipes). *Added detail to confirm:* **our guides carry a basic first-aid kit**. (Since 2026-10-14 this line sits under "Personal medication" in What you are responsible for, not in this answer.) | ☐ Confirm ☐ Change: |
 | 12 | Are the listed dates fixed? How far ahead should I book? | Listed dates are **planned departures, confirmed on enquiry**. They are shown at least **6 weeks** ahead (`SITE.bookingLeadDays = 42`). Private departures are offered if no date suits. | ☐ Confirm 6 weeks ☐ Change: |
 
 The same commitments also appear in the `healthAndSafety` list (insurance with evacuation cover,
@@ -75,7 +75,7 @@ Why the seasons changed (sources are cited in `lib/data.ts`):
 | Public email | `SITE.email = null`. The old `info@wildoraexpeditions.com` was a placeholder for a domain nobody owns, and has been removed from the data layer. | A working inbox, or confirmation that the site is WhatsApp-only. |
 | Facebook / Instagram | `null`, so no link is shown. | Real page URLs. |
 | Launch date | `SITE.launchDate = null`, so dates are computed from the build date. | The go-live date, if departures should not appear before it. |
-| Phone `+91 98765 43210` | Still in `app/contact/page.tsx`, `components/Footer.tsx` and `README.md`. It looks like a placeholder; those files are owned by other contributors. | A real number, or removal. |
+| Phone `+91 98765 43210` | Resolved: the placeholder is gone. Every contact point now uses the owner-supplied WhatsApp number `+91 94431 61606` from `lib/site.ts`. | Nothing. |
 | Start/end points | Only the Endemics trip names places (Thattekad → Bandipur). The other three say "Confirmed at booking". | The reserve/town and nearest gateway for Central India, Monsoon and Himalaya. |
 | Monsoon trip location | Region is "Indian rainforests". | Is it in the Western Ghats? Which area? |
 | Airport transfers | Not stated anywhere. Guests are told that travel to the start point is their responsibility. | Do you offer a Kochi airport pickup (paid or included)? |

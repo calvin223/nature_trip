@@ -1,50 +1,54 @@
 @import "tailwindcss";
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   Wildora — "Canopy" design system
-   A dark, vibrant forest-camouflage world that floats in 3D: a fixed perspective
-   stage behind every page (camo, light shafts, swaying leaves, fireflies), with
-   content blocks drifting at their own depth as you scroll.
-   Pattern adapted from the Martin Richardson site (bg-stage → depth → float).
+   Wildora — "Field Notes" design system
+   Light and editorial: shola-lichen paper, forest ink, one shola-green action
+   colour and a little hornbill gold. Photographs carry the mood; the chrome stays
+   quiet. Motion only where it means something: the hero settles in once,
+   sections fade in as they enter view (CSS only, off for reduced motion), and
+   controls answer the hand (press, hover, filter, lightbox, menu).
+   Class names are unchanged from the old dark theme, so pages restyle in place.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 :root {
-  --wd-night: #07140d;      /* page background */
-  --wd-deep: #0a1c12;       /* panels, darkest surfaces */
-  --wd-canopy: #0d2618;     /* map land, raised dark surfaces */
-  --wd-forest: #134e2e;
-  --wd-emerald: #1f7a45;
-  --wd-fern: #3fa34d;
-  --wd-lime: #9ad14b;       /* signature highlight */
-  --wd-leaf: #c8e86b;       /* brightest highlight, sparingly */
-  --wd-moss: #6b7f2a;
+  --wd-night: #f1f2e9;      /* page background: pale shola lichen */
+  --wd-deep: #e6e8dc;       /* sunken surfaces, image placeholders */
+  --wd-canopy: #dcdfcf;
+  --wd-forest: #1f4630;     /* deep shola green */
+  --wd-emerald: #2c5e3f;
+  --wd-fern: #3d7550;
+  --wd-lime: #2c5e3f;       /* accent text, active states (≈7:1 on paper) */
+  --wd-leaf: #1f4630;       /* accent hover */
+  --wd-moss: #5d6b2c;
   --wd-earth: #7a5230;
   --wd-bark: #4a3220;
-  --wd-sand: #efe6c8;
-  --wd-sun: #f2b134;        /* hornbill gold: primary CTA */
-  --wd-sun-deep: #d9921a;
-  --wd-trogon: #e2553b;     /* trogon red: alerts, endemic tags */
-  --wd-ink: #eaf3e3;        /* body text on dark */
-  --wd-muted: #b9c9b0;      /* secondary text (≈9.8:1 on --wd-deep) */
-  --wd-faint: #8fa587;      /* tertiary text (≈6.4:1 on --wd-deep) */
-  --wd-line: rgba(154, 209, 75, 0.16);
-  --wd-line-strong: rgba(154, 209, 75, 0.32);
-  --wd-glass: rgba(9, 27, 17, 0.74);
-  --wd-glass-strong: rgba(7, 21, 13, 0.9);
-  --wd-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --wd-sand: #e9e2c9;
+  --wd-sun: #8f6112;        /* hornbill gold, darkened to read as text (≈5:1) */
+  --wd-sun-soft: #e9b54a;   /* the bright gold, for fills only */
+  --wd-sun-deep: #6f4b0e;
+  --wd-trogon: #b03e28;     /* trogon red: errors, endemic tags */
+  --wd-ink: #1b211b;        /* body text */
+  --wd-muted: #4c554a;      /* secondary text (≈7:1) */
+  --wd-faint: #646d61;      /* tertiary text (≈5:1) */
+  --wd-surface: #fafaf4;    /* cards */
+  --wd-line: rgba(27, 33, 27, 0.12);
+  --wd-line-strong: rgba(27, 33, 27, 0.24);
+  --wd-glass: var(--wd-surface);
+  --wd-glass-strong: #fdfdf8;
+  /* Motion: strong custom curves (Emil Kowalski's set). Enter/exit and press use --ease-out;
+     movement on screen uses --ease-in-out; gesture follow-through uses --ease-drawer. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --wd-ease: var(--ease-out);
+  /* Lets <details> animate to height: auto where supported. */
+  interpolate-size: allow-keywords;
   --wd-max: 80rem;
   --wd-gutter: clamp(1rem, 4vw, 2rem);
-  --px: 0;                  /* pointer x, -0.5..0.5 (set by ForestFX) */
-  --py: 0;                  /* pointer y, -0.5..0.5 */
-  --p: 0;                   /* page scroll progress, 0..1 */
+  --wd-nav-h: 4.5rem;
 
-  /* Legacy names still referenced by older markup */
   --background: var(--wd-night);
   --foreground: var(--wd-ink);
-  --forest-green: var(--wd-forest);
-  --fern-green: var(--wd-fern);
-  --sunrise-orange: var(--wd-sun);
-  --sand: var(--wd-sand);
 }
 
 @theme inline {
@@ -66,435 +70,422 @@
   --color-wd-ink: var(--wd-ink);
   --color-wd-muted: var(--wd-muted);
   --color-wd-faint: var(--wd-faint);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-fraunces);
+  --color-wd-surface: var(--wd-surface);
+  --font-sans: var(--font-hanken);
+  --font-display: var(--font-hanken);
 }
 
-html { scroll-behavior: smooth; background: var(--wd-night); }
+html { scroll-behavior: smooth; background: var(--wd-night); -webkit-tap-highlight-color: transparent; }
 body {
   background: var(--wd-night);
   color: var(--wd-ink);
-  font-family: var(--font-geist-sans), system-ui, Arial, Helvetica, sans-serif;
+  font-family: var(--font-hanken), system-ui, -apple-system, 'Segoe UI', sans-serif;
   overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
 }
 @layer base {
+  /* Tracking tightens as type grows; body text stays at 0. */
   h1, h2, h3 {
-    font-family: var(--font-fraunces), Georgia, 'Times New Roman', serif;
-    font-optical-sizing: auto;
-    letter-spacing: -0.012em;
+    letter-spacing: -0.015em;
   }
 }
-.font-display { font-family: var(--font-fraunces), Georgia, 'Times New Roman', serif; font-optical-sizing: auto; letter-spacing: -0.012em; }
-::selection { background: rgba(154, 209, 75, 0.35); color: #fff; }
+.font-display { letter-spacing: -0.015em; }
+::selection { background: rgba(44, 94, 63, 0.18); }
 :focus-visible { outline: 2px solid var(--wd-lime); outline-offset: 3px; border-radius: 4px; }
-a, button { -webkit-tap-highlight-color: transparent; }
-main, .site-footer, .site-nav { position: relative; z-index: 1; }
-.skip-link { position: absolute; left: -999px; top: 8px; z-index: 400; background: var(--wd-sun); color: var(--wd-night); padding: 8px 14px; border-radius: 8px; font-weight: 600; }
+/* Controls answer the finger, not the browser: no double-tap-zoom wait, a long press doesn't
+   select a label or pop the link callout, and links and toggles dim while pressed (the tap
+   flash is off on html, so every control needs its own :active). Content text stays selectable. */
+a, button, summary, label, [role="button"] { touch-action: manipulation; }
+button, summary, [role="button"], .btn, .tab { user-select: none; -webkit-user-select: none; }
+.btn, .photo-tile, .blur-carousel { -webkit-touch-callout: none; }
+:where(a:not(.btn), summary):active { opacity: 0.7; }
+.skip-link { position: absolute; left: -999px; top: 8px; z-index: 400; background: var(--wd-ink); color: var(--wd-night); padding: 8px 14px; border-radius: 8px; font-weight: 600; }
 .skip-link:focus { left: 8px; }
 .sr-only-wd { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-
-/* ── The forest stage (fixed, behind everything) ───────────────────────────── */
-.forest-stage {
-  position: fixed; left: 0; top: 0; width: 100%; height: 100vh; height: 100lvh;
-  z-index: 0; overflow: hidden; pointer-events: none; perspective: 1100px;
-  background: var(--wd-night);
-}
-.forest-depth {
-  position: absolute; inset: -12%; transform-style: preserve-3d; will-change: transform;
-  transform:
-    translate3d(0, calc(var(--p) * -3%), calc(var(--p) * -160px))
-    rotateX(calc(var(--p) * 5deg + var(--py) * -3deg))
-    rotateY(calc(var(--px) * 3deg))
-    scale(1.08);
-  transition: transform 0.9s var(--wd-ease);
-}
-.forest-float { position: absolute; inset: 0; transform-style: preserve-3d; animation: forest-hover 28s ease-in-out infinite alternate; }
-@keyframes forest-hover {
-  0%   { transform: translate3d(-1.2%, 0.8%, 0) rotateZ(-0.5deg) rotateX(1.5deg); }
-  50%  { transform: translate3d(0.8%, -1%, 40px) rotateZ(0.4deg) rotateX(-1deg); }
-  100% { transform: translate3d(1.2%, 0.6%, -30px) rotateZ(0.7deg) rotateY(1.5deg); }
-}
-.forest-camo {
-  position: absolute; inset: 0;
-  background: url("/nature_trip/textures/camo.svg") 0 0 / 720px 720px repeat;
-  filter: saturate(1.25) brightness(0.74);
-  animation: camo-drift 120s linear infinite;
-}
-@keyframes camo-drift { to { background-position: 720px 360px; } }
-/* Sun shafts breaking through the canopy */
-.forest-shafts {
-  position: absolute; inset: -10% -5% 20% -5%;
-  background:
-    linear-gradient(112deg, transparent 18%, rgba(200, 232, 107, 0.14) 22%, transparent 27%),
-    linear-gradient(104deg, transparent 38%, rgba(242, 177, 52, 0.10) 42%, transparent 48%),
-    linear-gradient(118deg, transparent 58%, rgba(154, 209, 75, 0.12) 61%, transparent 66%),
-    linear-gradient(108deg, transparent 74%, rgba(200, 232, 107, 0.09) 77%, transparent 81%);
-  filter: blur(10px);
-  mix-blend-mode: screen;
-  transform: translateZ(60px);
-  animation: shafts-sway 14s ease-in-out infinite alternate;
-}
-@keyframes shafts-sway {
-  0% { opacity: 0.55; transform: translateZ(60px) translateX(-2%) skewX(-2deg); }
-  100% { opacity: 1; transform: translateZ(60px) translateX(2%) skewX(2deg); }
-}
-.forest-leaves { position: absolute; inset: 0; transform-style: preserve-3d; }
-.forest-leaf {
-  position: absolute; transform-origin: var(--ox, 50%) var(--oy, 100%);
-  animation: leaf-sway var(--dur, 9s) ease-in-out var(--delay, 0s) infinite alternate;
-  filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.55));
-}
-.forest-leaf--near { filter: blur(2.5px) drop-shadow(0 24px 40px rgba(0, 0, 0, 0.6)); }
-@keyframes leaf-sway {
-  from { transform: translateZ(var(--z, 0px)) rotate(calc(var(--r, 0deg) - var(--amp, 4deg))); }
-  to   { transform: translateZ(var(--z, 0px)) rotate(calc(var(--r, 0deg) + var(--amp, 4deg))); }
-}
-.firefly {
-  position: absolute; width: var(--s, 5px); height: var(--s, 5px); border-radius: 50%;
-  background: radial-gradient(circle, #f6ffc9 0%, #c8e86b 35%, rgba(154, 209, 75, 0) 70%);
-  box-shadow: 0 0 12px 3px rgba(200, 232, 107, 0.55);
-  opacity: 0;
-  animation: firefly-drift var(--dur, 16s) ease-in-out var(--delay, 0s) infinite, firefly-blink var(--blink, 3.6s) ease-in-out var(--delay, 0s) infinite;
-}
-@keyframes firefly-drift {
-  0%   { transform: translate3d(0, 0, var(--z, 0px)); }
-  25%  { transform: translate3d(var(--dx1, 30px), var(--dy1, -40px), var(--z, 0px)); }
-  50%  { transform: translate3d(var(--dx2, -20px), var(--dy2, -80px), var(--z, 0px)); }
-  75%  { transform: translate3d(var(--dx3, 40px), var(--dy3, -50px), var(--z, 0px)); }
-  100% { transform: translate3d(0, 0, var(--z, 0px)); }
-}
-@keyframes firefly-blink { 0%, 100% { opacity: 0; } 40%, 60% { opacity: 0.95; } }
-.forest-scrim {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 70% 60% at 50% 45%, rgba(7, 20, 13, 0.55), rgba(7, 20, 13, 0.62) 55%, rgba(7, 20, 13, 0.30) 100%),
-    linear-gradient(to bottom, rgba(7, 20, 13, 0.10), rgba(7, 20, 13, 0.25));
-}
-
-/* Content blocks float at their own depth as you scroll (ForestFX sets `translate`). */
-.float { will-change: translate; }
-
-/* ── Opening curtain: the canopy parts ─────────────────────────────────────── */
-.wd-intro { position: fixed; inset: 0; z-index: 300; overflow: hidden; perspective: 1400px; cursor: pointer; display: none; }
-html.js .wd-intro { display: block; }
-html.wd-intro-skip .wd-intro, html.wd-intro-done .wd-intro { display: none; }
-html.wd-intro-lock { overflow: hidden; }
-.wd-intro-half {
-  position: absolute; top: 0; bottom: 0; width: 50.1%;
-  transition: transform 1000ms cubic-bezier(0.76, 0, 0.24, 1), opacity 1000ms ease;
-  will-change: transform;
-}
-.wd-intro-left { left: 0; transform-origin: left center; }
-.wd-intro-right { right: 0; transform-origin: right center; }
-.wd-intro-panel {
-  position: absolute; inset: 0; overflow: hidden;
-  background:
-    radial-gradient(120% 100% at 50% 45%, rgba(10, 40, 22, 0.55) 0%, rgba(4, 14, 8, 0.92) 70%),
-    url("/nature_trip/textures/camo.svg") 0 0 / 640px 640px repeat,
-    #0a2214;
-}
-.wd-intro-left .wd-intro-panel { box-shadow: inset -40px 0 60px -30px rgba(0, 0, 0, 0.8); }
-.wd-intro-right .wd-intro-panel { box-shadow: inset 40px 0 60px -30px rgba(0, 0, 0, 0.8); }
-/* Leafy fringe on the inner edge of each door; the two fringes interlock at the seam. */
-.wd-intro-fringe { --fw: clamp(64px, 9vw, 130px); position: absolute; top: -4%; bottom: -4%; width: var(--fw); pointer-events: none; filter: drop-shadow(6px 0 10px rgba(0, 0, 0, 0.55)); }
-.wd-intro-left .wd-intro-fringe { right: calc(var(--fw) / -2); }
-.wd-intro-fringe svg { width: 100%; height: 100%; }
-.wd-intro-mark {
-  position: absolute; top: 50%; width: 100vw; transform: translateY(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: clamp(14px, 2vw, 24px);
-  transition: opacity 600ms var(--wd-ease), transform 900ms var(--wd-ease);
-}
-.wd-intro-left .wd-intro-mark { left: 0; }
-.wd-intro-right .wd-intro-mark { left: -100%; }
-.wd-intro-glyph { width: clamp(44px, 7vw, 72px); height: auto; opacity: 0; transform: translateY(10px) scale(0.9); transition: opacity 700ms var(--wd-ease), transform 900ms var(--wd-ease); }
-.wd-intro-word {
-  font: 600 clamp(3.2rem, 15vw, 10.5rem)/0.95 var(--font-fraunces), Georgia, serif;
-  letter-spacing: 0.08em; padding-left: 0.08em;
-  background: linear-gradient(100deg,
-    #2f6d33 0%, #4f9a2f 12%, #9ad14b 24%, #e9ffb0 31%, #fff6c2 34%, #f2b134 38%,
-    #c8e86b 44%, #7fbf3c 56%, #3fa34d 70%, #1f7a45 85%, #2f6d33 100%);
-  background-size: 260% 100%; background-position: 135% 0;
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-  filter: drop-shadow(0 0 40px rgba(154, 209, 75, 0.25)) drop-shadow(0 3px 2px rgba(0, 0, 0, 0.8));
-  opacity: 0; transform: scale(0.96) translateZ(0);
-  transition: opacity 700ms var(--wd-ease), transform 1300ms var(--wd-ease);
-}
-.wd-intro-rule { width: 0; height: 2px; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--wd-lime), var(--wd-sun), var(--wd-lime), transparent); opacity: 0; transition: width 900ms var(--wd-ease) 150ms, opacity 600ms 150ms; }
-.wd-intro-tag {
-  font: 500 clamp(10px, 1.15vw, 13px)/1 var(--font-geist-sans), system-ui, sans-serif;
-  letter-spacing: 0.42em; padding-left: 0.42em; text-transform: uppercase; color: #cfe3b8;
-  opacity: 0; transform: translateY(6px);
-  transition: opacity 700ms var(--wd-ease) 250ms, transform 700ms var(--wd-ease) 250ms;
-}
-html.wd-intro-in .wd-intro-glyph { opacity: 1; transform: none; }
-html.wd-intro-in .wd-intro-word { opacity: 1; transform: scale(1); animation: wd-sheen 1.8s var(--wd-ease) 80ms forwards; }
-html.wd-intro-in .wd-intro-rule { width: clamp(110px, 16vw, 240px); opacity: 1; }
-html.wd-intro-in .wd-intro-tag { opacity: 1; transform: none; }
-@keyframes wd-sheen { to { background-position: -40% 0; } }
-.wd-intro-seam {
-  position: absolute; left: 50%; top: -5%; bottom: -5%; width: 3px; margin-left: -1.5px; opacity: 0;
-  background: linear-gradient(to bottom, transparent, rgba(232, 255, 170, 0.95) 30%, rgba(242, 177, 52, 0.95) 50%, rgba(232, 255, 170, 0.95) 70%, transparent);
-  filter: drop-shadow(0 0 18px rgba(200, 232, 107, 0.9)) drop-shadow(0 0 48px rgba(154, 209, 75, 0.6));
-}
-html.wd-intro-open .wd-intro-left { transform: translate3d(-104%, 0, 0) rotateY(24deg); }
-html.wd-intro-open .wd-intro-right { transform: translate3d(104%, 0, 0) rotateY(-24deg); }
-html.wd-intro-open .wd-intro-mark { opacity: 0.9; transform: translateY(-50%) scale(1.05); }
-html.wd-intro-open .wd-intro-seam { animation: wd-seam 700ms var(--wd-ease) forwards; }
-@keyframes wd-seam { 0% { opacity: 0; transform: scaleY(0.7); } 20% { opacity: 1; transform: scaleY(1); } 100% { opacity: 0; transform: scaleY(1.05); } }
-.wd-intro-skipbtn {
-  position: absolute; right: 18px; bottom: 18px; z-index: 2;
-  font: 500 12px/1 var(--font-geist-sans), system-ui, sans-serif; letter-spacing: 0.2em; text-transform: uppercase;
-  color: #cfe3b8; opacity: 0.7; padding: 10px 14px; border: 1px solid rgba(207, 227, 184, 0.3); border-radius: 999px; background: rgba(0, 0, 0, 0.25);
-}
-html.wd-intro-revealing main { animation: wd-settle 1000ms var(--wd-ease) both; }
-@keyframes wd-settle { from { opacity: 0.4; transform: scale(1.025) translateY(12px); } to { opacity: 1; transform: none; } }
 
 @layer components {
 /* ── Layout primitives ─────────────────────────────────────────────────────── */
 /* First block of every inner page: clears the fixed nav. */
-.wd-page-head { position: relative; padding-top: clamp(7rem, 13vw, 9.5rem); padding-bottom: clamp(2rem, 5vw, 3.5rem); }
+.wd-page-head { position: relative; padding-top: clamp(6.25rem, 9vw, 7.75rem); padding-bottom: clamp(1rem, 3vw, 2rem); }
 .wd-wrap {
   max-width: var(--wd-max); margin-inline: auto;
   padding-left: max(var(--wd-gutter), env(safe-area-inset-left, 0px));
   padding-right: max(var(--wd-gutter), env(safe-area-inset-right, 0px));
 }
 .wd-wrap--narrow { max-width: 56rem; }
-.wd-section { position: relative; padding-block: clamp(3.5rem, 8vw, 6.5rem); }
-.wd-section--tight { padding-block: clamp(2rem, 5vw, 3.5rem); }
-.wd-head { text-align: center; max-width: 46rem; margin: 0 auto clamp(2rem, 5vw, 3.25rem); }
-/* Headings sit straight on the camouflage: a soft dark halo keeps them readable without a panel. */
-.wd-head, .wd-page-head { text-shadow: 0 0 2px rgba(4, 12, 7, 0.9), 0 2px 20px rgba(4, 12, 7, 0.85), 0 0 44px rgba(4, 12, 7, 0.7); }
-.wd-head .glass, .wd-page-head .glass { text-shadow: none; }
-.wd-head p:not(.eyebrow) { color: var(--wd-muted); margin-top: 0.85rem; line-height: 1.65; }
-
-.eyebrow {
-  display: inline-flex; align-items: center; gap: 0.55rem;
-  font: 600 0.72rem/1 var(--font-geist-sans), system-ui, sans-serif;
-  letter-spacing: 0.24em; text-transform: uppercase; color: var(--wd-lime);
-  margin-bottom: 0.9rem;
-}
-.eyebrow::before { content: ""; width: 1.6rem; height: 1px; background: linear-gradient(90deg, transparent, var(--wd-lime)); }
-.wd-head .eyebrow::after { content: ""; width: 1.6rem; height: 1px; background: linear-gradient(90deg, var(--wd-lime), transparent); }
-.h-display { font-size: clamp(2.4rem, 6.2vw, 4.75rem); line-height: 1.02; font-weight: 600; color: #fff; }
-.h-section { font-size: clamp(1.9rem, 4.2vw, 3rem); line-height: 1.08; font-weight: 600; color: #fff; }
-.h-card { font-size: 1.25rem; line-height: 1.25; font-weight: 600; color: #fff; }
-.text-glow { text-shadow: 0 0 2px rgba(0, 0, 0, 0.9), 0 2px 24px rgba(0, 0, 0, 0.75); }
-.lede { color: var(--wd-muted); font-size: clamp(1.02rem, 1.6vw, 1.2rem); line-height: 1.7; }
-.accent-text {
-  background: linear-gradient(95deg, var(--wd-leaf), var(--wd-lime) 45%, var(--wd-sun));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-  text-shadow: none;
-}
-.text-glow .accent-text, .accent-text.text-glow { filter: drop-shadow(0 2px 14px rgba(0, 0, 0, 0.85)); }
+.wd-section { position: relative; padding-block: clamp(1.5rem, 3vw, 2.5rem); }
+.wd-section--tight { padding-block: clamp(1.25rem, 2.5vw, 1.75rem); }
+/* Section head: heading and its one-line purpose, left-aligned with the content below. */
+.wd-head { max-width: 44rem; margin-bottom: clamp(1.5rem, 3vw, 2.25rem); }
+.wd-head p { color: var(--wd-muted); margin-top: 0.85rem; line-height: 1.65; font-size: 1.05rem; }
+.h-display { font-size: clamp(2.4rem, 6vw, 4.5rem); line-height: 1.02; font-weight: 700; color: var(--wd-ink); letter-spacing: -0.04em; }
+.h-section { font-size: clamp(1.9rem, 4vw, 2.9rem); line-height: 1.08; font-weight: 700; color: var(--wd-ink); letter-spacing: -0.035em; }
+.h-card { font-size: 1.25rem; line-height: 1.25; font-weight: 650; color: var(--wd-ink); letter-spacing: -0.015em; }
+.lede { color: var(--wd-muted); font-size: clamp(1.02rem, 1.6vw, 1.18rem); line-height: 1.7; }
+/* Formerly a gradient on one word of a headline; now the headline reads as one voice. */
+.accent-text { color: inherit; }
 
 /* ── Surfaces ──────────────────────────────────────────────────────────────── */
-.glass {
-  position: relative;
-  background: var(--wd-glass);
-  border: 1px solid var(--wd-line);
-  border-radius: 1.25rem;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 30px 60px -30px rgba(0, 0, 0, 0.8);
-}
+.glass { position: relative; background: var(--wd-glass); border: 1px solid var(--wd-line); border-radius: 1rem; }
 .glass-strong { background: var(--wd-glass-strong); }
-@media (hover: hover) and (min-width: 1024px) {
-  .glass { backdrop-filter: blur(14px) saturate(1.2); -webkit-backdrop-filter: blur(14px) saturate(1.2); }
-}
 .glass-pad { padding: clamp(1.25rem, 3vw, 2rem); }
-.divider { height: 1px; background: linear-gradient(90deg, transparent, var(--wd-line-strong), transparent); border: 0; }
-
-/* 3D tilt card with a glare that follows the pointer (ForestFX sets --rx/--ry/--mx/--my). */
-.card-3d {
-  transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(0);
-  transition: transform 0.5s var(--wd-ease), box-shadow 0.4s ease, border-color 0.3s ease;
-  transform-style: preserve-3d;
+.divider { height: 1px; background: var(--wd-line); border: 0; }
+/* Cards that are links answer the pointer: the border firms up and a soft shadow lands.
+   Cards that are not links stay still, so nothing pretends to be clickable. */
+.card-3d { transition: border-color 200ms ease, box-shadow 200ms ease; }
+@media (hover: hover) and (pointer: fine) {
+  a.card-3d:hover { border-color: var(--wd-line-strong); box-shadow: 0 18px 40px -28px rgba(27, 33, 27, 0.35); }
 }
-.card-3d::after {
-  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
-  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(200, 232, 107, 0.16), transparent 45%);
-  transition: opacity 0.3s ease;
-}
-.card-3d:hover { border-color: var(--wd-line-strong); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 40px 70px -30px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(154, 209, 75, 0.08); }
-.card-3d:hover::after { opacity: 1; }
-.card-3d.is-tilting { transition: transform 0.12s linear, box-shadow 0.4s ease, border-color 0.3s ease; }
-.lift-z { transform: translateZ(28px); }
-
-/* Legacy hover lift, restyled */
-.card-lift { transition: transform 0.25s ease, box-shadow 0.25s ease; }
-.card-lift:hover { transform: translateY(-4px); box-shadow: 0 24px 48px -16px rgba(0, 0, 0, 0.7); }
 
 /* ── Buttons & chips ───────────────────────────────────────────────────────── */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem;
-  padding: 0.85rem 1.6rem; border-radius: 999px; font-weight: 600; font-size: 0.98rem; line-height: 1.1;
-  transition: transform 0.2s var(--wd-ease), background-color 0.2s ease, box-shadow 0.25s ease, border-color 0.2s ease, color 0.2s ease;
+  padding: 0.85rem 1.5rem; border-radius: 999px; font-weight: 600; font-size: 0.98rem; line-height: 1.1;
+  border: 1px solid transparent;
+  transition: transform 160ms var(--ease-out), background-color 200ms ease, border-color 200ms ease, color 200ms ease;
   white-space: nowrap;
 }
-.btn:active { transform: translateY(1px) scale(0.99); }
-.btn-lg { padding: 1.05rem 2rem; font-size: 1.05rem; }
-.btn-primary { background: var(--wd-sun); color: #10200f; box-shadow: 0 10px 30px -10px rgba(242, 177, 52, 0.6); }
-.btn-primary:hover { background: #ffc451; box-shadow: 0 14px 36px -10px rgba(242, 177, 52, 0.75); transform: translateY(-1px); }
-.btn-lime { background: var(--wd-lime); color: #0b1d10; box-shadow: 0 10px 30px -12px rgba(154, 209, 75, 0.6); }
-.btn-lime:hover { background: var(--wd-leaf); transform: translateY(-1px); }
-.btn-ghost { background: rgba(255, 255, 255, 0.06); color: #fff; border: 1px solid rgba(234, 243, 227, 0.28); }
-.btn-ghost:hover { background: rgba(255, 255, 255, 0.12); border-color: rgba(234, 243, 227, 0.5); }
-.btn-wa { background: #25d366; color: #062a12; box-shadow: 0 10px 30px -12px rgba(37, 211, 102, 0.6); }
-.btn-wa:hover { background: #3be27a; transform: translateY(-1px); }
-.chip {
-  display: inline-flex; align-items: center; gap: 0.35rem;
-  padding: 0.3rem 0.7rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600;
-  background: rgba(154, 209, 75, 0.1); color: var(--wd-leaf); border: 1px solid rgba(154, 209, 75, 0.25);
+.btn:active { transform: scale(0.97); }
+.btn-lg { padding: 1rem 1.9rem; font-size: 1.03rem; }
+.btn-primary, .btn-lime { background: var(--wd-emerald); color: #fff; }
+.btn-ghost { background: transparent; color: var(--wd-ink); border-color: var(--wd-line-strong); }
+.btn-wa { background: #25d366; color: #062a12; }
+/* Steps aside while another WhatsApp link is on screen (FloatingCTA), so there's only ever one. */
+.floating-cta { right: max(1rem, env(safe-area-inset-right, 0px)); bottom: max(1rem, env(safe-area-inset-bottom, 0px)); transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out); }
+@media (min-width: 640px) { .floating-cta { right: max(1.25rem, env(safe-area-inset-right, 0px)); bottom: max(1.25rem, env(safe-area-inset-bottom, 0px)); } }
+.floating-cta[data-covered] { opacity: 0; transform: translateY(0.5rem); pointer-events: none; }
+/* On photographs */
+.btn-light { background: #fff; color: var(--wd-ink); }
+.btn-glass { background: rgba(255, 255, 255, 0.12); color: #fff; border-color: rgba(255, 255, 255, 0.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+/* Hover colours only for a real pointer: on touch they'd stick after the tap. */
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover, .btn-lime:hover { background: var(--wd-forest); }
+  .btn-ghost:hover { background: var(--wd-deep); }
+  .btn-wa:hover { background: #1fbf5b; }
+  .btn-light:hover { background: var(--wd-night); }
+  .btn-glass:hover { background: rgba(255, 255, 255, 0.22); }
 }
-.chip-sun { background: rgba(242, 177, 52, 0.12); color: #ffd27a; border-color: rgba(242, 177, 52, 0.32); }
-.chip-trogon { background: rgba(226, 85, 59, 0.14); color: #ff9a85; border-color: rgba(226, 85, 59, 0.35); }
-.link-arrow { color: var(--wd-lime); font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem; }
-.link-arrow::after { content: "→"; transition: transform 0.2s var(--wd-ease); }
-.link-arrow:hover::after { transform: translateX(4px); }
+/* A fact about something (duration, grade, season): plain text, no lozenge. Rows of them are
+   spaced, not boxed. Gold and red carry meaning (required / demanding), so use them sparingly. */
+.chip { display: inline-flex; align-items: baseline; gap: 0.35rem; font-size: 0.875rem; font-weight: 500; color: var(--wd-muted); }
+.chip-sun { color: var(--wd-sun); font-weight: 600; }
+.chip-trogon { color: var(--wd-trogon); font-weight: 600; }
+/* A label laid over a photograph: white type on the photo's own darkened edge (see .photo-scrim). */
+.photo-label { display: block; font-size: 0.8rem; font-weight: 600; color: #fff; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); }
+.photo-scrim { position: absolute; inset-inline: 0; bottom: 0; padding: 3rem 1rem 0.9rem; background: linear-gradient(to top, rgba(12, 17, 12, 0.72), transparent); }
+/* A text link that leads somewhere: underlined, firming up on hover. */
+.link-arrow {
+  display: inline-block; color: var(--wd-ink); font-weight: 600;
+  text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.3em;
+  text-decoration-color: var(--wd-line-strong); transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+@media (hover: hover) and (pointer: fine) { .link-arrow:hover { color: var(--wd-lime); text-decoration-color: currentColor; } }
+
+/* Underline tabs (filters). The bar is drawn by FilterTabs and glides between tabs. */
+.tabs { position: relative; overscroll-behavior-x: contain; display: flex; gap: clamp(1.25rem, 3vw, 2rem); border-bottom: 1px solid var(--wd-line); overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { position: relative; flex: none; display: inline-flex; align-items: baseline; gap: 0.4rem; padding: 0.75rem 0; font-size: 0.95rem; font-weight: 500; color: var(--wd-muted); transition: color 0.2s ease; }
+.tab { transition: color 200ms ease, transform 160ms var(--ease-out); }
+.tab:active { transform: scale(0.97); }
+.tab[aria-pressed="true"] { color: var(--wd-ink); }
+@media (hover: hover) and (pointer: fine) { .tab:hover { color: var(--wd-ink); } }
+.tab__count { font-size: 0.75rem; color: var(--wd-faint); font-variant-numeric: tabular-nums; }
+.tabs--center { justify-content: safe center; }
+/* 1px wide, scaled to the active tab by FilterTabs: transform-only, so the slide stays on the compositor. */
+.tab__bar { position: absolute; left: 0; bottom: 0; width: 1px; height: 2px; transform-origin: 0 0; background: var(--wd-ink); pointer-events: none; }
+.tab__bar[data-ready] { transition: transform 260ms var(--ease-out); }
+
+/* In-page navigation (PageNav): sticks under the main nav. */
+.subnav { position: sticky; top: 4rem; z-index: 50; background: var(--wd-night); border-bottom: 1px solid var(--wd-line); }
+@media (min-width: 768px) { .subnav { top: 4.5rem; } }
+.subnav__inner { display: flex; align-items: center; gap: 2rem; height: 3.25rem; }
+.subnav__title { display: none; font: 650 1rem/1 var(--font-hanken), system-ui, -apple-system, 'Segoe UI', sans-serif; letter-spacing: -0.01em; white-space: nowrap; }
+@media (min-width: 768px) { .subnav__title { display: block; } }
+.subnav__links {
+  display: flex; gap: 1.5rem; margin-left: auto; overflow-x: auto; scrollbar-width: none;
+  mask-image: linear-gradient(to right, #000 calc(100% - 1.5rem), transparent);
+}
+@media (min-width: 1024px) { .subnav__links { mask-image: none; } }
+.subnav__links { overscroll-behavior-x: contain; }
+.subnav__links::-webkit-scrollbar { display: none; }
+.subnav__links a { display: block; padding: 0.4rem 0; font-size: 0.88rem; color: var(--wd-muted); white-space: nowrap; transition: color 0.2s ease; }
+@media (hover: hover) and (pointer: fine) { .subnav__links a:hover { color: var(--wd-ink); } }
+html:has(.subnav) { scroll-padding-top: 8.5rem; }
 
 /* Footnote / disclaimer block (e.g. "no guaranteed sightings") */
 .wd-note {
   display: flex; gap: 0.75rem; align-items: flex-start;
   padding: 0.9rem 1.1rem; border-radius: 0.9rem;
-  background: rgba(242, 177, 52, 0.07); border: 1px dashed rgba(242, 177, 52, 0.35);
-  color: #f3dfb0; font-size: 0.86rem; line-height: 1.55;
+  background: rgba(233, 181, 74, 0.1); border: 1px dashed rgba(143, 97, 18, 0.35);
+  color: #4d3a14; font-size: 0.88rem; line-height: 1.55;
 }
 
-/* Forms on dark */
+/* Forms */
 .wd-input {
-  width: 100%; padding: 0.8rem 1rem; border-radius: 0.8rem;
-  background: rgba(3, 12, 7, 0.55); color: var(--wd-ink);
-  border: 1px solid rgba(154, 209, 75, 0.22);
+  width: 100%; padding: 0.8rem 1rem; border-radius: 0.8rem; font-size: max(16px, 1rem); /* under 16px iOS zooms in on focus */
+  background: #fff; color: var(--wd-ink);
+  border: 1px solid var(--wd-line-strong);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
-.wd-input::placeholder { color: #7f957a; }
-.wd-input:focus { outline: none; border-color: var(--wd-lime); box-shadow: 0 0 0 3px rgba(154, 209, 75, 0.2); }
-select.wd-input option { background: var(--wd-deep); color: var(--wd-ink); }
-.wd-label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--wd-muted); margin-bottom: 0.4rem; }
+.wd-input::placeholder { color: #8a9286; }
+.wd-input:focus { outline: none; border-color: var(--wd-lime); box-shadow: 0 0 0 3px rgba(44, 94, 63, 0.16); }
+.wd-label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--wd-ink); margin-bottom: 0.4rem; }
 
 /* Accordion (FAQ) using <details> */
 .wd-acc { border-bottom: 1px solid var(--wd-line); }
 .wd-acc > summary {
   list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start;
-  padding: 1.1rem 0.25rem; font-weight: 600; color: #fff;
+  padding: 1.1rem 0.25rem; font-weight: 600; color: var(--wd-ink);
 }
 .wd-acc > summary::-webkit-details-marker { display: none; }
+/* A drawn chevron that turns to point up when open. */
 .wd-acc > summary::after {
-  content: "+"; flex: none; width: 1.6rem; height: 1.6rem; border-radius: 50%; display: grid; place-items: center;
-  border: 1px solid var(--wd-line-strong); color: var(--wd-lime); font-weight: 500; transition: transform 0.25s var(--wd-ease);
+  content: ""; flex: none; width: 0.55rem; height: 0.55rem; margin: 0.45rem 0.35rem 0 0;
+  border-right: 1.5px solid var(--wd-muted); border-bottom: 1.5px solid var(--wd-muted);
+  transform: rotate(45deg); transition: transform 250ms var(--ease-out);
 }
-.wd-acc[open] > summary::after { transform: rotate(45deg); }
+.wd-acc[open] > summary::after { transform: translateY(0.25rem) rotate(-135deg); }
+.wd-acc::details-content {
+  block-size: 0; overflow-y: clip;
+  transition: block-size 250ms var(--ease-out), content-visibility 250ms allow-discrete;
+}
+.wd-acc[open]::details-content { block-size: auto; }
+.wd-acc > div { opacity: 0; transition: opacity 200ms ease; }
+.wd-acc[open] > div { opacity: 1; }
 .wd-acc > div { padding: 0 0.25rem 1.2rem; color: var(--wd-muted); line-height: 1.7; }
+/* Compact accordion for narrow columns (trip page "You arrange"). */
+.wd-acc--sm > summary { padding: 0.8rem 0; font-size: 0.92rem; }
+.wd-acc--sm > summary::after { margin-top: 0.3rem; }
+.wd-acc--sm > div { padding: 0 0 0.95rem; font-size: 0.875rem; line-height: 1.6; }
+.wd-acc--sm:last-child { border-bottom: 0; }
 
-/* ── Reveal on scroll ──────────────────────────────────────────────────────── */
-/* Hidden only when JS is running (html.js is set in <head>), so no-JS visitors see everything.
-   Uses opacity + the individual `scale` property only: `transform` belongs to .card-3d and
-   `translate` to the scroll floaters, so all three compose instead of fighting. */
-html.js .reveal { opacity: 0; scale: 0.965; transition: opacity 0.9s var(--wd-ease), scale 1s var(--wd-ease); transition-delay: var(--d, 0ms); }
-html.js .reveal.in { opacity: 1; scale: 1; }
-html.js .card-3d.reveal { transition: opacity 0.9s var(--wd-ease) var(--d, 0ms), scale 1s var(--wd-ease) var(--d, 0ms), transform 0.5s var(--wd-ease), box-shadow 0.4s ease, border-color 0.3s ease; }
-html.js .card-3d.reveal.is-tilting { transition: opacity 0.9s var(--wd-ease) var(--d, 0ms), scale 1s var(--wd-ease) var(--d, 0ms), transform 0.12s linear, box-shadow 0.4s ease, border-color 0.3s ease; }
-
-} /* end @layer components */
-
-/* ── Hero: a floating 3D window onto the forest ────────────────────────────── */
-.hero3d { position: relative; padding: clamp(5.25rem, 10vw, 6.5rem) 0 clamp(2rem, 5vw, 3rem); }
-@media (max-width: 640px) { .hero3d-window { min-height: 560px; height: 84svh; } }
-.hero3d-window {
-  position: relative; overflow: hidden; border-radius: clamp(1.25rem, 3vw, 2rem);
-  height: min(80vh, 780px); min-height: 520px;
-  border: 1px solid rgba(200, 232, 107, 0.22);
-  box-shadow: 0 60px 120px -40px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(0, 0, 0, 0.4), 0 0 80px -20px rgba(154, 209, 75, 0.18);
-  transform: perspective(1600px) rotateX(calc(var(--py) * -4deg)) rotateY(calc(var(--px) * 5deg)) translateZ(0);
-  transition: transform 0.8s var(--wd-ease);
-  background: var(--wd-deep);
-}
-.hero3d-orbit {
-  position: absolute; z-index: 3; border-radius: 1rem; overflow: hidden;
-  border: 1px solid rgba(234, 243, 227, 0.25);
-  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.9);
-  transform: translate3d(calc(var(--px) * var(--depth, 30px)), calc(var(--py) * var(--depth, 30px)), 0) rotate(var(--r, 0deg));
-  transition: transform 0.6s var(--wd-ease);
-  animation: orbit-bob var(--dur, 7s) ease-in-out var(--delay, 0s) infinite alternate;
-}
-.hero3d-orbit img { width: 100%; height: 100%; object-fit: cover; display: block; }
-@keyframes orbit-bob { from { translate: 0 -8px; } to { translate: 0 10px; } }
-
-/* Full-bleed hero slideshow inside the window: crossfade with slow Ken Burns. */
-.hero-slide {
-  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
-  opacity: 0; transform: scale(1.06); transition: opacity 1.8s ease;
-}
-.hero-slide--active { opacity: 1; z-index: 1; animation: heroKenBurns 8.6s ease-out forwards; }
-@keyframes heroKenBurns { from { transform: scale(1.06); } to { transform: scale(1); } }
-
-@layer components {
-/* ── Marquees & photo tiles (kept from v1, restyled) ───────────────────────── */
-@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.marquee-track { animation: marquee 32s linear infinite; }
-.photo-marquee {
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%);
-  mask-image: linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%);
-}
-.photo-marquee-track { display: flex; width: max-content; gap: 0.75rem; animation: marquee 160s linear infinite; }
-.photo-marquee-track--reverse { animation-direction: reverse; animation-duration: 180s; }
-.photo-marquee:hover .photo-marquee-track { animation-play-state: paused; }
-.photo-tile { position: relative; overflow: hidden; border-radius: 0.9rem; background: var(--wd-deep); border: 1px solid rgba(154, 209, 75, 0.12); }
-.photo-tile img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--wd-ease); }
-.photo-tile:hover img { transform: scale(1.06); }
+/* ── Photo tiles ───────────────────────────────────────────────────────────── */
+.photo-tile { position: relative; overflow: hidden; border-radius: 0.75rem; background: var(--wd-deep); }
+.photo-tile img { width: 100%; height: 100%; object-fit: cover; transition: transform 300ms var(--ease-out); }
+@media (hover: hover) and (pointer: fine) { .photo-tile:hover img { transform: scale(1.02); } }
+button.photo-tile { transition: transform 160ms var(--ease-out); }
+button.photo-tile:active { transform: scale(0.98); }
 .photo-tile__caption {
   position: absolute; inset-inline: 0; bottom: 0; padding: 1.6rem 0.85rem 0.6rem;
-  background: linear-gradient(to top, rgba(4, 12, 7, 0.9), transparent);
-  color: #fff; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.01em;
-  opacity: 0; transform: translateY(6px); transition: opacity 0.3s ease, transform 0.3s ease;
+  background: linear-gradient(to top, rgba(15, 20, 15, 0.75), transparent);
+  color: #fff; font-size: 0.78rem; font-weight: 600;
 }
-.photo-tile:hover .photo-tile__caption, .photo-tile--captioned .photo-tile__caption { opacity: 1; transform: translateY(0); }
-.photo-credit { font-size: 0.68rem; color: var(--wd-faint); }
-.photo-credit a { text-decoration: underline; text-underline-offset: 2px; }
+.float-gallery { display: flex; gap: 0.75rem; height: min(80svh, 860px); overflow: hidden; }
+.float-gallery__col { flex: 1; min-width: 0; }
+.float-gallery__track { display: flex; flex-direction: column; animation: wd-drift linear infinite; will-change: transform; }
+@keyframes wd-drift { from { transform: translateY(-50%); } to { transform: none; } }
+.float-gallery:has(:focus-visible) .float-gallery__track { animation-play-state: paused; }
+.float-gallery--still { height: auto; }
+/* Species tab change: the new group fades in where the old one was (SpeciesExplorer). Opacity
+   only, so it suits reduced motion as it is. */
+.wd-swap { animation: wd-fade 220ms var(--ease-out) both; }
+.float-gallery--still .float-gallery__track { animation: none; }
 
-/* Legacy helpers still used by some pages */
-.leaf-texture { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M30 5C20 20 20 40 30 55C40 40 40 20 30 5Z' fill='none' stroke='%239ad14b' stroke-opacity='0.07' stroke-width='1'/%3E%3C/svg%3E"); }
-.hero-canopy { background: radial-gradient(120% 120% at 20% 0%, rgba(31, 122, 69, 0.55), rgba(7, 20, 13, 0.9) 70%); }
-@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-.fade-up { animation: fadeUp 0.9s var(--wd-ease) both; }
+/* Blur carousel (focus species). Photos crossfade in one frame; each half of the photo is a
+   button whose hover blurs that edge, and a press tilts the frame toward it (BlurCarousel). */
+.blur-carousel { perspective: 1100px; }
+.blur-carousel__frame { position: relative; aspect-ratio: 4 / 3; overflow: hidden; touch-action: pan-y; border-radius: 1rem; background: var(--wd-deep); transition: transform 200ms var(--ease-out); }
+.blur-carousel__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 450ms ease; user-select: none; }
+.blur-carousel__img[data-active] { opacity: 1; }
+.blur-carousel__side { position: absolute; top: 0; bottom: 0; width: 50%; display: flex; align-items: center; padding-inline: 0.75rem; color: rgba(255, 255, 255, 0.75); cursor: pointer; transition: color 200ms ease; -webkit-tap-highlight-color: transparent; }
+.blur-carousel__side[data-side="prev"] { left: 0; justify-content: flex-start; }
+.blur-carousel__side[data-side="next"] { right: 0; justify-content: flex-end; }
+.blur-carousel__side[data-hover], .blur-carousel__side:focus-visible { color: #fff; }
+.blur-carousel__side:focus-visible { outline: 2px solid #fff; outline-offset: -0.5rem; border-radius: 0.75rem; }
+.blur-carousel__blur { position: absolute; top: 0; bottom: 0; width: 84%; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); opacity: 0; transition: opacity 400ms ease; pointer-events: none; }
+.blur-carousel__side[data-side="prev"] .blur-carousel__blur { left: 0; mask-image: linear-gradient(to right, #000, transparent); }
+.blur-carousel__side[data-side="next"] .blur-carousel__blur { right: 0; mask-image: linear-gradient(to left, #000, transparent); }
+.blur-carousel__side[data-hover] .blur-carousel__blur { opacity: 1; }
+.blur-carousel__arrow { position: relative; width: 2.25rem; height: 2.25rem; filter: drop-shadow(0 1px 6px rgba(0, 0, 0, 0.5)); }
+
+/* Focus species details beside the carousel: every species in one grid cell, the active one shown. */
+/* Species index under the gallery (species page): every photo's notes as plain, crawlable text. */
+.species-index__row { padding-block: 0.7rem; border-top: 1px solid var(--wd-line); }
+.species-index__facts { display: grid; grid-template-columns: repeat(auto-fill, minmax(12rem, 20rem)); gap: 0.35rem 1.5rem; margin-top: 0.35rem; font-size: 0.85rem; line-height: 1.45; }
+.species-index__facts dt { font-size: 0.75rem; color: var(--wd-faint); }
+.species-index__facts dd { color: var(--wd-muted); }
+.focus__detail { grid-area: 1 / 1; opacity: 0; visibility: hidden; transform: translateY(4px); transition: opacity 300ms ease, transform 300ms var(--ease-out), visibility 0s 300ms; }
+.focus__detail[data-active] { opacity: 1; visibility: visible; transform: none; transition: opacity 300ms ease 100ms, transform 300ms var(--ease-out) 100ms, visibility 0s; }
+.focus__tags { display: flex; flex-wrap: wrap; gap: 0.25rem 0.85rem; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--wd-faint); }
+.focus__row { border-top: 1px solid var(--wd-line); padding-block: 0.85rem; line-height: 1.6; color: var(--wd-muted); }
+.focus__label { margin-bottom: 0.2rem; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--wd-faint); }
+.focus__dot { display: grid; place-items: center; width: 1.75rem; height: 1.75rem; }
+.focus__dot::before, .focus__dot::after { grid-area: 1 / 1; }
+.focus__dot::before { content: ""; width: 0.5rem; height: 0.5rem; border-radius: 999px; background: var(--wd-line-strong); transition: width 250ms var(--ease-out), background-color 200ms ease; }
+.focus__dot[aria-current]::before { width: 1.25rem; }
+/* The active dot fills over 5 s, linear like any progress bar, and its animationend is the autoplay
+   timer (FocusCarousel). Paused with the carousel. */
+.focus__dot[aria-current]::after { content: ""; width: 1.25rem; height: 0.5rem; border-radius: 999px; background: var(--wd-ink); transform-origin: left; animation: wd-dot-fill 5000ms linear both; }
+[data-paused] .focus__dot::after { animation-play-state: paused; }
+@keyframes wd-dot-fill { from { transform: scaleX(0); } to { transform: none; } }
+@media (hover: hover) and (pointer: fine) { .focus__dot:not([aria-current]):hover::before { background: var(--wd-faint); } }
+/* Pause/resume autoplay, beside the dots: the same 28 px target, an icon in the counter's tone. */
+.focus__toggle { display: grid; place-items: center; width: 1.75rem; height: 1.75rem; border-radius: 999px; color: var(--wd-faint); transition: color 200ms ease; }
+.focus__toggle svg { width: 0.875rem; height: 0.875rem; }
+@media (hover: hover) and (pointer: fine) { .focus__toggle:hover { color: var(--wd-ink); } }
+.photo-credit { font-size: 0.7rem; color: var(--wd-faint); }
+.photo-credit a { text-decoration: underline; text-underline-offset: 2px; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+.fade-up { animation: fadeUp 200ms var(--ease-out) both; }
+/* Messages that appear after an action (form errors, sent/failed): fade in instead of popping. */
+.wd-appear { transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out); }
+@starting-style { .wd-appear { opacity: 0; transform: translateY(4px); } }
 
 /* ── Navigation ────────────────────────────────────────────────────────────── */
-.site-nav { position: fixed; inset: 0 0 auto 0; z-index: 60; transition: background-color 0.35s ease, border-color 0.35s ease, backdrop-filter 0.35s ease; border-bottom: 1px solid transparent; }
-.site-nav.is-scrolled { background: rgba(6, 18, 11, 0.86); border-bottom-color: var(--wd-line); }
-@media (hover: hover) { .site-nav.is-scrolled { backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); background: rgba(6, 18, 11, 0.7); } }
-.nav-link { position: relative; color: #dbe8d2; font-size: 0.92rem; font-weight: 500; padding: 0.4rem 0; transition: color 0.2s ease; }
-.nav-link::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px; border-radius: 2px; background: var(--wd-lime); transform: scaleX(0); transition: transform 0.3s var(--wd-ease); }
-.nav-link:hover, .nav-link[aria-current="page"] { color: #fff; }
-.nav-link:hover::after, .nav-link[aria-current="page"]::after { transform: scaleX(1); }
+/* Solid paper bar; over the home hero it starts clear, with white text, until the page scrolls. */
+.site-nav {
+  position: fixed; inset: 0 0 auto 0; z-index: 60;
+  background: var(--wd-night); border-bottom: 1px solid var(--wd-line);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  color: var(--wd-ink);
+}
+.site-nav[data-over-hero] { background: transparent; border-bottom-color: transparent; color: #fff; }
+.nav-link { position: relative; color: inherit; opacity: 0.78; font-size: 0.92rem; font-weight: 500; padding: 0.4rem 0; transition: opacity 0.2s ease; }
+.nav-link::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 1.5px; border-radius: 2px; background: currentColor; transform: scaleX(0); transition: transform 200ms var(--ease-out); }
+.nav-link[aria-current="page"], .nav-link[data-active], .nav-link[aria-expanded="true"] { opacity: 1; }
+.nav-link[aria-current="page"]::after, .nav-link[data-active]::after { transform: scaleX(1); }
 
+/* Header dropdowns (Navigation): the panel grows down from its trigger and leaves faster than it
+   came. .nav-drop's top padding bridges the gap, so the pointer can travel into the panel. */
+.nav-group { position: relative; }
+.nav-group__trigger { display: inline-flex; align-items: center; gap: 0.3rem; }
+.nav-group__chevron { width: 0.7rem; height: 0.7rem; transition: transform 200ms var(--ease-out); }
+.nav-group__trigger[aria-expanded="true"] .nav-group__chevron { transform: rotate(180deg); }
+.nav-drop { position: absolute; top: 100%; left: 50%; z-index: 70; padding-top: 0.85rem; opacity: 0; visibility: hidden; transform: translateX(-50%) translateY(-4px) scale(0.97); transform-origin: top center; transition: opacity 120ms ease, transform 120ms var(--ease-out), visibility 0s 120ms; }
+.nav-drop[data-open] { opacity: 1; visibility: visible; transform: translateX(-50%); transition: opacity 160ms ease, transform 160ms var(--ease-out), visibility 0s; }
+.nav-drop__panel { padding: 0.3rem; border: 1px solid var(--wd-line); border-radius: 0.9rem; background: var(--wd-glass-strong); color: var(--wd-ink); box-shadow: 0 22px 44px -24px rgba(27, 33, 27, 0.4); }
+.nav-drop__link { display: block; padding: 0.4rem 1rem; border-radius: 0.6rem; font-size: 0.92rem; line-height: 1.35; font-weight: 500; color: var(--wd-ink); white-space: nowrap; transition: background-color 150ms ease; }
+.nav-drop__link:focus-visible { outline-offset: -2px; }
+.nav-drop__link[aria-current="page"] { color: var(--wd-lime); }
+@media (hover: hover) and (pointer: fine) { .nav-drop__link:hover { background: var(--wd-deep); } }
+.nav-drop__link:active { background: var(--wd-canopy); opacity: 1; }
+/* Phone menu: stays mounted so it can leave the way it came (down-and-in to open, quicker up-and-out
+   to close); the burger and the cross swap with a small turn. */
+.mobile-menu { opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity 150ms ease, transform 150ms var(--ease-out), visibility 0s 150ms; }
+.mobile-menu[data-open] { opacity: 1; visibility: visible; transform: none; transition: opacity 200ms ease, transform 200ms var(--ease-out), visibility 0s; }
+.menu-icon { display: grid; }
+.menu-icon > svg { grid-area: 1 / 1; width: 1.25rem; height: 1.25rem; transition: opacity 150ms ease, transform 150ms var(--ease-out); }
+.menu-icon__close { opacity: 0; transform: rotate(-45deg) scale(0.8); }
+.menu-icon[data-open] .menu-icon__bars { opacity: 0; transform: rotate(45deg) scale(0.8); }
+.menu-icon[data-open] .menu-icon__close { opacity: 1; transform: none; }
+/* Language switcher (footer and phone menu); renders only once a second language is published. */
+.lang-switch { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; font-size: 0.8rem; }
+.lang-switch a { color: var(--wd-muted); transition: color 150ms ease; }
+.lang-switch a[aria-current] { color: var(--wd-ink); font-weight: 600; }
+@media (hover: hover) and (pointer: fine) { .lang-switch a:hover { color: var(--wd-ink); } }
+.mobile-menu__heading { margin-bottom: 0.35rem; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--wd-faint); }
+@media (hover: hover) and (pointer: fine) {
+  .nav-link:hover { opacity: 1; }
+  .nav-link:hover::after { transform: scaleX(1); }
+}
 
 /* Form feedback and small badges */
-.wd-field-error { margin-top: 0.35rem; font-size: 0.8rem; color: #ff9a85; }
-.wd-alert { padding: 0.85rem 1rem; border-radius: 0.8rem; background: rgba(226, 85, 59, 0.12); border: 1px solid rgba(226, 85, 59, 0.4); color: #ffc2b5; font-size: 0.9rem; }
-.wd-badge { display: inline-grid; place-items: center; min-width: 1.9rem; height: 1.9rem; padding: 0 0.45rem; border-radius: 999px; font: 700 0.8rem/1 var(--font-geist-sans), system-ui, sans-serif; color: #0b1d10; background: linear-gradient(135deg, var(--wd-leaf), var(--wd-lime)); box-shadow: 0 0 0 3px rgba(154, 209, 75, 0.18); }
+.wd-field-error { margin-top: 0.35rem; font-size: 0.8rem; color: var(--wd-trogon); }
+.wd-alert { padding: 0.85rem 1rem; border-radius: 0.8rem; background: rgba(176, 62, 40, 0.07); border: 1px solid rgba(176, 62, 40, 0.3); color: #7c2a1a; font-size: 0.9rem; }
+.wd-badge { display: inline-grid; place-items: center; min-width: 1.9rem; height: 1.9rem; padding: 0 0.45rem; border-radius: 999px; font: 700 0.8rem/1 var(--font-hanken), system-ui, sans-serif; color: #fff; background: var(--wd-emerald); }
 } /* end @layer components */
+
+/* ── Home: full-bleed hero ─────────────────────────────────────────────────── */
+.home-hero { position: relative; min-height: 100svh; display: flex; align-items: flex-end; overflow: hidden; color: #fff; background: #1d2a20; }
+.home-hero__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+@media (prefers-reduced-motion: no-preference) {
+  .home-hero__img { animation: wd-settle 1.2s var(--ease-out) both; }
+}
+@keyframes wd-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes wd-settle { from { opacity: 0; transform: scale(1.04); } to { opacity: 1; transform: none; } }
+.home-hero::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(10, 16, 11, 0.45) 0%, transparent 22%, transparent 42%, rgba(10, 16, 11, 0.82) 100%); }
+.home-hero__body { position: relative; z-index: 1; width: 100%; padding-bottom: clamp(2.5rem, 7vh, 5rem); }
+.home-hero h1 { color: #fff; font-size: clamp(2.6rem, 6.4vw, 5.4rem); line-height: 0.98; letter-spacing: -0.04em; font-weight: 700; max-width: 14ch; }
+.home-hero__caption { position: absolute; right: max(var(--wd-gutter), 1rem, env(safe-area-inset-right, 0px)); top: calc(var(--wd-nav-h) + 1.25rem); z-index: 1; font-size: 0.75rem; color: rgba(255, 255, 255, 0.8); text-align: right; }
+@media (max-width: 640px) { .home-hero__caption { display: none; } }
+
+/* ── The route page: sticky photo that cross-fades as each stop reaches centre ── */
+/* Landscape frame for landscape photographs, capped so it always fits under the nav. */
+.route-stage-col { container-type: inline-size; }
+/* Centred in the space under the nav, level with the stop being read (37.5cqw = half its 4:3 height). */
+.route-stage { position: sticky; top: max(calc(var(--wd-nav-h) + 1.5rem), calc(50svh + var(--wd-nav-h) / 2 - 37.5cqw)); aspect-ratio: 4 / 3; max-height: calc(100svh - var(--wd-nav-h) - 4rem); width: 100%; border-radius: 1rem; overflow: hidden; background: var(--wd-deep); }
+.route-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 600ms ease; }
+.route-stage img[data-on] { opacity: 1; }
+.route-stop { min-height: 56vh; display: flex; flex-direction: column; justify-content: center; opacity: 0.4; transition: opacity 300ms ease; }
+.route-stop[data-on] { opacity: 1; }
+@media (max-width: 1023px) { .route-stop { min-height: 0; opacity: 1; } }
+
+/* ── Maps keep their own dark palette, as an inset on the paper page ───────── */
+.wdm {
+  --wd-night: #07140d; --wd-deep: #0a1c12; --wd-canopy: #0d2618; --wd-forest: #134e2e; --wd-emerald: #1f7a45;
+  --wd-lime: #9ad14b; --wd-sand: #efe6c8; --wd-sun: #f2b134; --wd-ink: #eaf3e3; --wd-sea: #06231f;
+  --wd-muted: #b9c9b0; --wd-faint: #8fa587; --wd-line: rgba(154, 209, 75, 0.16);
+  background: #0a1c12; border-radius: 14px;
+}
+
+/* Lightbox (yet-another-react-lightbox) in the site's palette */
+.yarl__root {
+  --yarl__color_backdrop: rgba(12, 16, 12, 0.97);
+  --yarl__slide_captions_container_background: linear-gradient(to top, rgba(10, 14, 10, 0.92), rgba(10, 14, 10, 0.72) 75%, rgba(10, 14, 10, 0));
+  --yarl__slide_captions_container_padding: 1.5rem max(clamp(1rem, 4vw, 3rem), env(safe-area-inset-right, 0px)) 1.75rem max(clamp(1rem, 4vw, 3rem), env(safe-area-inset-left, 0px));
+  --yarl__toolbar_padding: max(8px, env(safe-area-inset-top, 0px)) max(8px, env(safe-area-inset-right, 0px)) 8px 8px;
+}
+/* Captions fade in when shown (the toggle, or a slide arriving) instead of popping. Hiding stays
+   instant: the plugin removes them. */
+.yarl__slide_captions_container { transition: opacity 200ms var(--ease-out); }
+@starting-style { .yarl__slide_captions_container { opacity: 0; } }
+.yarl__slide_title_container { --yarl__slide_captions_container_background: linear-gradient(to bottom, rgba(10, 14, 10, 0.7), rgba(10, 14, 10, 0)); }
+.yarl__slide_title { font: 700 clamp(1.25rem, 2.4vw, 1.6rem)/1.2 var(--font-hanken), system-ui, -apple-system, 'Segoe UI', sans-serif; letter-spacing: -0.02em; }
+/* Species notes: let the panel grow to its content instead of the plugin's 3-line clamp. */
+.yarl__root .yarl__slide_description { display: block; -webkit-line-clamp: none; max-height: 55svh; overflow-y: auto; overscroll-behavior: contain; }
+.yarl__navigation_prev { left: env(safe-area-inset-left, 0px); }
+.yarl__navigation_next { right: env(safe-area-inset-right, 0px); }
+/* Captions toggle at the lower right (captionsToggle in SpeciesCaption); the caption band keeps
+   room beneath its text so the button never covers it. */
+.yarl__slide_description_container { --yarl__slide_captions_container_padding: 1.5rem max(clamp(1rem, 4vw, 3rem), env(safe-area-inset-right, 0px)) calc(4.25rem + env(safe-area-inset-bottom, 0px)) max(clamp(1rem, 4vw, 3rem), env(safe-area-inset-left, 0px)); }
+.wd-lb-toggle { position: fixed; right: max(clamp(1rem, 4vw, 3rem), env(safe-area-inset-right, 0px)); bottom: max(1rem, env(safe-area-inset-bottom, 0px)); z-index: 1; padding: 0.5rem 0.95rem; border: 1px solid rgba(255, 255, 255, 0.28); border-radius: 999px; background: rgba(10, 14, 10, 0.6); color: #fff; font-size: 0.8rem; font-weight: 600; line-height: 1.2; transition: background-color 200ms ease, transform 160ms var(--ease-out); }
+.wd-lb-toggle:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) { .wd-lb-toggle:hover { background: rgba(10, 14, 10, 0.85); } }
+.wd-lb { max-width: 64rem; }
+.wd-lb__latin { font: italic 400 1rem/1.3 var(--font-hanken), system-ui, -apple-system, 'Segoe UI', sans-serif; color: rgba(255, 255, 255, 0.78); }
+.wd-lb__about { margin-top: 0.45rem; max-width: 62ch; font-size: 1rem; line-height: 1.55; color: #fff; }
+.wd-lb__facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.75rem 1.75rem; margin-top: 1rem; padding-top: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.18); font-size: 0.875rem; line-height: 1.4; }
+.wd-lb__facts dt { font-size: 0.75rem; color: rgba(255, 255, 255, 0.62); margin-bottom: 0.15rem; }
+.wd-lb__facts dd { color: #fff; }
+@media (max-width: 639px) { .wd-lb__facts { grid-template-columns: 1fr 1fr; } .wd-lb__about { font-size: 0.92rem; } }
 
 /* ── Print: trip pages print as clean itineraries ──────────────────────────── */
 @media print {
-  .forest-stage, .wd-intro, .site-nav, .site-footer, .floating-cta, .no-print { display: none !important; }
+  .site-nav, .site-footer, .floating-cta, .no-print { display: none !important; }
   html, body { background: #fff !important; color: #111 !important; }
-  .glass, .glass-strong { background: #fff !important; border-color: #ccc !important; box-shadow: none !important; }
-  .reveal { opacity: 1 !important; scale: 1 !important; }
-  .float { translate: none !important; }
-  h1, h2, h3, .h-card, .h-section, .h-display { color: #111 !important; }
-  p, li, div, span { color: #222 !important; text-shadow: none !important; }
-  a { color: #111 !important; }
+  .glass, .glass-strong { background: #fff !important; border-color: #ccc !important; }
+  /* Collapsed sections ("You arrange", FAQ answers) print open. */
+  .wd-acc::details-content { content-visibility: visible; block-size: auto; }
+  .wd-acc > div { opacity: 1 !important; }
+  .wd-acc > summary::after { display: none; }
 }
 
-/* ── Reduced motion: everything holds still ────────────────────────────────── */
+/* ── Accessibility preferences ─────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .forest-float, .forest-camo, .forest-shafts, .forest-leaf, .firefly, .hero3d-orbit,
-  .marquee-track, .photo-marquee-track, .hero-slide--active { animation: none !important; }
-  .firefly { opacity: 0.5; }
-  .hero-slide { transition: none; }
-  .hero-slide--active { transform: scale(1); }
-  html.js .reveal { opacity: 1; scale: 1; transition: none; }
-  html.js .wd-intro { display: none; }
-  .card-3d, .hero3d-window { transform: none !important; }
+  .fade-up { animation-name: wd-fade; }
+  @starting-style { .wd-appear { transform: none; } }
+  .wd-acc::details-content { transition: none; }
+  .photo-tile img { transition: none; }
+  .photo-tile:hover img { transform: none; }
+  .float-gallery { height: auto; }
+  .float-gallery__track { animation: none; }
+  .float-gallery [data-dup] { display: none; }
+  .tab__bar[data-ready] { transition: none; }
+  .blur-carousel__frame { transform: none !important; }
+  .focus__detail, .focus__detail[data-active] { transform: none; }
+  .floating-cta { transform: none; }
+  .nav-drop, .nav-drop[data-open] { transform: translateX(-50%); }
+  .mobile-menu, .menu-icon > svg { transform: none !important; }
+  .focus__dot[aria-current]::after { animation: none; }
+  .focus__toggle { display: none; } /* no fill, so no autoplay to pause */
 }
+@media (prefers-reduced-transparency: reduce) {
+  .btn-glass { background: rgba(15, 20, 15, 0.85); backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
+@media (prefers-contrast: more) {
+  :root { --wd-line: rgba(27, 33, 27, 0.4); --wd-line-strong: rgba(27, 33, 27, 0.65); --wd-muted: #2f362e; --wd-faint: #3f473d; }
+}
+
+/* Placeholder for legal details the owners have not supplied yet. */
+.tbc { color: var(--wd-sun); border-bottom: 1px dashed currentColor; font-weight: 500; }

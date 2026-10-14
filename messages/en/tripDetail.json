@@ -1,0 +1,181 @@
+{
+  "meta": {
+    "notFoundTitle": "Trip not found"
+  },
+  "difficulty": {
+    "Easy": "Easy",
+    "Moderate": "Moderate",
+    "Challenging": "Challenging"
+  },
+  "breadcrumb": {
+    "label": "Breadcrumb",
+    "trips": "Trips"
+  },
+  "hero": {
+    "summaryLabel": "Trip summary",
+    "nextDeparture": "Next departure:",
+    "seeDates": "See dates & enquire",
+    "print": "Print / save itinerary"
+  },
+  "glance": {
+    "title": "At a glance",
+    "duration": "Duration",
+    "season": "Season",
+    "groupSize": "Group size",
+    "price": "Price",
+    "starts": "Starts",
+    "ends": "Ends",
+    "confirmedAtBooking": "Confirmed at booking"
+  },
+  "wildlife": {
+    "title": "What we look for",
+    "intro": "The habitats and species this route is planned around.",
+    "highlights": "Highlights",
+    "species": "Species we search for",
+    "takeHome": "What you take home",
+    "mightSee": "What you might see",
+    "stripLabel": "Wildlife on the {trip}"
+  },
+  "photoStrip": {
+    "previous": "Previous photos",
+    "next": "Next photos"
+  },
+  "scenery": {
+    "title": "Scenery along the way",
+    "intro": "Landscapes and places named in the itinerary.",
+    "photographedAt": "Photographed at {where}.",
+    "credit": "Photo: {credit}",
+    "where": {
+      "kettiValley": "the Ketti Valley, just outside Ooty",
+      "kanha": "Kanha Tiger Reserve, Madhya Pradesh",
+      "sondarLake": "Sondar Lake, Kanha Tiger Reserve",
+      "bandhavgarh": "Bandhavgarh Tiger Reserve, Madhya Pradesh",
+      "kanhaVillage": "a buffer-zone village at Kanha",
+      "jogFalls": "Jog Falls, Karnataka, in July",
+      "cardamomHills": "the Cardamom Hills, Kerala",
+      "wayanad": "Wayanad, Kerala",
+      "kausani": "Kausani, Uttarakhand",
+      "cranksRidge": "Crank’s Ridge, near Almora, Uttarakhand",
+      "sandakphu": "the Sandakphu trail, Darjeeling hills",
+      "binsar": "Binsar Wildlife Sanctuary, Uttarakhand",
+      "singalila": "Singalila National Park, Darjeeling hills"
+    }
+  },
+  "fit": {
+    "title": "Is this trip right for you?",
+    "pace": "Pace",
+    "terrain": "Terrain",
+    "rhythm": "Days & weather",
+    "loveIt": "Who will love it",
+    "mayNotSuit": "Who it may not suit",
+    "weighUp": "Worth weighing up before you book:",
+    "otherPace": "Looking for a different pace?",
+    "faqLink": "Age, fitness and access: FAQ",
+    "gradingLink": "How we grade difficulty"
+  },
+  "fitNotes": {
+    "grades": {
+      "Easy": "Mostly vehicle-based safaris, walks in lodge grounds and gentle trails. Suits most fitness levels, including families.",
+      "Moderate": "More walking on uneven forest trails, some climbs, early starts and more exposure to rain, heat or cold. Needs basic fitness and comfort outdoors.",
+      "Challenging": "Longer walks, higher altitude, steep trails, remote habitat or long field hours. Needs good fitness and stamina."
+    },
+    "westernGhatsEndemics": {
+      "pace": "Moderate, and on the move: {bases, plural, =3 {three bases} =4 {four bases} =5 {five bases} =6 {six bases} =7 {seven bases} =8 {eight bases} =9 {nine bases} =10 {ten bases} =11 {eleven bases} =12 {twelve bases} one {# base} other {# bases}} in {days, plural, =3 {three days} =4 {four days} =5 {five days} =6 {six days} =7 {seven days} =8 {eight days} =9 {nine days} =10 {ten days} =11 {eleven days} =12 {twelve days} one {# day} other {# days}} ({places}), so you pack up and move on {moves, plural, =2 {two times} =3 {three times} =4 {four times} =5 {five times} =6 {six times} =7 {seven times} =8 {eight times} =9 {nine times} =10 {ten times} =11 {eleven times} =12 {twelve times} one {# time} other {# times}}.",
+      "terrain": "Lowland forest at Thattekad, shola forest and grassland on the high ground at Pampadum Shola and Mukurthi, the Nilgiri tahr country of Eravikulam, and rain-shadow forest at Chinnar.",
+      "rhythm": "Cool to cold mornings on the high ground around Munnar and Ooty, and possible showers from the north-east monsoon between October and December.",
+      "mayNotSuit": {
+        "roads": "Time on the road: the route crosses Kerala, Tamil Nadu and Karnataka, with transfers between bases on hill roads. If you would rather unpack once, ask about a private trip with fewer bases.",
+        "footing": "Uneven ground on the high shola-grassland walks at Mukurthi, Avalanche and Emerald, which need steady footing and basic fitness."
+      }
+    },
+    "monsoonRainforestNights": {
+      "pace": "Moderate, with the main sessions after dark: guided night walks for frogs, geckos, snakes, owls and moths. Day {day} starts with a slower morning.",
+      "terrain": "Forest edges and stream banks in monsoon rain, often walked after dark by headlamp. Sturdy waterproof boots matter here.",
+      "rhythm": "Rain is part of the trip: the monsoon is when amphibians are most active. Bring reliable rain gear and a dry bag for electronics.",
+      "mayNotSuit": {
+        "leeches": "Leeches are common on wet forest paths in the monsoon. Long trousers and sturdy boots help.",
+        "snakes": "Snakes are among the animals we look for. We watch them only from a safe distance with a guide, but if snakes worry you, this trip may not be for you.",
+        "footing": "Late evenings on uneven, wet ground in the dark, which needs steady footing."
+      }
+    },
+    "centralIndiaBigCats": {
+      "pace": "Easy. Most wildlife watching is from a safari jeep, walks stay in lodge grounds and buffer forest, and there is downtime between drives. Day {day} is a lighter day.",
+      "terrain": "Dry forest, meadows, waterholes and rocky forest edges, seen mostly from the vehicle.",
+      "rhythm": "Safari days have a morning and an afternoon drive. Early-morning drives can be cool, so bring a light jacket.",
+      "mayNotSuit": {
+        "patience": "Big-cat watching takes patience: long, quiet spells in the jeep, with no promise that a tiger will appear.",
+        "heat": "Heat late in the season: daytime highs in central India can pass 40 °C by the end of May.",
+        "nightDrives": "No night drives: night tourism is not permitted inside tiger reserves, so after-dark birding is in lodge grounds outside the reserve."
+      }
+    },
+    "himalayaBirdsMountainWildlife": {
+      "pace": "Moderate, at a flexible walking pace with warm meals and rest breaks built in, and a slower afternoon on Day {day}.",
+      "terrain": "Forest trails through oak, pine and rhododendron, a ridge route with viewpoints, and village paths.",
+      "rhythm": "Dawn starts for birding, and cold mornings in the mountains: bring warm layers.",
+      "mayNotSuit": {
+        "altitude": "Higher ground: Day {day} visits a higher forest belt. If you have a heart or breathing condition, tell us before you book.",
+        "conditions": "A plan that bends to the mountains: the high forest day runs only if conditions allow."
+      }
+    }
+  },
+  "itinerary": {
+    "title": "The itinerary",
+    "intro": "Day 1 is the departure date.",
+    "dayTitle": "<sr>Day {day}: </sr>{title}"
+  },
+  "map": {
+    "route": "Follow the route",
+    "region": "The region"
+  },
+  "arrange": {
+    "title": "We arrange, you arrange",
+    "intro": "What is included between the start and end points, and what you arrange and bring yourself.",
+    "weArrange": "We arrange",
+    "youArrange": "You arrange",
+    "toBring": "What to bring",
+    "packingLink": "Full packing list"
+  },
+  "health": {
+    "title": "Health & insurance",
+    "detailsLink": "Full health & insurance details",
+    "required": "<strong>Required of every guest, at or before booking:</strong> travel medical insurance for the whole trip, details of any allergies, and any medical conditions.",
+    "ask": "Ask a health question",
+    "whatsappMessage": "Hello Wildora, I have a health question about the {trip}: "
+  },
+  "dates": {
+    "title": "Upcoming departures",
+    "intro": "{rule}. Dates are confirmed when you enquire, and private departures on dates of your choosing are available.",
+    "listLabel": "Upcoming departure dates",
+    "next": "Next departure",
+    "tellUs": "Tell us which date you have in mind, your group size and any dietary or medical needs.",
+    "enquire": "Enquire on WhatsApp",
+    "enquireMessage": "Hello Wildora, I'm interested in the {trip}. Could you tell me more?",
+    "privateDates": "Ask about private dates",
+    "privateMessage": "Hello Wildora, I'd like to ask about a private departure of the {trip} on our own dates.",
+    "form": "Send an enquiry form",
+    "whyMonths": "Why these months",
+    "askDate": "Ask about this date",
+    "askDateLabel": "Ask about the departure on {date}"
+  },
+  "seo": {
+    "western-ghats-endemics": {
+      "title": "Western Ghats Birding & Wildlife Tour: 10 Days",
+      "description": "Ten days through the UNESCO-listed Western Ghats with a naturalist: endemic birds, Nilgiri tahr, lion-tailed macaques and shola grasslands."
+    },
+    "monsoon-rainforest-nights": {
+      "title": "Monsoon Herping & Rainforest Night-Walk Tour: 5 Days",
+      "description": "Five monsoon days in India’s rainforests with a naturalist: frogs, geckos and pit vipers on guided night walks, plus hornbills and butterflies."
+    },
+    "central-india-big-cats": {
+      "title": "Central India Tiger Safari: 7-Day Big Cats Tour",
+      "description": "Seven days in central India’s tiger country with a naturalist: tigers, leopards and wild dogs, plus owls, raptors and dry-forest birds."
+    },
+    "himalaya-birds-mountain-wildlife": {
+      "title": "Himalayan Birding Tour: 6 Days of Birds & Wildlife",
+      "description": "Six days of Himalayan birding with a naturalist: pheasants, laughingthrushes and woodpeckers, forest mammals, mountain villages and views."
+    }
+  },
+  "print": {
+    "contact": "{siteName} · WhatsApp {whatsapp} · {url}"
+  }
+}

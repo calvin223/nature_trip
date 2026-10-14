@@ -1,0 +1,102 @@
+{
+  "journeyCta": "Follow the 10-day route",
+  "hero": {
+    "imageAlt": "A lion-tailed macaque looks straight at the camera from the rainforest",
+    "title": "Walk into a forest older than the Himalaya.",
+    "lede": "Small-group journeys through the rainforest, cloud grassland and tiger country of South India's Western Ghats, guided by the naturalists who study them.",
+    "tripsCta": "See trips & dates",
+    "captionName": "Lion-tailed macaque, <i>{latin}</i>",
+    "captionNote": "Found only in the Western Ghats"
+  },
+  "stats": {
+    "label": "Wildora in numbers",
+    "years": {
+      "label": "Years in the field",
+      "note": "Research on birds, butterflies, mammals and tropical forests, much of it in the Ghats."
+    },
+    "species": {
+      "label": "Species recorded",
+      "note": "Birds, butterflies, mammals, reptiles and frogs."
+    },
+    "groupSize": {
+      "label": "Max group size",
+      "note": "Everyone gets a turn at the telescope, and the pace suits the group."
+    }
+  },
+  "species": {
+    "title": "What lives in these hills",
+    "lede": "Much of the wildlife here exists nowhere else on Earth. Filter by group, and select a photograph to see it full size.",
+    "all": "All species and field photographs",
+    "items": {
+      "nilgiri-tahr": { "name": "Nilgiri tahr", "where": "Eravikulam, Endemics day 4" },
+      "malabar-trogon": { "name": "Malabar trogon", "where": "Thattekad, Endemics day 1" },
+      "malabar-pit-viper": { "name": "Malabar pit viper", "where": "Monsoon Rainforest Nights" },
+      "nilgiri-flycatcher": { "name": "Nilgiri flycatcher", "where": "Eravikulam and Ooty, Endemics days 4 and 8" },
+      "indian-giant-squirrel": { "name": "Malabar giant squirrel", "where": "Anamalai hills, Endemics day 6" },
+      "large-scaled-pit-viper": { "name": "Large-scaled pit viper", "where": "Monsoon Rainforest Nights" },
+      "malabar-parakeet": { "name": "Malabar parakeet", "where": "Endemics route" },
+      "golden-backed-frog": { "name": "Golden-backed frog", "where": "Monsoon Rainforest Nights" }
+    }
+  },
+  "speciesIndex": {
+    "filterLabel": "Filter species",
+    "endemic": "Endemic",
+    "groups": {
+      "all": "All",
+      "birds": "Birds",
+      "mammals": "Mammals",
+      "reptilesFrogs": "Reptiles & frogs"
+    }
+  },
+  "guides": {
+    "title": "Your guides",
+    "lede": "Decades of field research in the Western Ghats, shared on a forest trail at your pace.",
+    "cta": "Meet the naturalists"
+  },
+  "trips": {
+    "title": "Four trips, each in its season",
+    "lede": "Small groups on fixed dates, or the same routes privately on your own dates.",
+    "days": "{count, plural, one {# day} other {# days}}",
+    "nextDepartures": "Next departures",
+    "next": "Next",
+    "lines": {
+      "western-ghats-endemics": "Rainforest bird sanctuaries, cloud grassland and tiger country, from Kerala to Karnataka.",
+      "monsoon-rainforest-nights": "The forest at its greenest: frogs, reptiles and night walks, when the rains bring everything out."
+    },
+    "difficulty": {
+      "Easy": "Easy",
+      "Moderate": "Moderate",
+      "Challenging": "Challenging"
+    }
+  },
+  "seasons": {
+    "title": "When to go",
+    "lede": "Every trip follows its season. Park closures and the monsoon set the calendar, not us.",
+    "caption": "Months in which each trip runs",
+    "trip": "Trip",
+    "monthInitials": ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"],
+    "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    "runs": "{month}: runs",
+    "noDepartures": "{month}: no departures",
+    "cta": "Why these months",
+    "shortTitles": {
+      "western-ghats-endemics": "Western Ghats Endemics",
+      "monsoon-rainforest-nights": "Monsoon Rainforest Nights",
+      "central-india-big-cats": "Central India Big Cats",
+      "himalaya-birds-mountain-wildlife": "Himalaya Birds"
+    }
+  },
+  "contact": {
+    "title": "Tell us what you hope to see.",
+    "lede": "A naturalist replies personally with dates, a suggested route and an honest view of what you are likely to find.",
+    "plan": "Plan a journey",
+    "whatsappMessage": "Hello Wildora! We'd like help planning a nature trip.",
+    "whatsapp": "Message on WhatsApp"
+  },
+  "reviews": {
+    "title": "What our guests say",
+    "preview": "Development preview: these are layout samples, not real reviews. The live site hides this section until real guest reviews are added to lib/data.ts.",
+    "rated": "Rated {rating} out of 5",
+    "quote": "“{text}”"
+  }
+}

@@ -1,3 +1,6 @@
+import { useLocale, useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
+import { localize, overlayEntry } from '@/i18n/content';
 import centralIndiaGeo from '@/lib/geo/central-india-big-cats.json';
 import himalayaGeo from '@/lib/geo/himalaya-birds-mountain-wildlife.json';
 import monsoonGeo from '@/lib/geo/monsoon-rainforest-nights.json';
@@ -5,8 +8,6 @@ import endemicsGeo from '@/lib/geo/western-ghats-endemics.json';
 import {
   mapSignature,
   osmUrl,
-  stopDays,
-  stopDetail,
   tripMaps,
   type MapGateway,
   type MapStop,
@@ -38,7 +39,9 @@ import {
  * Copyright-clean: Natural Earth geometry (public domain), India point-of-view boundaries,
  * coordinates from Wikipedia/OSM facts. No tiles, no third-party requests.
  * Render it from a server component (e.g. the trip page) so the geometry stays out of the
- * client bundle; only the small MapEnhancer is shipped as JavaScript.
+ * client bundle; only the small MapEnhancer is shipped as JavaScript. Its text comes from the
+ * `maps` messages and, for place names, from the content overlay (see lib/mapData.ts); all of it
+ * is rendered on the server, so no ClientMessages wrapper is needed.
  */
 
 const GEO: Record<TripMapId, RouteGeo | RegionGeo> = {
@@ -91,10 +94,19 @@ function RouteMap({
   className?: string;
   showStopList: boolean;
 }) {
+  const t = useTranslations('maps');
+  const locale = useLocale();
   const uid = `wdm-${def.id}`;
-  const stopById = new Map(def.stops.map((s) => [s.id, s]));
-  const arrivals = def.gateways.filter((g) => g.role === 'arrival');
-  const departures = def.gateways.filter((g) => g.role === 'departure');
+  const stops = localize(locale, 'places', def.stops, (s) => s.id);
+  const gateways = localize(locale, 'places', def.gateways, (g) => g.id);
+  const stopById = new Map(stops.map((s) => [s.id, s]));
+  const arrivals = gateways.filter((g) => g.role === 'arrival');
+  const departures = gateways.filter((g) => g.role === 'departure');
+  /* 'Days 1–2' / 'Day 3', and the second tooltip line, e.g. 'Days 1–2 · Overnight Thattekad (2 nights)'. */
+  const dayLabel = (days: string) => t(/[–-]/.test(days) ? 'route.days' : 'route.day', { days });
+  const detail = (s: MapStop) => (s.days ? t('route.stopDetail', { days: dayLabel(s.days), stay: s.stay }) : s.stay);
+  const gatewayText = (g: MapGateway) =>
+    t(g.role === 'arrival' ? 'route.srArrival' : 'route.srDeparture', { name: g.name, stop: stopById.get(g.connectsTo)?.name ?? g.connectsTo });
   const pos = (id: string) => {
     const p = geo.stops[id];
     if (!p) throw staleError(def.id);
@@ -107,14 +119,14 @@ function RouteMap({
   };
 
   return (
-    <figure className={['m-0', className].filter(Boolean).join(' ')}>
+    <figure className={['m-0', className].filter(Boolean).join(' ')} style={cssVars({ '--wdm-ar': geo.width / geo.height })}>
       <MapStyles />
-      <MapEnhancer className="wdm">
+      <MapEnhancer className="wdm wdm-routemap">
         <svg
           className="wdm-svg"
           viewBox={`0 0 ${geo.width} ${geo.height}`}
           role="img"
-          aria-label={def.ariaLabel}
+          aria-label={t(`trips.${def.id}.ariaLabel`)}
           aria-describedby={`${uid}-stops`}
           style={cssVars({ '--wdm-dur': `${DRAW_SECONDS}s` })}
         >
@@ -127,7 +139,7 @@ function RouteMap({
           {/* Transfers to and from gateways, day-trip spurs, then the main route. */}
           <g aria-hidden="true">
             {geo.legs.map((leg) => {
-              const g = def.gateways.find((x) => x.id === leg.id);
+              const g = gateways.find((x) => x.id === leg.id);
               const delay = g?.role === 'arrival' ? 0 : 1;
               return <path key={leg.id} className="wdm-leg wdm-pop" d={leg.d} style={cssVars({ '--d': delay })} />;
             })}
@@ -150,7 +162,7 @@ function RouteMap({
           <Layouts geo={geo}>
             {(layout) => (
               <g aria-hidden="true">
-                {def.gateways.map((g) => {
+                {gateways.map((g) => {
                   const p = gwPos(g.id);
                   const k = layout === 'sm' ? 1.22 : 1;
                   return (
@@ -184,22 +196,22 @@ function RouteMap({
             {(layout) => (
               <>
                 <g>
-                  {def.stops.map((s) => (
+                  {stops.map((s) => (
                     <StopMarker key={s.id} stop={s} p={pos(s.id)} layout={layout} />
                   ))}
                 </g>
                 <ScaleBar scale={geo.scale} />
                 <g aria-hidden="true">
-                  {def.stops.map((s) => {
-                    const t = pos(s.id)[layout].tip;
+                  {stops.map((s) => {
+                    const tip = pos(s.id)[layout].tip;
                     return (
-                      <g key={s.id} className="wdm-tip" data-tip={s.id} transform={`translate(${t.x} ${t.y})`}>
-                        <rect className="wdm-tip-box" width={t.w} height={t.h} rx={9} />
-                        <text className="wdm-tip-t" x={t.pad} y={t.t1}>
+                      <g key={s.id} className="wdm-tip" data-tip={s.id} transform={`translate(${tip.x} ${tip.y})`}>
+                        <rect className="wdm-tip-box" width={tip.w} height={tip.h} rx={9} />
+                        <text className="wdm-tip-t" x={tip.pad} y={tip.t1}>
                           {s.name}
                         </text>
-                        <text className="wdm-tip-b" x={t.pad} y={t.t2}>
-                          {stopDetail(s)}
+                        <text className="wdm-tip-b" x={tip.pad} y={tip.t2}>
+                          {detail(s)}
                         </text>
                       </g>
                     );
@@ -213,37 +225,30 @@ function RouteMap({
         {/* Text alternative: the stops in itinerary order. */}
         <ol id={`${uid}-stops`} className="sr-only">
           {arrivals.map((g) => (
-            <li key={g.id}>{gatewayText(g, stopById)}</li>
+            <li key={g.id}>{gatewayText(g)}</li>
           ))}
-          {def.stops.map((s) => (
+          {stops.map((s) => (
             <li key={s.id}>
-              {s.days ? `${stopDays(s)}: ` : ''}
-              {s.name}. {s.stay}.
+              {s.days
+                ? t('route.srStop', { days: dayLabel(s.days), name: s.name, stay: s.stay })
+                : t('route.srBase', { name: s.name, stay: s.stay })}
             </li>
           ))}
           {departures.map((g) => (
-            <li key={g.id}>{gatewayText(g, stopById)}</li>
+            <li key={g.id}>{gatewayText(g)}</li>
           ))}
         </ol>
 
         {showStopList && (
-          <StopList def={def} />
+          <StopList stops={stops} gateways={gateways} detail={detail} />
         )}
+        <MapKey />
       </MapEnhancer>
       <figcaption>
-        <MapKey />
-        <Attribution>
-          {`Straight lines show the order of travel, not roads.${def.shadeWesternGhats ? ' Shaded band: the Western Ghats.' : ''}`}
-        </Attribution>
+        <Attribution>{t(`trips.${def.id}.note`)}</Attribution>
       </figcaption>
     </figure>
   );
-}
-
-function gatewayText(g: MapGateway, stops: Map<string, MapStop>) {
-  const stop = stops.get(g.connectsTo);
-  const role = g.role === 'arrival' ? 'Arrival' : 'Departure option';
-  return `${role}: ${g.name}, ${g.role === 'arrival' ? 'to' : 'from'} ${stop?.name ?? g.connectsTo}.`;
 }
 
 function StopMarker({ stop, p, layout }: { stop: MapStop; p: RouteGeo['stops'][string]; layout: LayoutName }) {
@@ -279,28 +284,29 @@ function StopMarker({ stop, p, layout }: { stop: MapStop; p: RouteGeo['stops'][s
   );
 }
 
-function StopList({ def }: { def: RouteMapDef }) {
-  const rows: { id: string; chip: string; name: string; detail: string; lat: number; lon: number; kind: 'stop' | 'base' | 'gateway' }[] = [
-    ...def.gateways
+function StopList({ stops, gateways, detail }: { stops: MapStop[]; gateways: MapGateway[]; detail: (s: MapStop) => string }) {
+  const t = useTranslations('maps');
+  const rows: { id: string; chip: ReactNode; name: string; detail: string; lat: number; lon: number; kind: 'stop' | 'base' | 'gateway' }[] = [
+    ...gateways
       .filter((g) => g.role === 'arrival')
-      .map((g) => ({ id: g.id, chip: '✈', name: g.name, detail: 'Arrival', lat: g.lat, lon: g.lon, kind: 'gateway' as const })),
-    ...def.stops.map((s) => ({
+      .map((g) => ({ id: g.id, chip: <PlaneIcon />, name: g.name, detail: t('route.arrival'), lat: g.lat, lon: g.lon, kind: 'gateway' as const })),
+    ...stops.map((s) => ({
       id: s.id,
-      chip: s.days || '☾',
+      chip: s.days || <MoonIcon />,
       name: s.name,
-      detail: s.days ? stopDetail(s) : s.stay,
+      detail: detail(s),
       lat: s.lat,
       lon: s.lon,
       kind: s.days ? ('stop' as const) : ('base' as const),
     })),
-    ...def.gateways
+    ...gateways
       .filter((g) => g.role === 'departure')
-      .map((g) => ({ id: g.id, chip: '✈', name: g.name, detail: 'Departure option', lat: g.lat, lon: g.lon, kind: 'gateway' as const })),
+      .map((g) => ({ id: g.id, chip: <PlaneIcon />, name: g.name, detail: t('route.departureOption'), lat: g.lat, lon: g.lon, kind: 'gateway' as const })),
   ];
   return (
     <ul
-      aria-label="Stops on OpenStreetMap"
-      className="mt-4 grid list-none gap-x-6 gap-y-2.5 p-0 text-sm sm:grid-cols-2"
+      aria-label={t('stopList.label')}
+      className="wdm-stops mt-4 grid list-none gap-x-6 gap-y-2.5 p-0 text-sm sm:grid-cols-2"
     >
       {rows.map((row) => (
         <li
@@ -332,10 +338,10 @@ function StopList({ def }: { def: RouteMapDef }) {
               href={osmUrl(row.lat, row.lon)}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Open ${row.name} in OpenStreetMap (opens in a new tab)`}
+              aria-label={t('stopList.openLabel', { name: row.name })}
               className="text-xs font-medium text-[color:var(--wd-lime,#9ad14b)] underline decoration-dotted underline-offset-2 hover:decoration-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--wd-lime,#9ad14b)]"
             >
-              Open in OpenStreetMap ↗
+              {t('stopList.open')}
             </a>
           </span>
         </li>
@@ -344,43 +350,61 @@ function StopList({ def }: { def: RouteMapDef }) {
   );
 }
 
+/* Drawn to match the map: a plane for airports, the map's crescent for an overnight base. */
+function PlaneIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" aria-hidden="true">
+      <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z" />
+    </svg>
+  );
+}
+
+function MoonIcon() {
+  return (
+    <svg viewBox="-6 -6 12 12" className="h-3 w-3" fill="currentColor" aria-hidden="true">
+      <path d="M1.6,-4.7 A5,5 0 1 0 1.6,4.7 A3.9,3.9 0 1 1 1.6,-4.7 Z" />
+    </svg>
+  );
+}
+
 function MapKey() {
+  const t = useTranslations('maps.key');
   const item = 'inline-flex items-center gap-1.5';
   return (
     <ul
-      aria-label="Map key"
-      className="mt-3 flex list-none flex-wrap gap-x-4 gap-y-1.5 p-0 text-xs text-[color:var(--wd-ink,#eaf3e3)]/80"
+      aria-label={t('label')}
+      className="wdm-key mt-3 flex list-none flex-wrap gap-x-4 gap-y-1.5 p-0 text-xs text-[color:var(--wd-ink,#eaf3e3)]/80"
     >
       <li className={item}>
         <svg aria-hidden="true" width="22" height="14" viewBox="0 0 22 14">
           <rect x="1" y="1" width="20" height="12" rx="6" fill="var(--wd-sun, #f2b134)" />
         </svg>
-        Day number
+        {t('dayNumber')}
       </li>
       <li className={item}>
         <svg aria-hidden="true" width="24" height="16" viewBox="0 0 24 16">
           <rect x="1.5" y="1.5" width="21" height="13" rx="6.5" fill="none" stroke="var(--wd-lime, #9ad14b)" strokeWidth="1.6" />
           <rect x="4" y="4" width="16" height="8" rx="4" fill="var(--wd-sun, #f2b134)" />
         </svg>
-        Overnight
+        {t('overnight')}
       </li>
       <li className={item}>
         <svg aria-hidden="true" width="28" height="10" viewBox="0 0 28 10">
           <line x1="2" y1="5" x2="26" y2="5" className="wdm-key-route" strokeWidth="3" strokeLinecap="round" />
         </svg>
-        Route
+        {t('route')}
       </li>
       <li className={item}>
         <svg aria-hidden="true" width="28" height="10" viewBox="0 0 28 10">
           <line x1="2" y1="5" x2="26" y2="5" className="wdm-key-route" strokeWidth="2.4" strokeDasharray=".5 5" strokeLinecap="round" />
         </svg>
-        Day trip
+        {t('dayTrip')}
       </li>
       <li className={item}>
         <svg aria-hidden="true" width="28" height="10" viewBox="0 0 28 10">
           <line x1="2" y1="5" x2="26" y2="5" className="wdm-key-leg" strokeWidth="1.8" strokeDasharray="5 4" />
         </svg>
-        Transfer
+        {t('transfer')}
       </li>
     </ul>
   );
@@ -389,15 +413,18 @@ function MapKey() {
 // ---------------------------------------------------------------------------------------------
 
 function RegionMap({ def, geo, className }: { def: RegionMapDef; geo: RegionGeo; className?: string }) {
+  const t = useTranslations('maps');
+  const locale = useLocale();
   const uid = `wdm-${def.id}`;
   const accent = REGION_ACCENT[def.id];
+  const regionLabel = overlayEntry<RegionMapDef>(locale, 'places', def.id)?.regionLabel ?? def.regionLabel;
   const { regionLabel: rl } = geo;
   const diffuse = def.region.kind === 'ellipse';
   return (
-    <figure className={['m-0', className].filter(Boolean).join(' ')}>
+    <figure className={['m-0', className].filter(Boolean).join(' ')} style={cssVars({ '--wdm-ar': geo.width / geo.height })}>
       <MapStyles />
       <div className="wdm">
-        <svg className="wdm-svg" viewBox={`0 0 ${geo.width} ${geo.height}`} role="img" aria-label={def.ariaLabel}>
+        <svg className="wdm-svg" viewBox={`0 0 ${geo.width} ${geo.height}`} role="img" aria-label={t(`trips.${def.id}.ariaLabel`)}>
           <defs>
             <SoftFilter id={`${uid}-soft`} blur={diffuse ? 22 : 9} width={geo.width} height={geo.height} />
           </defs>
@@ -411,7 +438,7 @@ function RegionMap({ def, geo, className }: { def: RegionMapDef; geo: RegionGeo;
                   <Cities geo={geo} layout={layout} />
                   <g aria-hidden="true" style={cssVars({ '--wdm-accent': accent })}>
                     <text className="wdm-rl1" x={rl.x} y={rl.y} dy="0.35em" textAnchor={rl.anchor}>
-                      {def.regionLabel[0]}
+                      {regionLabel[0]}
                     </text>
                     <text
                       className="wdm-rl2"
@@ -420,7 +447,7 @@ function RegionMap({ def, geo, className }: { def: RegionMapDef; geo: RegionGeo;
                       dy="0.35em"
                       textAnchor={rl.anchor}
                     >
-                      {def.regionLabel[1]}
+                      {regionLabel[1]}
                     </text>
                   </g>
                   <ScaleBar scale={geo.scale} />
@@ -431,7 +458,7 @@ function RegionMap({ def, geo, className }: { def: RegionMapDef; geo: RegionGeo;
         </svg>
       </div>
       <figcaption>
-        <Attribution>{def.regionNote}</Attribution>
+        <Attribution>{t(`trips.${def.id}.note`)}</Attribution>
       </figcaption>
     </figure>
   );

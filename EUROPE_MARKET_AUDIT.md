@@ -11,6 +11,17 @@ European wildlife-tour operators selling India, and where Wildora's edge lies.*
    prospective travellers. They discussed the site on a simulated forum, then each one was interviewed. See §3.
 3. **Competitor desk research.** I compared Wildora with European operators that sell India wildlife trips. See §4.
 
+> **Status, later on 2026-10-14 (after the redesign).** Findings in §2.2, by number:
+> - **Done:** 13 (one floating button now; nothing covers text on phones) and 14 (the opening animation is gone).
+> - **Drafted, waiting on the owners:** 2 (Company details, Booking terms and Privacy pages exist with
+>   "To be confirmed" placeholders), 3 (a web enquiry form exists; email and a form service are still needed)
+>   and 8 (booking mechanics are placeholders in the terms).
+> - **Partly done:** 5 (a reviews section is built but hidden until real reviews exist), 15 (responsive
+>   images and blur placeholders; the maps are still inline SVG) and 16 (the home page now leads with the
+>   two Western Ghats trips).
+> - **Open:** 1 (prices), 4 (domain), 6, 7, 10 and 17 (places, transfers, lodges, day 10), 9 (travel
+>   health), 11 (languages) and 12 (sustainability evidence). Questions for each are in `CLIENT_QUESTIONS.md`.
+
 ---
 
 ## 1. Verdict in one paragraph

@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "title": "Practical Info",
+    "description": "What you arrange and bring, travel insurance, the medical and allergy details we need, difficulty grades, packing lists and what each trip includes."
+  },
+  "head": {
+    "title": "Before you travel",
+    "lede": "What each trip includes, what you arrange and bring yourself, and the health and insurance details we need from every guest before booking."
+  },
+  "essentials": {
+    "title": "Three things we need from every guest",
+    "link": "Read the details"
+  },
+  "nav": {
+    "title": "Practical info",
+    "responsibilities": "Your responsibilities",
+    "health": "Health & insurance",
+    "difficulty": "Difficulty grades",
+    "packing": "Packing",
+    "included": "What is included",
+    "faq": "More questions"
+  },
+  "responsibilities": {
+    "title": "What you are responsible for",
+    "intro": "Each trip page lists what is included between its start and end points. These you arrange and bring yourself."
+  },
+  "health": {
+    "title": "Health, insurance & medical information",
+    "intro": "Many of our routes are remote, and the nearest hospital can be hours away, so we plan the pace and our emergency response around what you tell us.",
+    "required": "Required at booking",
+    "notSure": "Not sure whether a trip suits a health condition, an allergy or your mobility? Ask us before you book.",
+    "ask": "Ask a health question",
+    "whatsappMessage": "Hello Wildora, I have a health question before booking: "
+  },
+  "difficulty": {
+    "title": "Difficulty grades",
+    "intro": "Every trip page shows its grade. On a private departure we can set the pace around your group.",
+    "none": "No current fixed departure is graded {grade}. A private route can be, on request."
+  },
+  "packing": {
+    "title": "What to pack",
+    "intro": "A general list for all our routes. Each <link>trip page</link> adds its own “What to bring” list for its season and terrain.",
+    "essential": {
+      "title": "Essential gear",
+      "items": [
+        "Sturdy, broken-in walking shoes or boots with good grip",
+        "A rain jacket that is waterproof, not just water-resistant",
+        "Long trousers and full-sleeve shirts in neutral colours",
+        "A warm layer for early mornings and high ground",
+        "Hat, sunglasses and sunscreen",
+        "Insect repellent",
+        "A reusable water bottle",
+        "Headlamp or torch, with spare batteries"
+      ]
+    },
+    "extras": {
+      "title": "Useful extras",
+      "items": [
+        "Binoculars (8× or 10×)",
+        "Camera with a telephoto or macro lens, spare batteries and memory cards",
+        "A field notebook and pen",
+        "Your own field guide (we carry shared references)",
+        "Dry bags for electronics",
+        "A small day pack",
+        "Power bank, and a plug adapter for Indian sockets (Types C, D and M; 230 V): power can be intermittent at remote lodges",
+        "Bags for wet clothes",
+        "Tissues, hand sanitiser and wet wipes for the road"
+      ]
+    }
+  },
+  "included": {
+    "title": "What each trip includes",
+    "intro": "We use wildlife lodges, guesthouses and nature stays chosen for comfort and for being close to the field. Meals are included on every trip; tell us about any allergy or dietary need when you book.",
+    "notIncluded": "Not included on any trip",
+    "notIncludedBody": "Travel medical insurance, and everything under <link>What you are responsible for</link>."
+  },
+  "faq": {
+    "title": "More questions",
+    "intro": "{answers, plural, one {# answer} other {# answers}} in {topics, plural, one {# topic} other {# topics}} are on the <link>FAQ page</link>."
+  }
+}

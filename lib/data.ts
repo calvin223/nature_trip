@@ -28,7 +28,6 @@ export interface Trip {
   /** Number of calendar days, day 1 = departure date. Must match `duration`. */
   durationDays: number;
   difficulty: 'Easy' | 'Moderate' | 'Challenging';
-  focus: string[];
   /** Human-readable season, shown on cards. */
   season: string;
   /** Months (1-12) in which the whole trip may run; drives the schedule. */
@@ -60,7 +59,6 @@ export interface Service {
   tagline: string;
   description: string;
   forWho: string;
-  icon: 'guide' | 'camera' | 'moon' | 'map' | 'family' | 'leaf' | 'groups' | 'school';
 }
 
 export interface Expert {
@@ -100,7 +98,6 @@ export const trips: Trip[] = [
     duration: '7 days / 6 nights',
     durationDays: 7,
     difficulty: 'Easy',
-    focus: ['Tigers', 'Leopards', 'Forest birds'],
     season: 'October to May',
     // Tiger-reserve core zones close for the monsoon from 1 July to 30 September
     // and reopen on 1 October. Pench (MP) is open only from 1 October to
@@ -217,7 +214,6 @@ export const trips: Trip[] = [
     duration: '5 days / 4 nights',
     durationDays: 5,
     difficulty: 'Moderate',
-    focus: ['Frogs', 'Reptiles', 'Rainforest birds'],
     season: 'June to September (monsoon)',
     // South-west monsoon season. Normal onset over Kerala is 1 June, standard
     // deviation about 7 days. Source: IMD press release, 15 May 2020,
@@ -226,6 +222,7 @@ export const trips: Trip[] = [
     // revised normals. Secondary source (press report, not IMD itself):
     //   https://www.thenewsminute.com/news/imd-change-reference-dates-onset-withdrawal-southwest-monsoon-year-116189
     seasonMonths: [6, 7, 8, 9],
+    seasonNote: 'It runs in the south-west monsoon, when frogs and reptiles are most active and the forest is at its greenest.',
     // Second Saturday of June to September. The earliest possible start
     // (8 June) is one standard deviation after the normal 1 June onset, so in
     // most years the monsoon has arrived; a 5-day trip always finishes by the 18th.
@@ -314,7 +311,6 @@ export const trips: Trip[] = [
     duration: '6 days / 5 nights',
     durationDays: 6,
     difficulty: 'Moderate',
-    focus: ['Himalayan birds', 'Mountain mammals', 'Forest walks'],
     season: 'March to May and October to November',
     // Owner-stated season (ASSUMED, not independently sourced: the itinerary
     // names no location). It skips the south-west monsoon (June to September,
@@ -417,7 +413,6 @@ export const trips: Trip[] = [
     duration: '10 days / 9 nights',
     durationDays: 10,
     difficulty: 'Moderate',
-    focus: ['Endemic birds', 'Endemic mammals', 'Shola & rainforest habitats'],
     season: 'October to January (post-monsoon)',
     // Post-monsoon window, cut short to avoid the Eravikulam closure (Day 4).
     // Eravikulam National Park closes every year for the Nilgiri tahr calving
@@ -606,16 +601,6 @@ export const species: Species[] = [
     fieldNote: 'Best observed through patient safari drives, track reading, and listening for alarm calls.'
   },
   {
-    id: 'asiatic-lion',
-    commonName: 'Asiatic Lion',
-    scientificName: 'Panthera leo persica',
-    category: 'Mammals',
-    endemic: true,
-    threatened: true,
-    habitat: 'Dry deciduous forest and scrubland',
-    fieldNote: 'A rare Indian big cat best seen with regulated local guiding in its native landscape.'
-  },
-  {
     id: 'great-hornbill',
     commonName: 'Great Hornbill',
     scientificName: 'Buceros bicornis',
@@ -633,7 +618,7 @@ export const species: Species[] = [
     endemic: true,
     threatened: false,
     habitat: 'Forest edges and clearings',
-    fieldNote: "India's largest butterfly, often seen flying high along forest edges."
+    fieldNote: "One of India's two largest butterflies, often seen flying high along forest edges."
   },
   {
     id: 'rhododendron',
@@ -662,7 +647,7 @@ export const guestResponsibilities: InfoItem[] = [
     title: 'Getting to the start and home again',
     detail:
       'You arrange and pay for your own travel to the trip\'s start point and home from its end point, including international and domestic flights, trains and any hotel nights before or after the trip. ' +
-      'Each trip page shows its start and end point; where it says "Confirmed at booking", we give you the details when you book.'
+      'The start and end points are under "At a glance" on each trip page; where they say "Confirmed at booking", we give you the details when you book.'
   },
   {
     // Official portal: https://indianvisaonline.gov.in ; Indian missions warn of
@@ -674,24 +659,16 @@ export const guestResponsibilities: InfoItem[] = [
       'Apply only through the Government of India\'s official site, indianvisaonline.gov.in: look-alike sites charge several times the real fee.'
   },
   {
-    title: 'Cameras, binoculars and optics',
+    title: 'Your own kit',
     detail:
-      'Bring your own camera, lenses, memory cards and binoculars. We carry shared field guides and references, but we do not supply personal cameras or binoculars.'
-  },
-  {
-    title: 'Walking and trekking gear',
-    detail:
-      'Comfortable, broken-in walking or trekking shoes with good grip, rain gear, a small day pack and clothing for the conditions. Each trip page has a "What to bring" list.'
-  },
-  {
-    title: 'Chargers, power banks and adapters',
-    detail:
-      'Bring a charger for every device, spare camera batteries, a power bank and a plug adapter for Indian sockets (Types C, D and M; 230 V). Power can be intermittent at remote lodges.'
+      'Cameras, binoculars, walking shoes, rain gear, chargers and a plug adapter are yours to bring; we carry shared field guides and references. ' +
+      'The packing list on Practical Info covers the rest.'
   },
   {
     title: 'Personal medication',
     detail:
-      'Bring enough of any medication you take for the whole trip plus a few days\' spare, in its original packaging with a copy of the prescription, and keep it in your hand luggage.'
+      'Bring enough of any medication you take for the whole trip plus a few days\' spare, in its original packaging with a copy of the prescription, and keep it in your hand luggage. ' +
+      'Our guides carry a basic first-aid kit but cannot supply prescription medicines.'
   }
 ];
 
@@ -714,11 +691,6 @@ export const healthAndSafety: InfoItem[] = [
     detail:
       'Tell us before you book about any medical condition, disability, pregnancy or mobility limitation, and any medicines you take regularly. ' +
       'We will ask you to fill in a short health form so we can judge whether a trip suits you, plan the pace and respond properly in an emergency.'
-  },
-  {
-    title: 'Carry your own medication',
-    detail:
-      'Our guides carry a basic first-aid kit, but we cannot supply prescription medicines. Bring your own, with copies of your prescriptions.'
   },
   {
     title: 'Remote places, distant hospitals',
@@ -984,8 +956,7 @@ export const faqs: Faq[] = [
     policy: true,
     answer:
       'The lodges and hotels we use normally supply soap and toilet paper in rooms. Please bring your own toothbrush, toothpaste and other toiletries. ' +
-      'On the road and in forest areas, public toilets often have neither toilet paper nor soap, and many Indian toilets have a hand-held water spray instead of paper, so carry a small kit: tissues or a travel roll, hand sanitiser and wet wipes. ' +
-      'Our guides carry a basic first-aid kit, but bring your own medication.'
+      'On the road and in forest areas, public toilets often have neither toilet paper nor soap, and many Indian toilets have a hand-held water spray instead of paper, so carry a small kit: tissues or a travel roll, hand sanitiser and wet wipes.'
   },
   {
     category: 'Practicalities',
@@ -1019,16 +990,14 @@ export const services: Service[] = [
     title: 'Guided Day Tours',
     tagline: 'Birding, safaris, trails, and wetlands',
     description: 'Half-day and full-day guiding for guests already in a region, with routes matched to the season, local wildlife, and your pace.',
-    forWho: 'Travellers, resort guests, families',
-    icon: 'guide'
+    forWho: 'Travellers, resort guests, families'
   },
   {
     id: 'private-custom',
     title: 'Private & Tailor-Made Tours',
     tagline: 'Your dates, your pace, your comfort level',
     description: 'A private itinerary built around your interests, fitness, wish-list species, preferred accommodation, and available travel window.',
-    forWho: 'Couples, friends, solo travellers',
-    icon: 'map'
+    forWho: 'Couples, friends, solo travellers'
   },
   {
     id: 'target-species',
@@ -1036,63 +1005,33 @@ export const services: Service[] = [
     tagline: 'Wildlife with a clear purpose',
     // Was: "...pheasants, red pandas, snow leopards..." - no route for those exists or has been confirmed.
     description: 'Routes planned around the species you most want to look for: Western Ghats endemics, hornbills, tigers, leopards, elephants, frogs, butterflies, and more. We plan for the best chance, never a guarantee.',
-    forWho: 'Birders, naturalists, photographers',
-    icon: 'leaf'
-  },
-  {
-    id: 'photography',
-    title: 'Wildlife Photography Walks',
-    tagline: 'Big cats, birds, macro, and fieldcraft',
-    description: 'Patient field support for ethical photography of mammals, birds, frogs, butterflies, forest details, landscapes, and safari subjects.',
-    forWho: 'Photographers of all levels',
-    icon: 'camera'
-  },
-  {
-    id: 'night-safari',
-    title: 'Night Walks & Spotlighting',
-    tagline: 'The wild after dark',
-    description: 'Guided night sessions for frogs, geckos, owls, moths, civets, insects, and forest soundscapes, run only on private land outside protected areas and where local rules allow.',
-    forWho: 'Add-on for suitable routes',
-    icon: 'moon'
-  },
-  {
-    id: 'culture-landscape',
-    title: 'Culture & Landscape Trails',
-    tagline: 'People, places, and wild country',
-    // Was: "...desert, river, craft, coastal, or mountain..." - no desert or coastal trips exist.
-    description: 'Add villages, tea estates, spice country, rivers, viewpoints, or mountain walks between wildlife sessions.',
-    forWho: 'Families and slow travellers',
-    icon: 'family'
+    forWho: 'Birders, naturalists, photographers'
   },
   {
     id: 'custom-groups',
     title: 'Custom Group Programmes',
     tagline: 'Made for your group',
     description: 'Flexible programmes for private groups, clubs, companies, families, schools, universities, and international travel groups.',
-    forWho: 'Groups of 6 or more',
-    icon: 'groups'
+    forWho: 'Groups of 6 or more'
   },
-  {
-    id: 'school-camps',
-    title: 'School & University Options',
-    tagline: 'Academic when you need it',
-    description: 'Field courses, student camps, and curriculum-linked modules remain available on request, but they are built as custom programmes.',
-    forWho: 'Schools and universities',
-    icon: 'school'
-  }
 ];
 
-// The former `reviews` array was removed on 2026-10-03: no trip has yet run
-// under this brand, so every review in it was invented. Add reviews back only
-// from real guests, with their permission.
+// Guest reviews for the home page. The former array was removed on 2026-10-03: no trip had
+// yet run under this brand, so every review in it was invented. Add reviews only from real
+// guests, with their written permission, and keep the wording exactly as they gave it
+// (EU and UK law ban fake or edited consumer reviews). While this list is empty the
+// "What our guests say" section shows marked samples in development and nothing on the
+// live site.
+export interface Review {
+  name: string;
+  country: string;
+  trip: string;
+  text: string;
+  /** Out of 5, as the guest gave it. */
+  rating: number;
+  /** Month of travel, e.g. "November 2026". */
+  travelled?: string;
+}
 
-export const trustSignals: string[] = [
-  'Led by PhD-level naturalists',
-  'Western Ghats specialists',
-  'Rainforest, shola grassland, tiger country, Himalaya',
-  'Small groups of 10–12 at most',
-  'Leisure-first nature holidays',
-  'Private and custom programmes on request',
-  'Honest expectations: no guaranteed sightings',
-  'Ethical, low-impact wildlife watching'
-];
+export const reviews: Review[] = [];
+

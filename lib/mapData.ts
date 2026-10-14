@@ -20,6 +20,10 @@
  *                   the coordinate, not map tiles or geometry).
  *  - Trips whose itineraries do not name places get an approximate REGION, never invented
  *    parks or towns.
+ *  - Text here is English and is what the build script measures for the label layout. The map
+ *    components show it through the content overlay content/<locale>/places.json (stop and
+ *    gateway `name`/`label`/`stay` by their id; `regionLabel` and overview `label` by trip id).
+ *    Aria labels and captions are in messages/en/maps.json.
  */
 
 export type TripMapId =
@@ -87,8 +91,6 @@ export type MapRegion =
 export interface RouteMapDef {
   kind: 'route';
   id: TripMapId;
-  title: string;
-  ariaLabel: string;
   /** Visiting order of the main route line (stop ids). Spur stops are not listed here. */
   route: string[];
   stops: MapStop[];
@@ -104,13 +106,9 @@ export interface RouteMapDef {
 export interface RegionMapDef {
   kind: 'region';
   id: TripMapId;
-  title: string;
-  ariaLabel: string;
   region: MapRegion;
   /** On-map label, two short lines. Must say the region is approximate. */
   regionLabel: [string, string];
-  /** Longer sentence for the caption and screen readers. */
-  regionNote: string;
   /** Where the region label sits (lon/lat) and which side of that point the text runs. */
   labelAt: { lat: number; lon: number; anchor: 'start' | 'middle' | 'end' };
   shadeWesternGhats: boolean;
@@ -127,9 +125,6 @@ export const tripMaps: Record<TripMapId, TripMapDef> = {
   'western-ghats-endemics': {
     kind: 'route',
     id: 'western-ghats-endemics',
-    title: 'Western Ghats Endemics Expedition: route map',
-    ariaLabel:
-      'Map of southern India showing the 10-day Western Ghats Endemics route: Thattekad, Munnar with day visits to Pampadum Shola and Eravikulam, Chinnar, Top Slip, Valparai, Ooty with a day visit to Mukurthi, and Bandipur. Arrival via Kochi airport; departure via Mysuru or Bengaluru airport.',
     route: ['thattekad', 'munnar', 'chinnar', 'topslip', 'valparai', 'ooty', 'bandipur'],
     stops: [
       {
@@ -291,13 +286,8 @@ export const tripMaps: Record<TripMapId, TripMapDef> = {
   'monsoon-rainforest-nights': {
     kind: 'region',
     id: 'monsoon-rainforest-nights',
-    title: 'Monsoon Rainforest Nights: region map',
-    ariaLabel:
-      'Map of western peninsular India with the Western Ghats rainforest belt shaded. The exact rainforest base is set at booking.',
     region: { kind: 'naturalEarth', features: WESTERN_GHATS_FEATURES },
     regionLabel: ['Western Ghats rainforests', 'exact base set at booking'],
-    regionNote:
-      'Approximate region: the Western Ghats rainforest belt. The exact base and night-walk sites are set at booking.',
     labelAt: { lat: 13.9, lon: 70.4, anchor: 'start' },
     shadeWesternGhats: false,
     referenceCities: ['Mumbai', 'Pune', 'Mangaluru', 'Bengaluru', 'Kochi'],
@@ -309,13 +299,8 @@ export const tripMaps: Record<TripMapId, TripMapDef> = {
   'central-india-big-cats': {
     kind: 'region',
     id: 'central-india-big-cats',
-    title: 'Central India Big Cats: region map',
-    ariaLabel:
-      'Map of central India with an approximate shaded area for the central Indian tiger reserves. The exact parks are set at booking.',
     region: { kind: 'ellipse', centre: { lat: 22.4, lon: 79.8 }, radiusLon: 2.5, radiusLat: 2.4 },
     regionLabel: ['Central Indian tiger reserves', 'exact parks set at booking'],
-    regionNote:
-      'Approximate region: the central Indian tiger reserves. The exact parks and safari zones are set at booking.',
     labelAt: { lat: 25.35, lon: 79.8, anchor: 'middle' },
     shadeWesternGhats: false,
     referenceCities: ['Nagpur', 'Bhopal', 'Jabalpur', 'Raipur'],
@@ -325,13 +310,8 @@ export const tripMaps: Record<TripMapId, TripMapDef> = {
   'himalaya-birds-mountain-wildlife': {
     kind: 'region',
     id: 'himalaya-birds-mountain-wildlife',
-    title: 'Himalaya Birds & Mountain Wildlife: region map',
-    ariaLabel:
-      'Map of northern India with the Indian Himalaya shaded. The exact route and base are set at booking.',
     region: { kind: 'naturalEarth', features: HIMALAYA_FEATURES },
     regionLabel: ['Indian Himalaya', 'route and base set at booking'],
-    regionNote:
-      'Approximate region: the Indian Himalaya. The exact route, base and altitude are set at booking.',
     labelAt: { lat: 25.9, lon: 84.2, anchor: 'middle' },
     shadeWesternGhats: false,
     referenceCities: ['New Delhi'],
@@ -344,8 +324,6 @@ export interface OverviewRegion {
   tripId: TripMapId;
   /** Map label, two short lines. */
   label: [string, string];
-  /** Full trip name for the link list. */
-  linkText: string;
   /** CSS colour token used for this trip's halo and key. */
   colour: string;
   labelAt: { lat: number; lon: number; anchor: 'start' | 'middle' | 'end' };
@@ -354,36 +332,29 @@ export interface OverviewRegion {
 }
 
 export const overviewMap = {
-  title: 'Wildora trip regions across India',
-  ariaLabel:
-    'Map of India marking four trip regions: the Western Ghats Endemics route in the far south-west, the Monsoon Rainforest belt along the Western Ghats, the central Indian tiger reserves, and the Indian Himalaya.',
   referenceCities: ['New Delhi', 'Mumbai', 'Kolkata', 'Chennai', 'Bengaluru'],
   regions: [
     {
       tripId: 'himalaya-birds-mountain-wildlife',
       label: ['Himalaya', 'Birds'],
-      linkText: 'Himalaya Birds & Mountain Wildlife',
       colour: 'var(--wd-sand, #efe6c8)',
       labelAt: { lat: 35.0, lon: 77.8, anchor: 'middle' },
     },
     {
       tripId: 'central-india-big-cats',
       label: ['Central India', 'Big Cats'],
-      linkText: 'Central India Big Cats & Forest Safari',
       colour: 'var(--wd-sun, #f2b134)',
       labelAt: { lat: 22.6, lon: 76.6, anchor: 'end' },
     },
     {
       tripId: 'monsoon-rainforest-nights',
       label: ['Monsoon', 'Rainforest'],
-      linkText: 'Monsoon Rainforest Nights & Endemics',
       colour: 'var(--wd-fern, #3fa34d)',
       labelAt: { lat: 15.8, lon: 67.9, anchor: 'start' },
     },
     {
       tripId: 'western-ghats-endemics',
       label: ['Western Ghats', 'Endemics'],
-      linkText: 'Western Ghats Endemics Expedition',
       colour: 'var(--wd-lime, #9ad14b)',
       labelAt: { lat: 11.6, lon: 80.9, anchor: 'start' },
       leaderTo: { lat: 10.9, lon: 77.0 },
@@ -395,7 +366,8 @@ export function isTripMapId(id: string): id is TripMapId {
   return (TRIP_MAP_IDS as readonly string[]).includes(id);
 }
 
-/** 'Days 1–2' / 'Day 3' / 'Base', used by the tooltip, the stop list and the label layout. */
+/** 'Days 1–2' / 'Day 3' / 'Base', in English for the build script's tooltip sizing (the components
+    render the translated wording from messages/<locale>/maps.json). */
 export function stopDays(stop: MapStop): string {
   if (!stop.days) return 'Base';
   return /[–-]/.test(stop.days) ? `Days ${stop.days}` : `Day ${stop.days}`;
@@ -414,7 +386,7 @@ export function osmUrl(lat: number, lon: number, zoom = 12): string {
 }
 
 /** Keys that never change the generated geometry or label layout. */
-const UNSIGNED_KEYS = ['title', 'ariaLabel', 'regionNote', 'source', 'linkText'];
+const UNSIGNED_KEYS = ['source'];
 
 /**
  * Signature (FNV-1a, hex) of everything that changes the generated geometry or label layout.

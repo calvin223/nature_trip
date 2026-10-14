@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "title": "FAQ",
+    "description": "Answers about Wildora’s guided nature trips: where and when they run, who can join, food, accessibility, health, insurance and booking."
+  },
+  "categories": {
+    "about-the-trips": "About the trips",
+    "who-can-join": "Who can join",
+    "food-diet": "Food & diet",
+    "accessibility": "Accessibility",
+    "health-safety": "Health & safety",
+    "practicalities": "Practicalities",
+    "booking": "Booking"
+  },
+  "hero": {
+    "title": "Frequently asked <accent>questions</accent>",
+    "lede": "Plain answers about where our trips go, who they suit, food, health, insurance and booking: {total} {total, plural, one {question} other {questions}} in {topics} {topics, plural, one {topic} other {topics}}. If yours is not here, ask us on WhatsApp."
+  },
+  "browser": {
+    "asideLabel": "FAQ topics and search",
+    "searchLabel": "Search the questions",
+    "searchPlaceholder": "e.g. vegan, insurance, plugs",
+    "matches": "{shown} of {total} {total, plural, one {question} other {questions}} match",
+    "summary": "{total} {total, plural, one {question} other {questions}} in {topics} {topics, plural, one {topic} other {topics}}",
+    "topicsLabel": "FAQ topics",
+    "topics": "Topics",
+    "noMatch": "No questions match “{query}”.",
+    "tryAgain": "Try a different word, or <link>ask us on WhatsApp</link>",
+    "whatsappMessage": "Hello Wildora, I have a question that is not in your FAQ: {query}"
+  }
+}

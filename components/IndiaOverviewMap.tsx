@@ -1,6 +1,9 @@
-import Link from 'next/link';
+import { useLocale, useTranslations } from 'next-intl';
+import { overlayEntry } from '@/i18n/content';
+import { Link } from '@/i18n/navigation';
+import { getContent } from '@/lib/content';
 import overviewGeo from '@/lib/geo/india-overview.json';
-import { mapSignature, overviewMap, tripMaps, type TripMapId } from '@/lib/mapData';
+import { mapSignature, overviewMap, tripMaps, type OverviewRegion, type TripMapId } from '@/lib/mapData';
 import {
   Attribution,
   BaseLayers,
@@ -22,6 +25,9 @@ import {
  * Accessibility: the SVG is one image (role="img"); its region links are a pointer
  * convenience hidden from assistive technology. The visible list under the map carries the
  * real, focusable links.
+ *
+ * Text: `maps` messages; each region's link text is its trip's title (lib/content), and its
+ * on-map label can be translated in content/<locale>/places.json by trip id (`label`).
  */
 
 const geo = overviewGeo as OverviewGeo;
@@ -39,16 +45,25 @@ export interface IndiaOverviewMapProps {
 const href = (id: TripMapId) => `/trips/${id}/`;
 
 export default function IndiaOverviewMap({ className, highlight, showLegend = true }: IndiaOverviewMapProps) {
+  const t = useTranslations('maps.overview');
+  const locale = useLocale();
   if (geo.version !== GEO_VERSION || geo.signature !== mapSignature(overviewMap)) throw staleError('india-overview');
   for (const r of overviewMap.regions) {
     if (!geo.regions[r.tripId] || !tripMaps[r.tripId]) throw staleError('india-overview');
   }
+  const { trips } = getContent(locale);
+  const label = (r: OverviewRegion) => overlayEntry<OverviewRegion>(locale, 'places', r.tripId)?.label ?? r.label;
+  const tripTitle = (id: TripMapId) => {
+    const trip = trips.find((x) => x.id === id);
+    if (!trip) throw new Error(`IndiaOverviewMap: no trip "${id}" in lib/data.ts`);
+    return trip.title;
+  };
 
   return (
-    <figure className={['m-0', className].filter(Boolean).join(' ')}>
+    <figure className={['m-0', className].filter(Boolean).join(' ')} style={cssVars({ '--wdm-ar': geo.width / geo.height })}>
       <MapStyles />
       <div className="wdm">
-        <svg className="wdm-svg" viewBox={`0 0 ${geo.width} ${geo.height}`} role="img" aria-label={overviewMap.ariaLabel}>
+        <svg className="wdm-svg" viewBox={`0 0 ${geo.width} ${geo.height}`} role="img" aria-label={t('ariaLabel')}>
           <defs>
             <SoftFilter id={`${UID}-soft`} blur={5} width={geo.width} height={geo.height} />
             <SoftFilter id={`${UID}-diffuse`} blur={11} width={geo.width} height={geo.height} />
@@ -90,10 +105,10 @@ export default function IndiaOverviewMap({ className, highlight, showLegend = tr
                       <>
                         {leader && <line className="wdm-ov-leader" x1={leader[0]} y1={leader[1]} x2={leader[2]} y2={leader[3]} />}
                         <text className="wdm-ov-lbl" x={g.label.x} y={g.label.y} dy="0.35em" textAnchor={g.label.anchor}>
-                          {r.label[0]}
+                          {label(r)[0]}
                         </text>
                         <text className="wdm-ov-lbl" x={g.label.x} y={g.label.y + lineGap} dy="0.35em" textAnchor={g.label.anchor}>
-                          {r.label[1]}
+                          {label(r)[1]}
                         </text>
                       </>
                     );
@@ -107,7 +122,7 @@ export default function IndiaOverviewMap({ className, highlight, showLegend = tr
       </div>
       <figcaption>
         {showLegend && (
-          <ul aria-label="Trip regions" className="mt-4 grid list-none gap-2 p-0 text-sm sm:grid-cols-2">
+          <ul aria-label={t('legendLabel')} className="mt-4 grid list-none gap-2 p-0 text-sm sm:grid-cols-2">
             {overviewMap.regions.map((r) => (
               <li key={r.tripId}>
                 <Link
@@ -118,16 +133,15 @@ export default function IndiaOverviewMap({ className, highlight, showLegend = tr
                   <span
                     aria-hidden="true"
                     className="inline-block h-3 w-3 shrink-0 rounded-full"
-                    style={{ background: r.colour, boxShadow: `0 0 0 3px color-mix(in srgb, ${r.colour} 30%, transparent)` }}
+                    style={{ background: r.colour, outline: "1px solid rgba(27, 33, 27, 0.25)" }}
                   />
-                  <span className="font-medium underline-offset-4 group-hover:underline">{r.linkText}</span>
-                  <span aria-hidden="true">→</span>
+                  <span className="font-medium underline-offset-4 group-hover:underline">{tripTitle(r.tripId)}</span>
                 </Link>
               </li>
             ))}
           </ul>
         )}
-        <Attribution>Shaded areas are approximate; exact parks and bases are set at booking.</Attribution>
+        <Attribution>{t('note')}</Attribution>
       </figcaption>
     </figure>
   );

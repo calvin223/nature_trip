@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "title": "Page not found",
+    "description": "This page does not exist or has moved. Find your way back to Wildora trips, naturalists and the species gallery."
+  },
+  "title": "Lost the <accent>trail?</accent>",
+  "lede": "This page does not exist, or it has moved. Even good trackers lose a trail now and then. Here is the way back.",
+  "home": "Back to home",
+  "trips": "See trips & dates",
+  "go": "Go",
+  "onward": {
+    "experts": { "title": "Our naturalists", "body": "Meet the people who lead our trips." },
+    "species": { "title": "Species gallery", "body": "Browse field photographs by group." },
+    "whenToVisit": { "title": "When to visit", "body": "See which trips run in your month." },
+    "contact": { "title": "Send an enquiry", "body": "Tell us your dates and interests." }
+  },
+  "specific": "Looking for something specific?",
+  "askWhatsApp": "Ask us on WhatsApp",
+  "whatsappMessage": "Hello Wildora, I couldn't find a page on your website. Can you help?"
+}

@@ -1,0 +1,50 @@
+{
+  "route": {
+    "day": "Day {days}",
+    "days": "Days {days}",
+    "stopDetail": "{days} · {stay}",
+    "arrival": "Arrival",
+    "departureOption": "Departure option",
+    "srStop": "{days}: {name}. {stay}.",
+    "srBase": "{name}. {stay}.",
+    "srArrival": "Arrival: {name}, to {stop}.",
+    "srDeparture": "Departure option: {name}, from {stop}."
+  },
+  "stopList": {
+    "label": "Stops on OpenStreetMap",
+    "open": "Open in OpenStreetMap",
+    "openLabel": "Open {name} in OpenStreetMap (opens in a new tab)"
+  },
+  "key": {
+    "label": "Map key",
+    "dayNumber": "Day number",
+    "overnight": "Overnight",
+    "route": "Route",
+    "dayTrip": "Day trip",
+    "transfer": "Transfer"
+  },
+  "attribution": "Map data: <link>Natural Earth</link> (public domain)",
+  "trips": {
+    "western-ghats-endemics": {
+      "ariaLabel": "Map of southern India showing the 10-day Western Ghats Endemics route: Thattekad, Munnar with day visits to Pampadum Shola and Eravikulam, Chinnar, Top Slip, Valparai, Ooty with a day visit to Mukurthi, and Bandipur. Arrival via Kochi airport; departure via Mysuru or Bengaluru airport.",
+      "note": "Straight lines show the order of travel, not roads. Shaded band: the Western Ghats."
+    },
+    "monsoon-rainforest-nights": {
+      "ariaLabel": "Map of western peninsular India with the Western Ghats rainforest belt shaded. The exact rainforest base is set at booking.",
+      "note": "Approximate region: the Western Ghats rainforest belt. The exact base and night-walk sites are set at booking."
+    },
+    "central-india-big-cats": {
+      "ariaLabel": "Map of central India with an approximate shaded area for the central Indian tiger reserves. The exact parks are set at booking.",
+      "note": "Approximate region: the central Indian tiger reserves. The exact parks and safari zones are set at booking."
+    },
+    "himalaya-birds-mountain-wildlife": {
+      "ariaLabel": "Map of northern India with the Indian Himalaya shaded. The exact route and base are set at booking.",
+      "note": "Approximate region: the Indian Himalaya. The exact route, base and altitude are set at booking."
+    }
+  },
+  "overview": {
+    "ariaLabel": "Map of India marking four trip regions: the Western Ghats Endemics route in the far south-west, the Monsoon Rainforest belt along the Western Ghats, the central Indian tiger reserves, and the Indian Himalaya.",
+    "legendLabel": "Trip regions",
+    "note": "Shaded areas are approximate; exact parks and bases are set at booking."
+  }
+}

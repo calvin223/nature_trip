@@ -8,12 +8,17 @@
     "start": "next start",
     "lint": "eslint",
     "build:maps": "node scripts/build-map-data.mjs",
-    "build:camo": "node scripts/gen-camo.mjs"
+    "build:images": "node scripts/build-images.mjs"
   },
   "dependencies": {
-    "next": "16.0.7",
+    "embla-carousel-react": "^8.6.0",
+    "motion": "^14.2.0",
+    "next": "16.3.8",
+    "next-intl": "4.14.7",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "thumbhash": "^0.1.1",
+    "yet-another-react-lightbox": "^3.32.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -22,8 +27,9 @@
     "@types/react-dom": "^19",
     "d3-geo": "^3.1.1",
     "eslint": "^9",
-    "eslint-config-next": "16.0.7",
+    "eslint-config-next": "16.3.8",
     "polygon-clipping": "^0.15.7",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4",
     "topojson-client": "^3.1.0",
     "topojson-server": "^3.0.1",

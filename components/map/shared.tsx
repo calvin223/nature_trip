@@ -1,4 +1,6 @@
+import { useLocale, useTranslations } from 'next-intl';
 import type { CSSProperties, ReactNode } from 'react';
+import { overlayEntry } from '@/i18n/content';
 
 /*
  * Shared pieces for the static SVG maps (TripMap, IndiaOverviewMap).
@@ -108,8 +110,16 @@ export const GEO_VERSION = 2;
  * Text sizes are user units from the JSON: calc(var(--fs-*) * 1px).
  */
 export const MAP_CSS = `
-.wdm{position:relative;color:var(--wd-ink,#eaf3e3);container-type:inline-size}
-.wdm-svg{display:block;width:100%;height:auto;border-radius:14px;background:var(--wd-sea,#06231f)}
+.wdm{position:relative;color:var(--wd-ink,#eaf3e3);container-type:inline-size;--wdm-fit:calc(100svh - 8rem)}
+.wdm-svg{display:block;width:min(100%,calc(var(--wdm-fit) * var(--wdm-ar,1)));height:auto;margin-inline:auto;border-radius:14px;background:var(--wd-sea,#06231f)}
+.wdm-routemap>ul{padding:0 1rem 1rem}
+@media (min-width:1024px){
+  .wdm-routemap{display:grid;grid-template-columns:min(calc(var(--wdm-fit) * var(--wdm-ar,1)),60%) minmax(0,1fr);gap:2rem;align-items:start;padding:1rem}
+  .wdm-routemap .wdm-svg{width:100%}
+  .wdm-routemap>ul{margin:0;padding:0}
+  .wdm-routemap>.wdm-stops{grid-row:span 2;grid-template-columns:1fr;padding-top:.5rem}
+}
+@media (min-width:1280px){.wdm-routemap>.wdm-stops{grid-template-columns:1fr 1fr;align-content:start}}
 .wdm text{font-family:inherit}
 .wdm .wdm-sm{display:none}
 @container (max-width:459px){.wdm .wdm-sm{display:inline}.wdm .wdm-lg{display:none}}
@@ -169,7 +179,7 @@ export const MAP_CSS = `
   .wdm:not([data-anim="off"]) .wdm-route{stroke-dasharray:var(--wdm-len) var(--wdm-len);stroke-dashoffset:var(--wdm-len)}
   .wdm:not([data-anim="off"]) .wdm-pop{opacity:0}
   .wdm[data-anim="run"] .wdm-route,.wdm:not([data-anim]) .wdm-route{animation:wdm-draw var(--wdm-dur,2.8s) cubic-bezier(.45,0,.3,1) forwards}
-  .wdm[data-anim="run"] .wdm-pop,.wdm:not([data-anim]) .wdm-pop{animation:wdm-pop .5s cubic-bezier(.3,1.4,.5,1) forwards;animation-delay:calc(var(--d,0) * var(--wdm-dur,2.8s))}
+  .wdm[data-anim="run"] .wdm-pop,.wdm:not([data-anim]) .wdm-pop{animation:wdm-pop .5s cubic-bezier(.22,1,.36,1) forwards;animation-delay:calc(var(--d,0) * var(--wdm-dur,2.8s))}
   /* Safety net: if JavaScript never hydrates, draw anyway after 3 s. */
   .wdm:not([data-anim]) .wdm-route{animation-delay:3s}
   .wdm:not([data-anim]) .wdm-pop{animation-delay:calc(3s + var(--d,0) * var(--wdm-dur,2.8s))}
@@ -268,8 +278,11 @@ export function Label({ label, text, className }: { label: PlacedLabel; text: st
   );
 }
 
-/** Reference-city dots and (per layout) their labels. */
+/** Reference-city dots and (per layout) their labels. A city's name is translated in the
+    'places' overlay under `city:<English name>`. */
 export function Cities({ geo, layout }: { geo: GeoBase; layout: LayoutName }) {
+  const locale = useLocale();
+  const name = (c: GeoBase['cities'][number]) => overlayEntry<{ name: string }>(locale, 'places', `city:${c.name}`)?.name ?? c.name;
   return (
     <g aria-hidden="true">
       {geo.cities.map((c) => {
@@ -277,7 +290,7 @@ export function Cities({ geo, layout }: { geo: GeoBase; layout: LayoutName }) {
         return (
           <g key={c.name}>
             <circle className="wdm-city" cx={c.x} cy={c.y} r={layout === 'sm' ? 3.4 : 2.8} />
-            {label && <Label label={label} text={c.name} className="wdm-lbl-city" />}
+            {label && <Label label={label} text={name(c)} className="wdm-lbl-city" />}
           </g>
         );
       })}
@@ -300,20 +313,23 @@ export function ScaleBar({ scale }: { scale: GeoBase['scale'] }) {
 }
 
 export function Attribution({ children }: { children?: ReactNode }) {
+  const t = useTranslations('maps');
   return (
     <p className="mt-2 text-xs leading-relaxed text-[color:var(--wd-ink,#eaf3e3)]/70">
       {children}
       {children ? ' ' : null}
-      Map data:{' '}
-      <a
-        href="https://www.naturalearthdata.com/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="underline decoration-dotted underline-offset-2 hover:text-[color:var(--wd-lime,#9ad14b)]"
-      >
-        Natural Earth
-      </a>{' '}
-      (public domain)
+      {t.rich('attribution', {
+        link: (chunks) => (
+          <a
+            href="https://www.naturalearthdata.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline decoration-dotted underline-offset-2 hover:text-[color:var(--wd-lime,#9ad14b)]"
+          >
+            {chunks}
+          </a>
+        ),
+      })}
     </p>
   );
 }

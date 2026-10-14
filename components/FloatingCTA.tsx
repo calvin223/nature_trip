@@ -1,25 +1,50 @@
-import Link from 'next/link';
+'use client';
+
+import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
+import { usePathname } from '@/i18n/navigation';
 import { waLink } from '@/lib/site';
 
+/* One floating button: WhatsApp. The enquiry form is "Plan a Trip" in the header. Hidden on
+   /contact, which has its own buttons and the form, and stepping aside while any other WhatsApp
+   link (a page CTA, the footer number) is on screen, so a screen never shows two. */
 export default function FloatingCTA() {
+  const t = useTranslations('common.whatsapp');
+  const pathname = usePathname() ?? '';
+  const [covered, setCovered] = useState(false);
+
+  useEffect(() => {
+    const onScreen = new Set<Element>();
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) onScreen.add(e.target);
+        else onScreen.delete(e.target);
+      }
+      setCovered(onScreen.size > 0);
+    });
+    document.querySelectorAll('a[href^="https://wa.me/"]').forEach((a) => {
+      if (!a.closest('.floating-cta')) io.observe(a);
+    });
+    return () => io.disconnect();
+  }, [pathname]);
+
+  if (pathname.startsWith('/contact')) return null;
   return (
-    <div className="floating-cta fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-50 flex flex-col items-end gap-3">
+    <div
+      className="floating-cta fixed z-50"
+      data-covered={covered || undefined}
+      inert={covered}
+    >
       <a
-        href={waLink("Hello Wildora! I'd like to know more about your Western Ghats nature trips.")}
+        href={waLink(t('default'))}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Chat with us on WhatsApp"
+        aria-label={t('floatingLabel')}
         className="btn btn-wa !px-3.5 sm:!pl-3.5 sm:!pr-5 !py-3.5 shadow-xl"
       >
         <WhatsAppIcon className="w-6 h-6" />
-        <span className="hidden sm:inline text-sm">WhatsApp us</span>
+        <span className="hidden sm:inline text-sm">{t('floatingText')}</span>
       </a>
-      <Link href="/contact/" aria-label="Enquire about a trip" className="btn btn-primary !px-3.5 sm:!pl-3.5 sm:!pr-5 !py-3.5 shadow-xl">
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-        </svg>
-        <span className="hidden sm:inline text-sm">Enquire</span>
-      </Link>
     </div>
   );
 }

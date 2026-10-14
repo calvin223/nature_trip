@@ -27,6 +27,36 @@ export interface SiteConfig {
     instagram: string | null;
   };
   /**
+   * URL of a form service (e.g. Formspree) that receives enquiries as JSON, or
+   * null until one is set up. When null the enquiry form only writes a WhatsApp
+   * message, as before.
+   */
+  formEndpoint: string | null;
+  /**
+   * Trader details for /legal/, /terms/ and /privacy/. null means "not supplied
+   * yet": the pages show a visible "to be confirmed" marker, never a guess.
+   */
+  legal: {
+    legalName: string | null;
+    address: string | null;
+    registrationNumber: string | null;
+    vatNumber: string | null;
+    /** Indian tourism-department registration / approval number. */
+    tourismRegistration: string | null;
+    /** Who protects customers' prepayments if Wildora fails (insurer, bank guarantee, fund). */
+    insolvencyProtection: string | null;
+    /** Address for privacy requests (access, erasure). */
+    privacyContact: string | null;
+    /** Set true only after a lawyer has reviewed /terms/ and /privacy/. */
+    reviewed: boolean;
+  };
+  /**
+   * Search-engine ownership codes (the "HTML tag" method: the content value only), or null. Google:
+   * Search Console > Add property > HTML tag. Bing: Webmaster Tools > Add site > Meta tag. Meta tags
+   * need no script or cookies, so the no-tracking promise on /cookies/ stays true.
+   */
+  searchVerification: { google: string | null; bing: string | null };
+  /**
    * Public launch date (YYYY-MM-DD), or null. When set and still in the
    * future, departure dates are computed from it instead of from the build
    * date, so no departure is listed before the site goes live.
@@ -40,20 +70,33 @@ export interface SiteConfig {
   bookingLeadDays: number;
   /** Time zone used for "today" when no BUILD_DATE is given. */
   timeZone: string;
-  /** Default text pre-filled in a WhatsApp chat opened from the site. */
-  defaultWhatsAppMessage: string;
 }
+
+/** The published site's root URL (with the GitHub Pages base path), for canonical links, the sitemap
+    and structured data. Temporarily the calvin223 fork's GitHub Pages (2026-10-14); change it when
+    the site moves to its own domain. */
+export const SITE_URL = 'https://calvin223.github.io/nature_trip/';
 
 export const SITE: SiteConfig = {
   name: 'Wildora Expeditions',
   whatsapp: { e164: '919443161606', display: '+91 94431 61606' },
   email: null,
   social: { facebook: null, instagram: null },
+  formEndpoint: null,
+  legal: {
+    legalName: null,
+    address: null,
+    registrationNumber: null,
+    vatNumber: null,
+    tourismRegistration: null,
+    insolvencyProtection: null,
+    privacyContact: null,
+    reviewed: false,
+  },
+  searchVerification: { google: null, bing: null },
   launchDate: null,
   bookingLeadDays: 42,
   timeZone: 'Asia/Kolkata',
-  defaultWhatsAppMessage:
-    "Hello Wildora, I'd like to know more about your guided nature trips.",
 };
 
 // Fail loudly at import time if the config is malformed, rather than shipping
@@ -68,6 +111,13 @@ if (SITE.launchDate !== null && !/^\d{4}-\d{2}-\d{2}$/.test(SITE.launchDate)) {
   throw new Error(`SITE.launchDate must be YYYY-MM-DD or null, got "${SITE.launchDate}"`);
 }
 
+if (SITE.formEndpoint !== null && !/^https:\/\//.test(SITE.formEndpoint)) {
+  throw new Error(`SITE.formEndpoint must be an https:// URL or null, got "${SITE.formEndpoint}"`);
+}
+
+/** True when an enquiry form service is configured. */
+export const hasForm: boolean = SITE.formEndpoint !== null;
+
 /** True when a real, owner-supplied email address is configured. */
 export const hasEmail: boolean = SITE.email !== null;
 
@@ -78,12 +128,6 @@ export const hasEmail: boolean = SITE.email !== null;
 export function waLink(message: string = ''): string {
   const base = `https://wa.me/${SITE.whatsapp.e164}`;
   return message ? `${base}?text=${encodeURIComponent(message)}` : base;
-}
-
-/** Pre-filled WhatsApp text for an enquiry about one trip (and optionally a date). */
-export function tripEnquiryMessage(tripTitle: string, departureLabel?: string): string {
-  const when = departureLabel ? ` departing ${departureLabel}` : '';
-  return `Hello Wildora, I'm interested in the ${tripTitle}${when}. Could you tell me more?`;
 }
 
 /**

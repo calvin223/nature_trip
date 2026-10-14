@@ -1,0 +1,78 @@
+{
+  "meta": {
+    "title": "About Wild India",
+    "description": "Why Wildora exists, where in India we travel, and our home ground: the Western Ghats, with rainforest, shola grassland and wildlife found nowhere else."
+  },
+  "hero": {
+    "title": "One country, many wild worlds",
+    "lede": "India holds rainforest, cloud grassland, tiger forest and Himalayan valleys within a single border. We run trips in three of them, and we know one best: the Western Ghats of South India.",
+    "caption": "Shola forest and grassland, the high-altitude mosaic of the southern Western Ghats."
+  },
+  "origin": {
+    "title": "Why Wildora exists",
+    "paragraphs": [
+      "Long before Wildora had a name, our naturalists were already in the field: studying striped hyenas in Sanjay Dubri Tiger Reserve, recording butterflies in the Eastern Ghats, surveying the forests and wetlands of the Western Ghats, and teaching environmental science at Bishop Heber College in Tiruchirappalli. Guiding came later. The field time came first.",
+      "We started Wildora to offer the trips we would want to take ourselves: routes planned by the naturalists who lead them, small groups, and enough time at each stop to watch rather than tick things off."
+    ],
+    "link": "Meet the naturalists"
+  },
+  "regions": {
+    "title": "Where we travel",
+    "lede": "Each region in the season that suits its wildlife.",
+    "items": {
+      "westernGhats": {
+        "name": "The Western Ghats",
+        "note": "Our home ground in South India, and where our naturalists have done much of their field research. Lowland rainforest, high shola grassland and tiger reserves, with wildlife found nowhere else."
+      },
+      "centralIndia": {
+        "name": "Central India",
+        "note": "Tiger country: dry forests, river edges, meadows and bird-rich buffer zones."
+      },
+      "himalaya": {
+        "name": "The Himalaya",
+        "note": "Pheasants, high-altitude birds, forest mammals and mountain views."
+      }
+    }
+  },
+  "habitats": {
+    "title": "Our home ground, habitat by habitat",
+    "intro": "The Western Ghats are a UNESCO World Heritage Site, older than the Himalaya. On the {trip} the forest changes completely from one day to the next. These are its habitats in the order you meet them.",
+    "items": {
+      "lowland": {
+        "title": "Lowland forest",
+        "places": "Thattekad Bird Sanctuary and the Periyar River, Kerala"
+      },
+      "shola": {
+        "title": "Shola forest and grassland",
+        "places": "Pampadum Shola, Eravikulam (Rajamalai) and Mukurthi"
+      },
+      "rainShadow": {
+        "title": "Rain-shadow forest",
+        "places": "Chinnar Wildlife Sanctuary, on the dry eastern slopes"
+      },
+      "fragments": {
+        "title": "Rainforest fragments and tea estates",
+        "places": "Anamalai Tiger Reserve, Valparai, Nallamudi and Sholayar"
+      },
+      "nilgiris": {
+        "title": "Nilgiri hills",
+        "places": "Doddabetta, Wenlock Downs and the Government Botanical Garden, Ooty"
+      },
+      "tigerCountry": {
+        "title": "Tiger country",
+        "places": "Bandipur Tiger Reserve, Karnataka"
+      }
+    },
+    "link": "Follow the 10-day route day by day"
+  },
+  "endemics": {
+    "title": "Found nowhere else",
+    "intro": "The lion-tailed macaque, the Nilgiri tahr and these birds live only in the Western Ghats. All six are target species on the {trip}.",
+    "link": "Browse the field gallery"
+  },
+  "howWeTravel": {
+    "title": "How we travel",
+    "body": "Wildlife travel only works when it respects park rules, local communities, animal behaviour and the limits of each habitat. Our part is to plan good routes, set honest expectations and help you see the forest without treating animals as props.",
+    "link": "What we do and don't do in the field"
+  }
+}
