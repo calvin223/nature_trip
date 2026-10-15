@@ -88,6 +88,7 @@ These read as template defaults, so they are gone and should stay gone:
 | `app/[locale]/species/page.tsx` | Also the collapsed species list under the gallery (`.species-index`, a `.wd-acc` accordion): every photo's notes as plain text for search engines |
 | `app/[locale]/trips/[id]/page.tsx` | Trip page; each departure row ends with a quiet "Ask about this date" link (opens the form pre-filled), the panel beside keeps the one green WhatsApp button |
 | `components/Navigation.tsx` | Solid paper bar; clear with white text over the home hero until scrolled. Trips ▾ · Species · About ▾ · Travel info ▾ from 1024 px (dropdowns: page names only, left-aligned), full-screen menu below |
+| `app/icon.svg`, `app/favicon.ico` | Browser tab icon: the header's leaf (`components/LeafMark.tsx`); the .ico is the same leaf at 16, 32 and 48 px for browsers without SVG icons |
 | `components/Footer.tsx` | Link columns, WhatsApp as a quiet link (one green button per screen), bottom row with every legal page; text uses `--wd-muted` on the darker footer for contrast |
 | `components/LegalPage.tsx` | Legal document layout: draft notice, contents list, section cards, last updated, see also |
 | `components/LanguageSwitcher.tsx` | Footer and menu language list; renders only once a second language is published |
