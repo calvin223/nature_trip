@@ -1,0 +1,1 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,62591,t=>{"use strict";var e=t.i(43476);t.s(["default",0,function(t){return(0,e.jsx)("img",{...t})}])}]);
