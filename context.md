@@ -102,6 +102,8 @@ branch served by GitHub Pages (enabled on the fork 2026-10-14). The owner asked 
   `lib/data.ts` say guests travel to the start point (airport scope).
 - **Design inconsistency:** the focus-species details and the phone menu's section headings use small
   all-caps labels, which `DESIGN.md` otherwise rules out. Owner to choose.
+- **Mobile audit (2026-10-15, code and headless Chrome):** no page runs off the right edge at 320, 375 or 390 px
+  (15 pages), no undersized tap targets, every hover style gated to real pointers, inputs 16 px.
 - **Real-phone checks still to do:** sticky hover, tap feel, notch/home-bar spacing, keyboard over
   the enquiry form (`npm run dev -- -H 0.0.0.0`, open `http://<PC IP>:3000/nature_trip/` on phones).
 - **Session scratchpad** (backup tarball, English snapshot, headless-Edge check scripts) is temporary

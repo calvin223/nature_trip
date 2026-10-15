@@ -24,7 +24,7 @@ const PAGES: { id: LegalDocId | 'credits'; href: string }[] = [
 /* Documents are plain semantic markup; the styling of their lists, links and tables lives here. */
 const BODY =
   'space-y-3 text-wd-muted leading-relaxed [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1.5 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1.5 ' +
-  '[&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:text-wd-ink [&_strong]:text-wd-ink [&_strong]:font-semibold ' +
+  '[&_a]:underline [&_a]:underline-offset-2 [&_a]:hover:text-wd-ink [&_strong]:text-wd-ink [&_strong]:font-semibold ' +
   '[&_table]:w-full [&_table]:text-sm [&_th]:text-left [&_th]:font-semibold [&_th]:text-wd-ink [&_th]:py-2 [&_th]:pr-4 [&_td]:py-2 [&_td]:pr-4 [&_tr]:border-b [&_tr]:border-[var(--wd-line)]';
 
 const quiet = 'underline underline-offset-2 hover:text-wd-ink';

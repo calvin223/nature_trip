@@ -166,7 +166,8 @@ export const MAP_CSS = `
    beside the map), so the browser's focus ring, drawn as a box round the region, never helps. */
 .wdm-ov-link{cursor:pointer;outline:none}
 .wdm-ov-link .wdm-halo{transition:opacity .2s}
-.wdm-ov-link:hover .wdm-halo,.wdm-ov-link[data-active] .wdm-halo{opacity:.8}
+.wdm-ov-link[data-active] .wdm-halo{opacity:.8}
+@media (hover:hover) and (pointer:fine){.wdm-ov-link:hover .wdm-halo{opacity:.8}}
 .wdm-ov-route{fill:none;stroke:var(--wdm-accent,var(--wd-lime,#9ad14b));stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .wdm-ov-routehalo{fill:none;stroke:var(--wdm-accent,var(--wd-lime,#9ad14b));stroke-width:18;stroke-linecap:round;stroke-linejoin:round;opacity:.45}
 .wdm-ov-lbl{fill:var(--wdm-accent,var(--wd-lime,#9ad14b));font-size:calc(var(--fs-overview) * 1px);font-weight:700;stroke-width:4px}
