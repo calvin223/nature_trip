@@ -58,6 +58,18 @@ branch served by GitHub Pages (enabled on the fork 2026-10-14). The owner asked 
   Photography" (watermark on the saw-scaled viper) is one of the clients: full permission, keep it.
   Owner questions open: painted background on the rock eagle-owl, low-res originals (treepie,
   grassbird, spiny lizard, hornbill, barbet, paradise flycatcher, sloth bear), bay owl's face away.
+- **Past field courses (2026-10-15):** the team's own photos from Heber Au Sable Institute courses
+  (Bishop Heber College; Sony originals, January 2010 and 2012, in `../Past photos/` with
+  "au sable india accomplishments.ppt": Ecology of Indian Tropics for US universities since 1995,
+  UK since 2009). Used once each, high quality (WebP 86, up to 2400 px, `public/photos/field/`):
+  home section "Long before Wildora" (after the naturalists), the About hero (shola walk; replaced
+  the Wikimedia landscape), two photos in the custom groups academic section. Left out on purpose:
+  elephant ride (ethics), students on a bus roof (safety), students asleep on a bus. Owner to
+  confirm the people shown are happy to be on the site.
+- **Photo ownership (2026-10-15):** every flora and fauna photo is the team's own: 87 trace to
+  camera originals (Nikon, Sony, Fujifilm, Canon), the rest confirmed by the user (2004 Photoshop
+  scans, Picasa edits, the GMV batch, sloth bear, moon moth, treepie). Only the itinerary place
+  photos are third-party (Wikimedia, credited).
 - **Home hero (2026-10-15):** a young Bengal tiger (`Tiger cub (2).JPG`), crops in
   `scripts/build-images.mjs` (WebP quality 72). The share image is still the lion-tailed macaque.
 - **Accessibility & speed pass (2026-10-15):** axe on all 21 pages, phone and desktop: everything

@@ -14,7 +14,7 @@
   },
   "landscape": {
     "heading": "Landscape photographs",
-    "body": "Landscape photographs in the itineraries on the <link>trip pages</link> and at the top of the About page, from Wikimedia Commons under open licences. Edited versions are shared under the same licence as the original.",
+    "body": "Landscape photographs in the itineraries on the <link>trip pages</link>, from Wikimedia Commons under open licences. Edited versions are shared under the same licence as the original.",
     "photo": "Photo: {author}, <sourceLink>{source}</sourceLink>, <licenceLink>{licence}</licenceLink>",
     "changes": "Changes: {changes}."
   },

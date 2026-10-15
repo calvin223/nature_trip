@@ -166,7 +166,17 @@
         "title": "Youth camps",
         "body": "Structured camps with age-appropriate nature walks, activities, observation skills and guided group reflection."
       }
-    ]
+    ],
+    "photos": {
+      "lecture": {
+        "alt": "Students and staff at a lecture during a field course",
+        "caption": "A lecture during a field course, January 2012"
+      },
+      "shore-notes": {
+        "alt": "Students on a sea wall writing notes about the birds on the shore",
+        "caption": "Field notes on the shore, January 2010"
+      }
+    }
   },
   "cta": {
     "title": "Tell us what your group wants",

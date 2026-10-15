@@ -166,6 +166,27 @@ export default async function CustomGroupsPage({ params }: { params: Promise<{ l
               </div>
             ))}
           </dl>
+          {/* The team's own photos from past university field courses (scripts/build-images.mjs). */}
+          <ul className="grid gap-4 sm:grid-cols-2 lg:col-span-2">
+            {(['lecture', 'shore-notes'] as const).map((name) => (
+              <li key={name}>
+                <figure className="relative m-0 aspect-[3/2] overflow-hidden rounded-xl bg-wd-deep" style={blurStyle(`/photos/field/${name}-1200.webp`)}>
+                  <img
+                    src={img(`/photos/field/${name}-1200.webp`)}
+                    srcSet={`${img(`/photos/field/${name}-700.webp`)} 700w, ${img(`/photos/field/${name}-1200.webp`)} 1200w`}
+                    sizes="(min-width: 640px) 50vw, 100vw"
+                    alt={t(`academic.photos.${name}.alt`)}
+                    loading="lazy"
+                    decoding="async"
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                  <figcaption className="photo-scrim">
+                    <span className="photo-label">{t(`academic.photos.${name}.caption`)}</span>
+                  </figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

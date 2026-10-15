@@ -7,7 +7,6 @@ import type { Metadata } from 'next';
 import { getContent } from '@/lib/content';
 import type { Trip } from '@/lib/data';
 import { img, photoName, photoOrThrow } from '@/lib/photos';
-import { findPlace } from '@/lib/placePhotos';
 import { blurStyle } from '@/lib/placeholders';
 import IndiaOverviewMap from '@/components/IndiaOverviewMap';
 import HeroImage from '@/components/HeroImage';
@@ -59,9 +58,8 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
     if (!found) throw new Error(`about/page.tsx: trip "${id}" not found in lib/data.ts`);
     return found;
   };
-  /* A credited place photo, so the hero differs from the home page's shola photo. */
-  const hero = findPlace('pampadum-shola', locale);
-  if (!hero) throw new Error('about/page.tsx: place photo "pampadum-shola" not found in lib/placePhotos.ts');
+  /* The team's own photo from a past field course (scripts/build-images.mjs, ../Past photos). */
+  const hero = '/photos/field/shola-walk-2400.webp';
   const endemics = trip('western-ghats-endemics');
 
   return (
@@ -71,12 +69,22 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           <h1 className="h-display max-w-4xl">{t('hero.title')}</h1>
           <p className="lede mt-6 max-w-2xl">{t('hero.lede')}</p>
           <figure className="mt-8 sm:mt-10">
-            <div className="aspect-[4/3] sm:aspect-[21/9] overflow-hidden rounded-2xl bg-wd-deep" style={blurStyle(hero.src)}>
-              <HeroImage src={img(hero.src)} alt={hero.alt} width={hero.w} height={hero.h} decoding="async" fetchPriority="high" className="h-full w-full object-cover" />
+            <div className="aspect-[4/3] sm:aspect-[21/9] overflow-hidden rounded-2xl bg-wd-deep" style={blurStyle(hero)}>
+              {/* Anchored low: the group walks across the lower part of the frame. */}
+              <HeroImage
+                src={img(hero)}
+                srcSet={[800, 1400, 2400].map((w) => `${img(`/photos/field/shola-walk-${w}.webp`)} ${w}w`).join(', ')}
+                sizes="(min-width: 1280px) 1216px, 100vw"
+                alt={t('hero.imageAlt')}
+                width={2400}
+                height={1800}
+                decoding="async"
+                fetchPriority="high"
+                className="h-full w-full object-cover object-[50%_75%]"
+              />
             </div>
             <figcaption className="mt-3 text-sm text-wd-muted">
-              {t('hero.caption')}{' '}
-              <span className="text-wd-faint">{tc('facts.credit', { credit: `${hero.credit.author}, ${hero.credit.licence}` })}</span>
+              {t('hero.caption')} {t('hero.photoNote')}
             </figcaption>
           </figure>
         </div>

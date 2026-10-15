@@ -6,7 +6,9 @@
   "hero": {
     "title": "One country, many wild worlds",
     "lede": "India holds rainforest, cloud grassland, tiger forest and Himalayan valleys within a single border. We run trips in three of them, and we know one best: the Western Ghats of South India.",
-    "caption": "Shola forest and grassland, the high-altitude mosaic of the southern Western Ghats."
+    "caption": "Shola forest and grassland, the high-altitude mosaic of the southern Western Ghats.",
+    "imageAlt": "A field-course group walks single file across shola grassland below forested hills",
+    "photoNote": "On one of our field courses, January 2012."
   },
   "origin": {
     "title": "Why Wildora exists",

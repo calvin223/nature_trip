@@ -79,6 +79,7 @@ These read as template defaults, so they are gone and should stay gone:
 | `components/PhotoStrip.tsx` | "What you might see" strip on trip pages (Embla) |
 | `lib/placePhotos.ts`, `lib/routePhotos.ts` | Credited Wikimedia landscape photos and which days of each trip's itinerary show them ("Photographed at …" when it is an example from elsewhere) |
 | `components/FloatingCTA.tsx` | The one floating button: WhatsApp |
+| `public/photos/field/`, home "Long before Wildora" | The team's own photos from past field courses: a large lead photo beside four smaller ones, captions with month and year; built from camera originals by `scripts/build-images.mjs` at quality 86 |
 | `components/HeroImage.tsx` | Every eagerly loaded hero `<img>` goes through this client component: in a server component React turns it into a preload hint that every page linking to it would download |
 | `app/[locale]/practical/page.tsx` | Practical info as a trail of four stages in the order a guest acts (`.trail`): stage heads stick beside a rail on wide screens; pace scale, booking conditions, tickable packing list (`.pack-item`), one-at-a-time inclusions (`details name`) |
 | `app/[locale]/schools/page.tsx` | Custom groups: photo-led group entries (thumbnail beside the text on phones), the sample day as a band of daylight from dawn to after dark (`.day-band`, the page's one bold element), customise options as short one-per-line columns, one closing block with the health condition |

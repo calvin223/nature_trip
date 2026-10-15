@@ -45,6 +45,17 @@ const STATS: [string, 'years' | 'species' | 'groupSize'][] = [
   ['10–12', 'groupSize'],
 ];
 
+/* Photos from the team's own past field courses (camera originals in ../Past photos, resized by
+   scripts/build-images.mjs at high quality). The first leads the mosaic. Text: home.field.photos. */
+const FIELD: { name: keyof HomeMessages['field']['photos']; widths: number[] }[] = [
+  { name: 'roadside-birding', widths: [800, 1400, 2400] },
+  { name: 'forest-notes', widths: [700, 1200] },
+  { name: 'mangrove-boat', widths: [700, 1200] },
+  { name: 'lake-birding', widths: [700, 1200] },
+  { name: 'shared-lunch', widths: [700, 1200] },
+];
+const fieldSrc = (name: string, w: number) => `/photos/field/${name}-${w}.webp`;
+
 const SEASON_ORDER: (keyof HomeMessages['seasons']['shortTitles'])[] = [
   'western-ghats-endemics',
   'monsoon-rainforest-nights',
@@ -150,7 +161,16 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
             {experts.map((e) => (
               <li key={e.id}>
                 {e.imageUrl && (
-                  <img src={img(e.imageUrl)} alt="" loading="lazy" decoding="async" style={blurStyle(e.imageUrl)} className="h-28 w-28 rounded-full object-cover" />
+                  <img
+                    src={img(e.imageUrl.replace('/experts/', '/experts/thumb/'))}
+                    srcSet={`${img(e.imageUrl.replace('/experts/', '/experts/thumb/'))} 240w, ${img(e.imageUrl)} 600w`}
+                    sizes="112px"
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    style={blurStyle(e.imageUrl)}
+                    className="h-28 w-28 rounded-full object-cover"
+                  />
                 )}
                 <p className="mt-4 font-display text-lg font-semibold text-wd-ink">{e.name}</p>
                 <p className="mt-1 text-sm leading-relaxed text-wd-muted">{e.specialization}</p>
@@ -159,6 +179,45 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
           </ul>
           <p className="mt-10">
             <Link href="/experts/" className="link-arrow">{t('guides.cta')}</Link>
+          </p>
+        </div>
+      </section>
+
+      {/* Past field courses: proof, in their own photos, that the naturalists have done this for years */}
+      <section className="wd-section" aria-labelledby="field-title">
+        <div className="wd-wrap">
+          <div className="wd-head">
+            <h2 id="field-title" className="h-section">{t('field.title')}</h2>
+            <p>{t('field.lede')}</p>
+          </div>
+          <ul className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+            {FIELD.map((f, i) => {
+              const largest = fieldSrc(f.name, f.widths[f.widths.length - 1]);
+              return (
+                <li key={f.name} className={i === 0 ? 'col-span-2 lg:row-span-2' : undefined}>
+                  <figure
+                    className={`relative m-0 h-full overflow-hidden rounded-xl bg-wd-deep aspect-[4/3] ${i === 0 ? 'lg:aspect-auto' : ''}`}
+                    style={blurStyle(largest)}
+                  >
+                    <img
+                      src={img(largest)}
+                      srcSet={f.widths.map((w) => `${img(fieldSrc(f.name, w))} ${w}w`).join(', ')}
+                      sizes={i === 0 ? '(min-width: 1024px) 50vw, 100vw' : '(min-width: 1024px) 25vw, 50vw'}
+                      alt={t(`field.photos.${f.name}.alt`)}
+                      loading="lazy"
+                      decoding="async"
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
+                    <figcaption className="photo-scrim">
+                      <span className="photo-label">{t(`field.photos.${f.name}.caption`)}</span>
+                    </figcaption>
+                  </figure>
+                </li>
+              );
+            })}
+          </ul>
+          <p className="mt-8">
+            <Link href="/schools/#academic" className="link-arrow">{t('field.link')}</Link>
           </p>
         </div>
       </section>
