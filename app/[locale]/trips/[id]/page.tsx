@@ -345,7 +345,7 @@ export default async function TripDetailPage({ params }: PageArgs) {
             <p>{t('itinerary.intro')}</p>
           </div>
           <RouteStory {...routeFor(trip, locale)} />
-          <p className="mt-10 text-xs text-wd-faint no-print">
+          <p className="mt-10 hidden text-xs text-wd-faint lg:block no-print">
             {t.rich('itinerary.photoNote', {
               link: (chunks) => (
                 <Link href="/credits/" className="underline underline-offset-2 hover:text-wd-ink">{chunks}</Link>

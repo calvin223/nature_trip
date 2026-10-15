@@ -6,8 +6,11 @@ import type { RouteDay, RoutePhoto } from '@/lib/routePhotos';
 
 /* The itinerary told by scrolling. On wide screens a sticky photograph of the place sits beside the
    days and cross-fades (opacity only) to the photo of whichever day crosses the middle of the
-   screen. On phones (and on paper) the days run as a list, with each photo above the first day it
-   belongs to. */
+   screen. Below that (phones, portrait tablets) the days run as a plain list with no photos, each
+   joined to the next by a centred arrow whose tail fades in from above; the
+   photos are never downloaded there. On paper the list prints without the arrows. The arrow carries
+   its own size and stroke as attributes, so it stays a small line even if the stylesheet is late or
+   stale (unstyled, an SVG fills its column and paints the arrowhead as a solid black triangle). */
 export default function RouteStory({ photos, days }: { photos: RoutePhoto[]; days: RouteDay[] }) {
   const [active, setActive] = useState(0);
   const items = useRef<(HTMLLIElement | null)[]>([]);
@@ -47,42 +50,46 @@ export default function RouteStory({ photos, days }: { photos: RoutePhoto[]; day
       </div>
 
       <ol className="lg:py-[10vh]">
-        {days.map((d, i) => {
-          const p = photos[d.photo];
-          return (
-            <li
-              key={d.label}
-              ref={(el) => { items.current[i] = el; }}
-              data-i={i}
-              data-on={i === active ? '' : undefined}
-              className="route-stop mb-10 lg:mb-0"
-            >
-              {(i === 0 || days[i - 1].photo !== d.photo) && (
-                <figure className="lg:hidden mb-5 no-print">
-                  <img
-                    src={p.thumb}
-                    srcSet={`${p.thumb} 800w, ${p.src} 1440w`}
-                    sizes="100vw"
-                    alt={p.alt}
-                    loading="lazy"
-                    decoding="async"
-                    style={bg(p.blur)}
-                    className="aspect-[4/3] w-full rounded-xl object-cover"
-                  />
-                  <figcaption className="mt-2 flex flex-wrap justify-between gap-x-4 text-xs text-wd-faint">
-                    <span>{p.caption}</span>
-                    <span>{p.credit}</span>
-                  </figcaption>
-                </figure>
-              )}
-              <h3 className="font-display text-2xl md:text-3xl font-semibold text-wd-ink">
-                <span className="mb-2 block text-sm font-semibold text-wd-lime">{d.label}</span>{' '}
-                {d.title}
-              </h3>
-              <p className="mt-3 max-w-md leading-relaxed text-wd-muted">{d.body}</p>
-            </li>
-          );
-        })}
+        {days.map((d, i) => (
+          <li
+            key={d.label}
+            ref={(el) => { items.current[i] = el; }}
+            data-i={i}
+            data-on={i === active ? '' : undefined}
+            className="route-stop"
+          >
+            <h3 className="font-display text-2xl md:text-3xl font-semibold text-wd-ink">
+              <span className="mb-2 block text-sm font-semibold text-wd-lime">{d.label}</span>{' '}
+              {d.title}
+            </h3>
+            <p className="mt-3 max-w-md leading-relaxed text-wd-muted">{d.body}</p>
+            {i < days.length - 1 && (
+              <svg
+                className="mx-auto mt-4 mb-4 block text-wd-lime lg:hidden no-print"
+                width="16"
+                height="30"
+                viewBox="0 0 16 30"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                {/* userSpaceOnUse: a gradient sized to a straight vertical line's own box (zero width) never paints. */}
+                <defs>
+                  <linearGradient id={`route-tail-${i}`} gradientUnits="userSpaceOnUse" x1="8" y1="2" x2="8" y2="21">
+                    <stop offset="0" stopColor="currentColor" stopOpacity="0" />
+                    <stop offset="1" stopColor="currentColor" />
+                  </linearGradient>
+                </defs>
+                <path d="M8 2v25" stroke={`url(#route-tail-${i})`} />
+                <path d="M3.5 22.5 8 27l4.5-4.5" />
+              </svg>
+            )}
+          </li>
+        ))}
       </ol>
     </div>
   );
