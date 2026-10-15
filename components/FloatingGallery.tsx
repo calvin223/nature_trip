@@ -3,7 +3,7 @@
 /* eslint-disable @next/next/no-img-element -- static export with images.unoptimized: plain <img> with img() adds the basePath, as across the site. */
 import { useLocale, useTranslations } from 'next-intl';
 import { useSyncExternalStore } from 'react';
-import { img, photoName, thumbWidth, type Photo } from '@/lib/photos';
+import { THUMB_WIDTH, img, photoName, type Photo } from '@/lib/photos';
 
 /* Adapted from Originkit's Floating Gallery. Instead of free-floating cards that overlap, photos
    are packed into masonry columns and each column drifts down on a seamless loop (two copies of
@@ -77,9 +77,9 @@ export default function FloatingGallery({
                     >
                       <img
                         src={img(p.thumb)}
-                        srcSet={`${img(p.thumb)} ${thumbWidth(p)}w, ${img(p.src)} ${p.w}w`}
+                        srcSet={`${img(p.thumb)} ${THUMB_WIDTH}w, ${img(p.src)} ${p.w}w`}
                         sizes="(min-width: 1280px) 300px, (min-width: 1024px) 23vw, (min-width: 768px) 31vw, 48vw"
-                        alt={dup ? '' : name}
+                        alt=""
                         width={p.w}
                         height={p.h}
                         loading="lazy"

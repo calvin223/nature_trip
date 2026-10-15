@@ -191,7 +191,7 @@ Wildora's product is stronger than most of the competitors we checked. It has fo
 
 **27. Build pages for key places, and month-by-month wildlife notes**
 - **Competitors:** [Wildlife Worldwide](https://www.wildlifeworldwide.com/locations/anamalai-tiger-reserve) has pages for Anamalai, Bandipur and Eravikulam, all stops on your route. [Wild Voyager](https://wildvoyager.com/destination/thattekad-bird-sanctuary/) has a Thattekad page with the best months.
-- **Wildora now:** Every stop shares the one /journey/ page, with about 40–80 words each. /when-to-visit/ shows which months each trip runs, but not what wildlife to expect each month.
+- **Wildora now:** Every stop is one day in a trip page's itinerary, with about 40–80 words each. /when-to-visit/ shows which months each trip runs, but not what wildlife to expect each month.
 - **Do:** Build three place pages (Thattekad; Munnar & Eravikulam; Valparai & Anamalai) from text and photos you already have, and link them from the itinerary days. Add a short wildlife note for each month to /when-to-visit/.
 - [impact: high] [effort: medium] [needs owner decision] [cost: free]
 

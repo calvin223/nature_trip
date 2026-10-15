@@ -9,11 +9,12 @@
   },
   "wildlife": {
     "heading": "Wildlife and habitat photographs",
-    "body": "Photographs of species and habitats across the site were supplied by the Wildora team. Please do not reuse them without permission."
+    "body": "Photographs of species and habitats across the site were supplied by the Wildora team, except those credited below. Please do not reuse the team's photographs without permission.",
+    "commons": "These are from Wikimedia Commons under open licences. Edited versions are shared under the same licence as the original."
   },
   "landscape": {
     "heading": "Landscape photographs",
-    "body": "Landscape photographs on <link>the 10-day route</link> and in “Scenery along the way” on the trip pages, from Wikimedia Commons under open licences. Edited versions are shared under the same licence as the original.",
+    "body": "Landscape photographs in the itineraries on the <link>trip pages</link> and at the top of the About page, from Wikimedia Commons under open licences. Edited versions are shared under the same licence as the original.",
     "photo": "Photo: {author}, <sourceLink>{source}</sourceLink>, <licenceLink>{licence}</licenceLink>",
     "changes": "Changes: {changes}."
   },

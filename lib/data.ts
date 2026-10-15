@@ -44,7 +44,7 @@ export interface Trip {
   targetSpecies?: string;
   region?: string;
   highlights: string[];
-  /** Scenic places and landscapes, drawn only from what the itinerary names. */
+  /** Scenic places and landscapes, drawn only from what the itinerary names. Not shown on the trip page; tripFit reads it as evidence. */
   sceneryHighlights: string[];
   itinerary: { day: number; title: string; description: string }[];
   included: string[];
@@ -777,7 +777,7 @@ export const faqs: Faq[] = [
     answer:
       'Yes. Scenic places are part of each route, not an extra. On the Western Ghats Endemics Expedition you pass through the shola forests and grasslands of Pampadum Shola and Mukurthi, Rajamalai in Eravikulam National Park, the tea-estate country around Valparai, and Doddabetta and Wenlock Downs near Ooty. ' +
       'The monsoon trip includes a waterfall or viewpoint visit and stops in spice and plantation country; the Himalaya trip follows a ridge route with mountain views. ' +
-      'Each trip page lists its scenic highlights. If landscapes matter more to you than wildlife, we can weight a private itinerary towards them.'
+      'Each trip page shows the route day by day in its itinerary. If landscapes matter more to you than wildlife, we can weight a private itinerary towards them.'
   },
   {
     category: 'About the trips',

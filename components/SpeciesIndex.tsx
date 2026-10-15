@@ -31,6 +31,8 @@ export interface IndexSpecies {
   blur?: string;
   /** Notes for the full-screen view (lib/speciesFacts), resolved on the server. */
   facts?: SpeciesFacts;
+  /** "Author, licence" for a photo that is not the team's own. */
+  credit?: string;
 }
 
 /* Filterable species index. Filtering re-flows the grid with a critically damped spring
@@ -70,7 +72,6 @@ export default function SpeciesIndex({ species, groups }: { species: IndexSpecie
                 type="button"
                 onClick={() => setOpen(i)}
                 className="group block w-full text-left cursor-zoom-in transition-transform duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.98]"
-                aria-label={tg('enlarge', { name: s.name })}
               >
                 <span
                   className="block aspect-square overflow-hidden rounded-xl bg-wd-deep"
@@ -92,6 +93,7 @@ export default function SpeciesIndex({ species, groups }: { species: IndexSpecie
                 </span>
                 <span className="block font-display italic text-wd-muted">{s.latin}</span>
                 <span className="block text-xs text-wd-lime mt-0.5">{s.where}</span>
+                <span className="sr-only"> ({tg('enlargeHint')})</span>
               </button>
             </motion.li>
           ))}
@@ -125,7 +127,7 @@ export default function SpeciesIndex({ species, groups }: { species: IndexSpecie
           height: s.h,
           alt: s.name,
           title: s.name,
-          description: <SpeciesCaption facts={s.facts} seenOn={s.where} />,
+          description: <SpeciesCaption facts={s.facts} seenOn={s.where} credit={s.credit} />,
         }))}
       />
     </MotionConfig>

@@ -10,6 +10,8 @@ export interface StripPhoto {
   src: string;
   thumb: string;
   name: string;
+  /** "Photo: Author, licence" for a photo that is not the team's own (already translated). */
+  credit?: string;
   blur?: string;
 }
 
@@ -54,14 +56,17 @@ export default function PhotoStrip({ photos, label, prevLabel, nextLabel }: { ph
                     src={p.thumb}
                     srcSet={`${p.thumb} 480w, ${p.src} 1600w`}
                     sizes="(min-width: 1024px) 23vw, (min-width: 640px) 40vw, 68vw"
-                    alt={p.name}
+                    alt=""
                     loading="lazy"
                     decoding="async"
                     draggable={false}
                     className="h-full w-full object-cover select-none"
                   />
                 </span>
-                <figcaption className="mt-2.5 text-sm font-medium text-wd-ink">{p.name}</figcaption>
+                <figcaption className="mt-2.5 text-sm font-medium text-wd-ink">
+                  {p.name}
+                  {p.credit && <span className="mt-0.5 block text-xs font-normal text-wd-faint">{p.credit}</span>}
+                </figcaption>
               </figure>
             </li>
           ))}

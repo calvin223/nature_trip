@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element -- static export with images.unoptimized: plain <img> with img() adds the basePath, as across the site. */
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { useTranslations } from 'next-intl';
 import type { Locale } from '@/i18n/locales';
@@ -5,7 +6,11 @@ import { alternates } from '@/i18n/metadata';
 import type { Metadata } from 'next';
 import { Link } from '@/i18n/navigation';
 import { WhatsAppIcon } from '@/components/FloatingCTA';
+import type { Messages } from '@/messages';
+import { img, photoName, photoOrThrow, THUMB_WIDTH } from '@/lib/photos';
+import { blurStyle } from '@/lib/placeholders';
 import { waLink } from '@/lib/site';
+import HeroImage from '@/components/HeroImage';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -13,21 +18,20 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   return { title: t('title'), description: t('description'), alternates: alternates(locale, '/schools/') };
 }
 
-type Note = { title: string; body: string };
+type GroupKey = keyof Messages['schools']['groupTypes']['items'];
 
-/** Columns of short titled notes, each ruled above: the page's one repeating pattern. */
-function Notes({ items, cols }: { items: Note[]; cols: string }) {
-  return (
-    <div className={`grid gap-x-10 gap-y-10 ${cols}`}>
-      {items.map((g) => (
-        <article key={g.title} className="border-t border-[var(--wd-line-strong)] pt-5">
-          <h3 className="h-card">{g.title}</h3>
-          <p className="mt-2 leading-relaxed text-wd-muted">{g.body}</p>
-        </article>
-      ))}
-    </div>
-  );
-}
+/* Each kind of group with a field photo of the sort of thing it comes for. None of these photos is
+   used on the home or About page, so the three pages never show the same picture. */
+const GROUPS: { key: GroupKey; photo: string }[] = [
+  { key: 'families', photo: 'smooth-coated-otter' },
+  { key: 'friends', photo: 'black-faced-langur' },
+  { key: 'clubs', photo: 'white-throated-kingfisher' },
+  { key: 'companies', photo: 'flame-of-the-forest' },
+  { key: 'international', photo: 'bengal-tiger-on-the-move' },
+  { key: 'schools', photo: 'indian-moon-moth' },
+];
+
+const HERO_PHOTO = 'chital-herd';
 
 function Actions() {
   const t = useTranslations('schools.actions');
@@ -45,25 +49,80 @@ export default async function CustomGroupsPage({ params }: { params: Promise<{ l
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'schools' });
+  const hero = photoOrThrow(HERO_PHOTO);
+
   return (
     <>
       <section className="wd-page-head">
-        <div className="wd-wrap">
-          <div className="max-w-3xl">
+        <div className="wd-wrap grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-center">
+          <div>
             <h1 className="h-display mb-5">{t('hero.title')}</h1>
-            <p className="lede">{t('hero.lede')}</p>
+            <p className="lede max-w-xl">{t('hero.lede')}</p>
             <Actions />
           </div>
+          <figure className="relative m-0 aspect-[4/3] overflow-hidden rounded-2xl bg-wd-deep" style={blurStyle(hero.src)}>
+            <HeroImage src={img(hero.src)} alt={photoName(hero, locale)} decoding="async" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover" />
+            <figcaption className="photo-scrim">
+              <span className="photo-label">{photoName(hero, locale)}</span>
+            </figcaption>
+          </figure>
         </div>
       </section>
 
+      {/* Photo-led, so a grid of entries is allowed here (DESIGN.md: cards only where a photo leads).
+          Phones get a thumbnail beside the text, so six groups stay a short scroll. */}
       <section className="wd-section">
         <div className="wd-wrap">
           <div className="wd-head">
             <h2 className="h-section">{t('groupTypes.title')}</h2>
             <p>{t('groupTypes.intro')}</p>
           </div>
-          <Notes items={t.raw('groupTypes.items') as Note[]} cols="sm:grid-cols-2 lg:grid-cols-3" />
+          <ul className="grid gap-x-6 gap-y-7 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-3">
+            {GROUPS.map(({ key, photo: slug }) => {
+              const p = photoOrThrow(slug);
+              return (
+                <li key={key} className="grid grid-cols-[6rem_minmax(0,1fr)] items-start gap-4 sm:block">
+                  <figure className="relative m-0 aspect-square overflow-hidden rounded-xl bg-wd-deep sm:aspect-[4/3]" style={blurStyle(p.src)}>
+                    <img
+                      src={img(p.thumb)}
+                      srcSet={`${img(p.thumb)} ${THUMB_WIDTH}w, ${img(p.src)} ${p.w}w`}
+                      sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 6rem"
+                      alt={photoName(p, locale)}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover"
+                    />
+                    <figcaption className="photo-scrim hidden sm:block" aria-hidden="true">
+                      <span className="photo-label">{photoName(p, locale)}</span>
+                    </figcaption>
+                  </figure>
+                  <div className="sm:mt-4">
+                    <h3 className="h-card">{t(`groupTypes.items.${key}.title`)}</h3>
+                    <p className="mt-1.5 leading-relaxed text-wd-muted">{t(`groupTypes.items.${key}.body`)}</p>
+                    {key === 'schools' && <a href="#academic" className="link-arrow mt-2 text-sm">{t('groupTypes.academicLink')}</a>}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </section>
+
+      {/* The page's one bold element: the day laid under the light it happens in, dawn to after dark. */}
+      <section className="wd-section">
+        <div className="wd-wrap">
+          <div className="wd-head">
+            <h2 className="h-section">{t('sampleDay.title')}</h2>
+            <p>{t('sampleDay.lede')}</p>
+          </div>
+          <ol className="day-band" aria-label={t('sampleDay.caption')}>
+            {(t.raw('sampleDay.rows') as { time: string; what: string }[]).map(({ time, what }) => (
+              <li key={time} className="day-band__slot">
+                <strong className="day-band__time">{time}</strong>
+                <span className="day-band__what">{what}</span>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
@@ -73,91 +132,58 @@ export default async function CustomGroupsPage({ params }: { params: Promise<{ l
             <h2 className="h-section">{t('customise.title')}</h2>
             <p>{t('customise.intro')}</p>
           </div>
+          <div className="grid grid-cols-2 gap-x-6 gap-y-9 md:grid-cols-3 md:gap-x-10">
+            {(t.raw('customise.options') as { term: string; items: string[]; note?: string }[]).map(({ term, items, note }) => (
+              <div key={term} className="border-t border-[var(--wd-line-strong)] pt-4">
+                <h3 className="h-card">{term}</h3>
+                <ul className="mt-3 space-y-1.5 leading-snug text-wd-muted">
+                  {items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                {note && <p className="mt-3 text-sm text-wd-muted">{note}</p>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="academic" className="wd-section scroll-mt-24">
+        <div className="wd-wrap grid gap-8 lg:grid-cols-[minmax(0,4fr)_minmax(0,7fr)] lg:gap-16">
+          <div>
+            <h2 className="h-section">{t('academic.title')}</h2>
+            <p className="mt-4 leading-relaxed text-wd-muted">
+              {t.rich('academic.intro', {
+                link: (chunks) => <Link href="/experts/" className="link-arrow">{chunks}</Link>,
+              })}
+            </p>
+          </div>
           <dl className="border-b border-[var(--wd-line)]">
-            {(t.raw('customise.options') as { term: string; detail: string }[]).map(({ term, detail }) => (
-              <div key={term} className="grid gap-2 border-t border-[var(--wd-line)] py-6 md:grid-cols-[minmax(0,4fr)_minmax(0,7fr)] md:gap-10">
-                <dt className="font-semibold text-wd-ink">{term}</dt>
-                <dd className="max-w-[65ch] leading-relaxed text-wd-muted">{detail}</dd>
+            {(t.raw('academic.items') as { title: string; body: string }[]).map(({ title, body }) => (
+              <div key={title} className="grid gap-1 border-t border-[var(--wd-line)] py-5 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-6">
+                <dt className="font-semibold text-wd-ink">{title}</dt>
+                <dd className="leading-relaxed text-wd-muted">{body}</dd>
               </div>
             ))}
           </dl>
         </div>
       </section>
 
+      {/* The ask, and the one booking condition every group must meet; the detail lives on Practical info. */}
       <section className="wd-section">
-        <div className="wd-wrap grid gap-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,7fr)] lg:gap-16">
-          <div>
-            <h2 className="h-section">{t('sampleDay.title')}</h2>
-            <p className="lede mt-4">{t('sampleDay.lede')}</p>
-          </div>
-          <table className="w-full text-left">
-            <caption className="sr-only-wd">{t('sampleDay.caption')}</caption>
-            <thead className="sr-only-wd">
-              <tr>
-                <th scope="col">{t('sampleDay.timeHeader')}</th>
-                <th scope="col">{t('sampleDay.whatHeader')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(t.raw('sampleDay.rows') as { time: string; what: string }[]).map(({ time, what }) => (
-                <tr key={time} className="border-t border-[var(--wd-line)] last:border-b">
-                  <th scope="row" className="w-36 py-4 pr-6 align-top font-semibold text-wd-ink whitespace-nowrap tabular-nums">{time}</th>
-                  <td className="py-4 leading-relaxed text-wd-muted">{what}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section className="wd-section !pt-0">
         <div className="wd-wrap">
-          <div className="wd-head">
-            <h2 className="h-section">{t('academic.title')}</h2>
-            <p>
-              {t.rich('academic.intro', {
-                link: (chunks) => <Link href="/experts/" className="link-arrow">{chunks}</Link>,
-              })}
-            </p>
-          </div>
-          <Notes items={t.raw('academic.items') as Note[]} cols="md:grid-cols-3" />
-        </div>
-      </section>
-
-      <section className="wd-section bg-wd-deep">
-        <div className="wd-wrap">
-          <div className="wd-head">
-            <h2 className="h-section">{t('safety.title')}</h2>
-            <p>{t('safety.intro')}</p>
-          </div>
-          <div className="grid gap-x-10 gap-y-10 md:grid-cols-2">
-            <article className="border-t border-[var(--wd-line-strong)] pt-5">
-              <h3 className="h-card">{t('safety.arrangeTitle')}</h3>
-              <ul className="mt-4 space-y-2.5">
-                {(t.raw('safety.logistics') as string[]).map((item) => (
-                  <li key={item} className="flex items-start gap-3 leading-relaxed text-wd-muted">
-                    <span aria-hidden="true" className="mt-[0.7rem] h-px w-3 flex-none bg-wd-faint" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </article>
-            <article className="border-t border-[var(--wd-line-strong)] pt-5">
-              <h3 className="h-card">{t('safety.healthTitle')}</h3>
-              <p className="mt-1 text-sm font-semibold text-wd-trogon">{t('safety.healthRequired')}</p>
-              <p className="mt-3 leading-relaxed text-wd-muted">{t('safety.healthBody')}</p>
-              <Link href="/practical/#health" className="link-arrow mt-4 text-sm">{t('safety.healthLink')}</Link>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section className="wd-section">
-        <div className="wd-wrap wd-wrap--narrow text-center">
-          <h2 className="h-section">{t('cta.title')}</h2>
-          <p className="lede mt-4 max-w-2xl mx-auto">{t('cta.lede')}</p>
-          <div className="flex justify-center">
-            <Actions />
+          <div className="glass glass-strong glass-pad grid gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-center lg:gap-12">
+            <div>
+              <h2 className="h-section">{t('cta.title')}</h2>
+              <p className="lede mt-4 max-w-2xl">{t('cta.lede')}</p>
+              <Actions />
+            </div>
+            <div className="lg:border-l lg:border-[var(--wd-line)] lg:pl-10">
+              <h3 className="h-card">{t('cta.healthTitle')}</h3>
+              <p className="mt-1 text-sm font-semibold text-wd-trogon">{t('cta.healthRequired')}</p>
+              <p className="mt-3 text-sm leading-relaxed text-wd-muted">{t('cta.healthBody')}</p>
+              <Link href="/practical/#health" className="link-arrow mt-4 text-sm">{t('cta.healthLink')}</Link>
+            </div>
           </div>
         </div>
       </section>

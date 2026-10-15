@@ -101,7 +101,6 @@ button, summary, [role="button"], .btn, .tab { user-select: none; -webkit-user-s
 :where(a:not(.btn), summary):active { opacity: 0.7; }
 .skip-link { position: absolute; left: -999px; top: 8px; z-index: 400; background: var(--wd-ink); color: var(--wd-night); padding: 8px 14px; border-radius: 8px; font-weight: 600; }
 .skip-link:focus { left: 8px; }
-.sr-only-wd { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 @layer components {
 /* ── Layout primitives ─────────────────────────────────────────────────────── */
@@ -147,7 +146,7 @@ button, summary, [role="button"], .btn, .tab { user-select: none; -webkit-user-s
 }
 .btn:active { transform: scale(0.97); }
 .btn-lg { padding: 1rem 1.9rem; font-size: 1.03rem; }
-.btn-primary, .btn-lime { background: var(--wd-emerald); color: #fff; }
+.btn-primary { background: var(--wd-emerald); color: #fff; }
 .btn-ghost { background: transparent; color: var(--wd-ink); border-color: var(--wd-line-strong); }
 .btn-wa { background: #25d366; color: #062a12; }
 /* Steps aside while another WhatsApp link is on screen (FloatingCTA), so there's only ever one. */
@@ -159,7 +158,7 @@ button, summary, [role="button"], .btn, .tab { user-select: none; -webkit-user-s
 .btn-glass { background: rgba(255, 255, 255, 0.12); color: #fff; border-color: rgba(255, 255, 255, 0.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
 /* Hover colours only for a real pointer: on touch they'd stick after the tap. */
 @media (hover: hover) and (pointer: fine) {
-  .btn-primary:hover, .btn-lime:hover { background: var(--wd-forest); }
+  .btn-primary:hover { background: var(--wd-forest); }
   .btn-ghost:hover { background: var(--wd-deep); }
   .btn-wa:hover { background: #1fbf5b; }
   .btn-light:hover { background: var(--wd-night); }
@@ -323,8 +322,6 @@ button.photo-tile:active { transform: scale(0.98); }
 .focus__toggle { display: grid; place-items: center; width: 1.75rem; height: 1.75rem; border-radius: 999px; color: var(--wd-faint); transition: color 200ms ease; }
 .focus__toggle svg { width: 0.875rem; height: 0.875rem; }
 @media (hover: hover) and (pointer: fine) { .focus__toggle:hover { color: var(--wd-ink); } }
-.photo-credit { font-size: 0.7rem; color: var(--wd-faint); }
-.photo-credit a { text-decoration: underline; text-underline-offset: 2px; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
 .fade-up { animation: fadeUp 200ms var(--ease-out) both; }
 /* Messages that appear after an action (form errors, sent/failed): fade in instead of popping. */
@@ -359,6 +356,11 @@ button.photo-tile:active { transform: scale(0.98); }
 .nav-drop__link[aria-current="page"] { color: var(--wd-lime); }
 @media (hover: hover) and (pointer: fine) { .nav-drop__link:hover { background: var(--wd-deep); } }
 .nav-drop__link:active { background: var(--wd-canopy); opacity: 1; }
+/* Right-aligned panel for the language menu at the bar's end, so it never runs off the screen. */
+.nav-drop--end { left: auto; right: 0; transform: translateY(-4px) scale(0.97); transform-origin: top right; }
+.nav-drop--end[data-open] { transform: none; }
+/* A language not published yet: listed, but not a link. */
+.nav-drop__link--off { display: flex; justify-content: space-between; gap: 1.25rem; color: var(--wd-faint); pointer-events: none; }
 /* Phone menu: stays mounted so it can leave the way it came (down-and-in to open, quicker up-and-out
    to close); the burger and the cross swap with a small turn. */
 .mobile-menu { opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity 150ms ease, transform 150ms var(--ease-out), visibility 0s 150ms; }
@@ -368,7 +370,7 @@ button.photo-tile:active { transform: scale(0.98); }
 .menu-icon__close { opacity: 0; transform: rotate(-45deg) scale(0.8); }
 .menu-icon[data-open] .menu-icon__bars { opacity: 0; transform: rotate(45deg) scale(0.8); }
 .menu-icon[data-open] .menu-icon__close { opacity: 1; transform: none; }
-/* Language switcher (footer and phone menu); renders only once a second language is published. */
+/* Footer language switcher; renders only once a second language is published. */
 .lang-switch { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; font-size: 0.8rem; }
 .lang-switch a { color: var(--wd-muted); transition: color 150ms ease; }
 .lang-switch a[aria-current] { color: var(--wd-ink); font-weight: 600; }
@@ -379,10 +381,8 @@ button.photo-tile:active { transform: scale(0.98); }
   .nav-link:hover::after { transform: scaleX(1); }
 }
 
-/* Form feedback and small badges */
-.wd-field-error { margin-top: 0.35rem; font-size: 0.8rem; color: var(--wd-trogon); }
+/* Form feedback */
 .wd-alert { padding: 0.85rem 1rem; border-radius: 0.8rem; background: rgba(176, 62, 40, 0.07); border: 1px solid rgba(176, 62, 40, 0.3); color: #7c2a1a; font-size: 0.9rem; }
-.wd-badge { display: inline-grid; place-items: center; min-width: 1.9rem; height: 1.9rem; padding: 0 0.45rem; border-radius: 999px; font: 700 0.8rem/1 var(--font-hanken), system-ui, sans-serif; color: #fff; background: var(--wd-emerald); }
 } /* end @layer components */
 
 /* ── Home: full-bleed hero ─────────────────────────────────────────────────── */
@@ -399,7 +399,7 @@ button.photo-tile:active { transform: scale(0.98); }
 .home-hero__caption { position: absolute; right: max(var(--wd-gutter), 1rem, env(safe-area-inset-right, 0px)); top: calc(var(--wd-nav-h) + 1.25rem); z-index: 1; font-size: 0.75rem; color: rgba(255, 255, 255, 0.8); text-align: right; }
 @media (max-width: 640px) { .home-hero__caption { display: none; } }
 
-/* ── The route page: sticky photo that cross-fades as each stop reaches centre ── */
+/* ── Trip itinerary (RouteStory): sticky photo that cross-fades as each day reaches centre ── */
 /* Landscape frame for landscape photographs, capped so it always fits under the nav. */
 .route-stage-col { container-type: inline-size; }
 /* Centred in the space under the nav, level with the stop being read (37.5cqw = half its 4:3 height). */
@@ -409,6 +409,49 @@ button.photo-tile:active { transform: scale(0.98); }
 .route-stop { min-height: 56vh; display: flex; flex-direction: column; justify-content: center; opacity: 0.4; transition: opacity 300ms ease; }
 .route-stop[data-on] { opacity: 1; }
 @media (max-width: 1023px) { .route-stop { min-height: 0; opacity: 1; } }
+
+/* ── Practical info: the stages as one trail (enquire → book → leave home → on the trip) ── */
+/* On wide screens each stage's marker and heading stay in view while its content scrolls past, so
+   the marker travels down a rail that joins it to the next stage. Phones: the marker sits beside
+   the heading and the content runs full width below, with no rail. */
+.trail { padding-block: clamp(0.5rem, 2vw, 1.5rem); }
+.trail__stage { --pad: clamp(2rem, 4vw, 3.5rem); position: relative; display: grid; gap: 1.75rem; padding-block: var(--pad); border-top: 1px solid var(--wd-line); }
+.trail__stage:first-child { border-top: 0; }
+.trail__head { display: grid; grid-template-columns: 2rem minmax(0, 1fr); gap: 0.875rem; align-items: start; }
+.trail__marker { position: relative; z-index: 1; display: grid; place-items: center; width: 2rem; height: 2rem; margin-top: 0.35rem; border-radius: 999px; border: 1.5px solid var(--wd-line-strong); background: var(--wd-night); color: var(--wd-lime); }
+.trail__marker svg { width: 1rem; height: 1rem; }
+@media (min-width: 64rem) {
+  .trail__stage { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 4rem; border-top: 0; }
+  .trail__head { position: sticky; top: 9rem; align-self: start; }
+  .trail__stage:not(:last-child)::before { content: ""; position: absolute; left: calc(1rem - 0.75px); top: calc(var(--pad) + 2.35rem); bottom: calc(-1 * var(--pad)); width: 1.5px; background: var(--wd-line-strong); }
+}
+/* Packing list: real checkboxes; a ticked item fades and is struck through. */
+.pack-item { display: flex; align-items: flex-start; gap: 0.75rem; padding-block: 0.45rem; line-height: 1.5; color: var(--wd-muted); cursor: pointer; }
+.pack-item input { flex: none; width: 1.1rem; height: 1.1rem; margin-top: 0.2rem; accent-color: var(--wd-lime); cursor: pointer; }
+.pack-item span { transition: color 150ms ease; }
+.pack-item input:checked + span { color: var(--wd-faint); text-decoration: line-through; text-decoration-color: var(--wd-line-strong); }
+
+/* ── Custom groups: the sample day under the light it happens in ───────────── */
+/* Each slot (in message order: dawn, morning, late morning, midday, late afternoon, after dinner) is
+   coloured for its time of day and blends into the next, so the strip reads as one sky from dawn to
+   after dark: across on wide screens, downwards on phones. Text stays ink on the light slots (the
+   muted grey is too faint on gold) and turns pale after dark. */
+/* Printed with its colours: without them the pale after-dark text would vanish on paper. */
+.day-band { display: grid; border-radius: 1rem; overflow: hidden; border: 1px solid var(--wd-line); print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+.day-band__slot { --dir: to bottom; display: grid; grid-template-columns: 7.25rem minmax(0, 1fr); gap: 1rem; padding: 1.1rem 1.25rem; color: var(--wd-ink); background: linear-gradient(var(--dir), var(--from), var(--to)); }
+.day-band__time { font-weight: 650; font-variant-numeric: tabular-nums; }
+.day-band__what { line-height: 1.5; }
+.day-band__slot:nth-child(1) { --from: #ecc472; --to: #f3dea6; }
+.day-band__slot:nth-child(2) { --from: #f3dea6; --to: #f5ecd0; }
+.day-band__slot:nth-child(3) { --from: #f5ecd0; --to: #f6f2e2; }
+.day-band__slot:nth-child(4) { --from: #f6f2e2; --to: #f2e4bd; }
+.day-band__slot:nth-child(5) { --from: #f2e4bd; --to: #dc9f55; }
+.day-band__slot:nth-child(6) { --from: #2b3727; --to: #17211a; color: #eef0e6; }
+@media (min-width: 64rem) {
+  .day-band { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .day-band__slot { --dir: to right; grid-template-columns: none; align-content: start; gap: 0.75rem; min-height: 12rem; padding: 1.5rem 1.25rem; }
+  .day-band__time { font-size: 1.05rem; }
+}
 
 /* ── Maps keep their own dark palette, as an inset on the paper page ───────── */
 .wdm {
@@ -447,11 +490,15 @@ button.photo-tile:active { transform: scale(0.98); }
 .wd-lb__facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.75rem 1.75rem; margin-top: 1rem; padding-top: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.18); font-size: 0.875rem; line-height: 1.4; }
 .wd-lb__facts dt { font-size: 0.75rem; color: rgba(255, 255, 255, 0.62); margin-bottom: 0.15rem; }
 .wd-lb__facts dd { color: #fff; }
+.wd-lb__credit { margin-top: 0.85rem; font-size: 0.75rem; color: rgba(255, 255, 255, 0.62); }
 @media (max-width: 639px) { .wd-lb__facts { grid-template-columns: 1fr 1fr; } .wd-lb__about { font-size: 0.92rem; } }
 
 /* ── Print: trip pages print as clean itineraries ──────────────────────────── */
 @media print {
   .site-nav, .site-footer, .floating-cta, .no-print { display: none !important; }
+  .route-stop { min-height: 0; opacity: 1; margin-bottom: 1.5rem; }
+  .trail__head { position: static; }
+  .trail__stage::before { display: none; }
   html, body { background: #fff !important; color: #111 !important; }
   .glass, .glass-strong { background: #fff !important; border-color: #ccc !important; }
   /* Collapsed sections ("You arrange", FAQ answers) print open. */

@@ -32,7 +32,7 @@ heads do not animate on navigation.
   lightbox captions fade in 200 ms. Springs have no bounce: species re-flow 0.35.
 - **Lightbox:** a swipe follows through on the drawer curve (300 ms); arrow keys and buttons change
   photo instantly, because keyboard actions repeat too often to animate.
-- **Longer by design:** the route page photo cross-fade (600 ms) and the route map drawing itself
+- **Longer by design:** the itinerary photo cross-fade (600 ms) and the route map drawing itself
   once in view are storytelling, not controls.
 - Hover effects run only for a real pointer (`@media (hover: hover) and (pointer: fine)`; Tailwind's
   `hover:` already checks `hover: hover`).
@@ -77,9 +77,12 @@ These read as template defaults, so they are gone and should stay gone:
 | `components/GuestReviews.tsx` | "What our guests say": hidden on the live site until `reviews` in `lib/data.ts` has real entries |
 | `components/SeasonLegend.tsx` | Key for the month charts (green runs, grey no departures) |
 | `components/PhotoStrip.tsx` | "What you might see" strip on trip pages (Embla) |
-| `lib/placePhotos.ts`, `lib/sceneryPhotos.ts` | Credited Wikimedia landscape photos; one per "Scenery along the way" item on each trip page ("Photographed at …" when it is an example from elsewhere) |
+| `lib/placePhotos.ts`, `lib/routePhotos.ts` | Credited Wikimedia landscape photos and which days of each trip's itinerary show them ("Photographed at …" when it is an example from elsewhere) |
 | `components/FloatingCTA.tsx` | The one floating button: WhatsApp |
-| `app/[locale]/journey/` | The 10-day route page: sticky place photo cross-fades per stop; text comes from `lib/data.ts` |
+| `components/HeroImage.tsx` | Every eagerly loaded hero `<img>` goes through this client component: in a server component React turns it into a preload hint that every page linking to it would download |
+| `app/[locale]/practical/page.tsx` | Practical info as a trail of four stages in the order a guest acts (`.trail`): stage heads stick beside a rail on wide screens; pace scale, booking conditions, tickable packing list (`.pack-item`), one-at-a-time inclusions (`details name`) |
+| `app/[locale]/schools/page.tsx` | Custom groups: photo-led group entries (thumbnail beside the text on phones), the sample day as a band of daylight from dawn to after dark (`.day-band`, the page's one bold element), customise options as short one-per-line columns, one closing block with the health condition |
+| `app/[locale]/trips/RouteStory.tsx` | Each trip's itinerary: sticky place photo cross-fades as the days scroll past; photos per day in `lib/routePhotos.ts` |
 | `app/[locale]/species/SpeciesExplorer.tsx` | Species page tabs + gallery; lightbox is yet-another-react-lightbox |
 | `app/[locale]/species/page.tsx` | Also the collapsed species list under the gallery (`.species-index`, a `.wd-acc` accordion): every photo's notes as plain text for search engines |
 | `app/[locale]/trips/[id]/page.tsx` | Trip page; each departure row ends with a quiet "Ask about this date" link (opens the form pre-filled), the panel beside keeps the one green WhatsApp button |

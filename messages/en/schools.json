@@ -10,73 +10,144 @@
   },
   "hero": {
     "title": "A trip built around your group",
-    "lede": "Families, friends, clubs, companies, visitors from abroad, schools and universities: tell us who is coming and what you want to experience, and we will design a guided programme around your dates, pace, interests and comfort."
+    "lede": "Tell us who is coming and what you want to experience, and we will design a guided programme around your dates, pace, interests and comfort."
   },
   "groupTypes": {
     "title": "Every kind of group",
     "intro": "Our default is a well-guided nature holiday, not a classroom field course.",
-    "items": [
-      {
+    "academicLink": "Academic options",
+    "items": {
+      "families": {
         "title": "Families",
         "body": "Gentle-paced nature days with safaris, short walks, birding, viewpoints, local food and enough downtime for mixed ages."
       },
-      {
+      "friends": {
         "title": "Friends & private groups",
         "body": "Your own departure on your dates, with a dedicated guide, a route shaped around your interests and a daily rhythm you choose."
       },
-      {
+      "clubs": {
         "title": "Clubs & societies",
         "body": "Birding, photography and natural-history groups: target birds, mammals, butterflies or macro subjects, low-light rainforest sessions and patient field support."
       },
-      {
+      "companies": {
         "title": "Companies & retreats",
         "body": "Nature immersion, team days, lodge-based wildlife, landscape trails and guided forest walks, planned around your schedule."
       },
-      {
+      "international": {
         "title": "International visitors",
         "body": "Route notes, comfort planning and guided wildlife time shaped around your flights."
+      },
+      "schools": {
+        "title": "Schools & universities",
+        "body": "Short modules, field courses and youth camps, led by naturalists who have taught environmental science."
       }
-    ]
-  },
-  "customise": {
-    "title": "What can be customised",
-    "intro": "We shape the programme around what your group wants: safaris, birds, mammals, forests, wetlands, mountains, night trails, local food, photography time and comfortable travel.",
-    "options": [
-      {
-        "term": "Target species",
-        "detail": "Tigers, leopards, elephants, hornbills, Western Ghats endemics, pheasants, frogs, reptiles, butterflies, orchids or other habitat specialities. We plan for the best chance, never a guarantee."
-      },
-      {
-        "term": "Trip style",
-        "detail": "Relaxed holiday, safari-focused, photography-focused, adventurous monsoon, family-friendly or academic."
-      },
-      {
-        "term": "Activities",
-        "detail": "Jeep safaris, birding, night walks where rules allow, wetland visits, waterfall stops, mountain trails, local markets and checklist sessions."
-      },
-      {
-        "term": "Comfort",
-        "detail": "Lodge category, safari intensity, walking difficulty, rooming preferences and food needs."
-      },
-      {
-        "term": "Length",
-        "detail": "Half-day guiding, weekend breaks, 4–7 day tours or longer multi-region routes."
-      }
-    ]
+    }
   },
   "sampleDay": {
     "title": "A sample group day",
     "lede": "An example only. The rhythm changes with the season, weather, permits, ages and the group’s energy.",
     "caption": "A sample day on a custom group programme",
-    "timeHeader": "Time",
-    "whatHeader": "What happens",
     "rows": [
-      { "time": "06:00–09:00", "what": "Guided safari, birding, wetland or forest walk while wildlife is most active" },
-      { "time": "09:00–11:00", "what": "Breakfast, checklist notes and free time" },
-      { "time": "11:00–13:00", "what": "Village, landscape, river, forest, tea, spice or viewpoint visit, depending on the region" },
-      { "time": "13:00–15:30", "what": "Lunch and rest through the hottest or wettest part of the day" },
-      { "time": "15:30–18:00", "what": "Forest-edge walk, safari drive, photography session, wetland visit or scenic drive" },
-      { "time": "After dinner", "what": "Optional night walk for frogs, reptiles, owls, moths and rainforest sounds, where rules allow" }
+      {
+        "time": "06:00–09:00",
+        "what": "Guided safari, birding, wetland or forest walk while wildlife is most active"
+      },
+      {
+        "time": "09:00–11:00",
+        "what": "Breakfast, checklist notes and free time"
+      },
+      {
+        "time": "11:00–13:00",
+        "what": "Village, landscape, river, forest, tea, spice or viewpoint visit, depending on the region"
+      },
+      {
+        "time": "13:00–15:30",
+        "what": "Lunch and rest through the hottest or wettest part of the day"
+      },
+      {
+        "time": "15:30–18:00",
+        "what": "Forest-edge walk, safari drive, photography session, wetland visit or scenic drive"
+      },
+      {
+        "time": "After dinner",
+        "what": "Optional night walk for frogs, reptiles, owls, moths and rainforest sounds, where rules allow"
+      }
+    ]
+  },
+  "customise": {
+    "title": "What can be customised",
+    "intro": "Every custom programme is planned around group size, ages, walking ability, weather, forest access, travel time, food needs and safe wildlife watching.",
+    "options": [
+      {
+        "term": "Target species",
+        "items": [
+          "Tigers",
+          "Leopards",
+          "Elephants",
+          "Hornbills",
+          "Western Ghats endemics",
+          "Pheasants",
+          "Frogs and reptiles",
+          "Butterflies",
+          "Orchids",
+          "Other habitat specialities"
+        ],
+        "note": "We plan for the best chance, never a guarantee."
+      },
+      {
+        "term": "Trip style",
+        "items": [
+          "Relaxed holiday",
+          "Safari-focused",
+          "Photography-focused",
+          "Adventurous monsoon",
+          "Family-friendly",
+          "Academic"
+        ]
+      },
+      {
+        "term": "Activities",
+        "items": [
+          "Jeep safaris",
+          "Birding",
+          "Night walks, where rules allow",
+          "Wetland visits",
+          "Waterfall stops",
+          "Mountain trails",
+          "Local markets",
+          "Checklist sessions"
+        ]
+      },
+      {
+        "term": "Comfort",
+        "items": [
+          "Lodge category",
+          "Safari intensity",
+          "Walking difficulty",
+          "Rooming preferences",
+          "Food needs"
+        ]
+      },
+      {
+        "term": "Length",
+        "items": [
+          "Half-day guiding",
+          "Weekend breaks",
+          "4–7 day tours",
+          "Longer multi-region routes"
+        ]
+      },
+      {
+        "term": "What we can arrange",
+        "items": [
+          "Airport or rail pick-up, where practical",
+          "Transport between field sites",
+          "Accommodation matched to your comfort and budget",
+          "Dietary planning, with vegetarian-friendly meals",
+          "Park permits and access coordination",
+          "Route notes, packing guidance and target-species lists"
+        ]
+      }
     ]
   },
   "academic": {
@@ -97,25 +168,12 @@
       }
     ]
   },
-  "safety": {
-    "title": "Safety & logistics",
-    "intro": "Every custom programme is planned around group size, ages, walking ability, weather, forest access, travel time, food needs and safe wildlife watching.",
-    "arrangeTitle": "What we can arrange",
-    "logistics": [
-      "Airport or rail pick-up, where practical",
-      "Transport between field sites",
-      "Accommodation matched to your comfort and budget",
-      "Dietary planning, with vegetarian-friendly meals",
-      "Park permits and access coordination",
-      "Route notes, packing guidance and target-species lists"
-    ],
-    "healthTitle": "Health & insurance",
-    "healthRequired": "Required for every guest",
-    "healthBody": "Every member of the group, students and staff included, needs comprehensive travel medical insurance and must tell us about any medical condition or allergy before booking. Many routes are remote, and the nearest hospital can be hours away.",
-    "healthLink": "Health, insurance & medical information"
-  },
   "cta": {
     "title": "Tell us what your group wants",
-    "lede": "Share your dates, group size, ages, interests, budget range and comfort level. We will suggest a route and a guided programme."
+    "lede": "Share your dates, group size, ages, interests, budget range and comfort level. We will suggest a route and a guided programme.",
+    "healthTitle": "Health & insurance",
+    "healthRequired": "Required for every guest",
+    "healthBody": "Every member of the group, students and staff included, needs comprehensive travel medical insurance and must tell us about any medical condition or allergy before booking.",
+    "healthLink": "Health, insurance & medical information"
   }
 }

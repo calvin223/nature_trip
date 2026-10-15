@@ -5,7 +5,6 @@ import home from './home.json';
 import about from './about.json';
 import trips from './trips.json';
 import tripDetail from './tripDetail.json';
-import journey from './journey.json';
 import maps from './maps.json';
 import species from './species.json';
 import experts from './experts.json';
@@ -18,6 +17,6 @@ import credits from './credits.json';
 import legal from './legal.json';
 import notFound from './notFound.json';
 
-const en = { common, home, about, trips, tripDetail, journey, maps, species, experts, whenToVisit, schools, practical, faq, contact, credits, legal, notFound };
+const en = { common, home, about, trips, tripDetail, maps, species, experts, whenToVisit, schools, practical, faq, contact, credits, legal, notFound };
 
 export default en;

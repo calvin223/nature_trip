@@ -13,7 +13,7 @@
   "stopList": {
     "label": "Stops on OpenStreetMap",
     "open": "Open in OpenStreetMap",
-    "openLabel": "Open {name} in OpenStreetMap (opens in a new tab)"
+    "openLabel": "Open in OpenStreetMap: {name} (opens in a new tab)"
   },
   "key": {
     "label": "Map key",
@@ -44,7 +44,6 @@
   },
   "overview": {
     "ariaLabel": "Map of India marking four trip regions: the Western Ghats Endemics route in the far south-west, the Monsoon Rainforest belt along the Western Ghats, the central Indian tiger reserves, and the Indian Himalaya.",
-    "legendLabel": "Trip regions",
     "note": "Shaded areas are approximate; exact parks and bases are set at booking."
   }
 }

@@ -21,7 +21,6 @@
     "closeMenu": "Close menu",
     "trips": "Trips",
     "tripsAll": "Trips & departures",
-    "journey": "The 10-day route",
     "whenToVisit": "When to visit",
     "customGroups": "Custom groups",
     "species": "Species",
@@ -44,7 +43,6 @@
     "legalLabel": "Legal",
     "links": {
       "trips": "Trips & departures",
-      "journey": "The 10-day route",
       "naturalists": "Our naturalists",
       "species": "Species gallery",
       "whenToVisit": "When to visit",
@@ -67,15 +65,17 @@
   "whatsapp": {
     "default": "Hello Wildora, I'd like to know more about your guided nature trips.",
     "footer": "Hello Wildora! I'd like to plan a nature trip.",
-    "floatingLabel": "Chat with us on WhatsApp",
     "floatingText": "WhatsApp us"
   },
   "language": {
     "label": "Language",
-    "switchTo": "Switch to {language}"
+    "button": "Language: {language}",
+    "switchTo": "Switch to {language}",
+    "soon": "coming soon"
   },
   "gallery": {
     "enlarge": "Enlarge photo: {name}",
+    "enlargeHint": "enlarge photo",
     "previous": "Previous species",
     "next": "Next species",
     "carousel": "carousel"
@@ -99,7 +99,8 @@
     "range": "Range",
     "endemicTo": "Endemic to",
     "habitat": "Habitat",
-    "whereWeLook": "Where we look"
+    "whereWeLook": "Where we look",
+    "credit": "Photo: {credit}"
   },
   "wildlifeDisclaimer": "Wildlife sightings depend on the season, the weather and local conditions on the day of your visit. We plan routes and timings to give you the best chance, but no particular sighting can be guaranteed.",
   "legal": {

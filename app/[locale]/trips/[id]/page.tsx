@@ -11,15 +11,17 @@ import TripMap from '@/components/TripMap';
 import { getContent } from '@/lib/content';
 import { CONFIRMED_AT_BOOKING, trips as englishTrips, type Trip } from '@/lib/data';
 import { isTripMapId, tripMaps } from '@/lib/mapData';
-import { findPhoto, img, photoName, tripPhotoSlugs, tripSpeciesPhotoSlugs } from '@/lib/photos';
+import { creditText, img, photoName, photoOrThrow, tripPhoto, tripPhotoSlugs, tripSpeciesPhotoSlugs } from '@/lib/photos';
 import { blurStyle, blurUrl } from '@/lib/placeholders';
 import PhotoStrip, { type StripPhoto } from '@/components/PhotoStrip';
-import { sceneryFor } from '@/lib/sceneryPhotos';
+import { routeFor } from '@/lib/routePhotos';
 import { describeDepartureRule, formatDepartureRange, getDepartures } from '@/lib/schedule';
 import { SITE, SITE_URL, waLink } from '@/lib/site';
 import { categorySlug } from '../../faq/faq-utils';
 import PrintButton from '../PrintButton';
+import RouteStory from '../RouteStory';
 import { tripFit } from '../tripFit';
+import HeroImage from '@/components/HeroImage';
 
 type PageArgs = { params: Promise<{ locale: Locale; id: string }> };
 
@@ -42,11 +44,6 @@ const DIFFICULTY_CHIP: Record<Trip['difficulty'], string> = {
 /** The trip in `locale`, for display. */
 const findTrip = (id: string, locale: Locale) => getContent(locale).trips.find((t) => t.id === id);
 
-function heroPhoto(trip: Trip) {
-  const slug = tripPhotoSlugs[trip.id];
-  return slug ? findPhoto(slug) : undefined;
-}
-
 /** "tigers" -> "Tigers" for the species list. */
 const capitalise = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
@@ -58,7 +55,7 @@ export async function generateMetadata({ params }: PageArgs): Promise<Metadata> 
     return { title: t('notFoundTitle') };
   }
 
-  const photo = heroPhoto(trip);
+  const photo = tripPhoto(trip.id);
   // Relative to metadataBase (the site root under /nature_trip/), so no leading slash.
   const image = photo
     ? {
@@ -100,7 +97,7 @@ export default async function TripDetailPage({ params }: PageArgs) {
   const tc = await getTranslations({ locale, namespace: 'common' });
   const { trips, guestResponsibilities } = getContent(locale);
 
-  const photo = heroPhoto(trip);
+  const photo = tripPhoto(trip.id);
   // Computed here, at build time, never in client code (see lib/schedule.ts).
   const departures = getDepartures(trip, DEPARTURE_COUNT);
   const fit = tripFit(english, locale);
@@ -108,11 +105,11 @@ export default async function TripDetailPage({ params }: PageArgs) {
   const mapKind = mapId ? tripMaps[mapId].kind : null;
   const otherPaces = trips.filter((o) => o.id !== trip.id && o.difficulty !== trip.difficulty);
   const species = trip.targetSpecies ? trip.targetSpecies.split(/,\s*/).map(capitalise) : [];
-  const scenery = sceneryFor(trip, locale);
-  const strip: StripPhoto[] = (tripSpeciesPhotoSlugs[trip.id] ?? []).map((slug) => {
-    const p = findPhoto(slug);
-    if (!p) throw new Error(`trips/[id]: photo "${slug}" in tripSpeciesPhotoSlugs not found in lib/photos.ts`);
-    return { src: img(p.src), thumb: img(p.thumb), name: photoName(p, locale), blur: blurUrl(p.src) };
+  /* The strip leaves out the photo already leading the page. */
+  const strip: StripPhoto[] = (tripSpeciesPhotoSlugs[trip.id] ?? []).filter((slug) => slug !== tripPhotoSlugs[trip.id]).map((slug) => {
+    const p = photoOrThrow(slug);
+    const credit = creditText(p);
+    return { src: img(p.src), thumb: img(p.thumb), name: photoName(p, locale), blur: blurUrl(p.src), credit: credit && t('itinerary.credit', { credit }) };
   });
 
   /* TouristTrip structured data: itinerary, audience, photo and the page's place in the site. No offers
@@ -193,8 +190,7 @@ export default async function TripDetailPage({ params }: PageArgs) {
             {photo && (
               <div className="no-print">
                 <figure className="relative m-0 aspect-[4/3] overflow-hidden rounded-2xl bg-wd-deep" style={blurStyle(photo.wide ?? photo.src)}>
-                  {/* eslint-disable-next-line @next/next/no-img-element -- static export with unoptimised images; img() adds the basePath */}
-                  <img
+                  <HeroImage
                     src={img(photo.wide ?? photo.src)}
                     alt={photoName(photo, locale)}
                     decoding="async"
@@ -286,48 +282,6 @@ export default async function TripDetailPage({ params }: PageArgs) {
         </div>
       </section>
 
-      {/* ── Beyond the wildlife ──────────────────────────────────────────── */}
-      <section id="scenery" className="wd-section">
-        <div className="wd-wrap">
-          <div className="wd-head">
-            <h2 className="h-section">{t('scenery.title')}</h2>
-            <p>{t('scenery.intro')}</p>
-          </div>
-          <ul className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-            {trip.sceneryHighlights.map((s, i) => {
-              const p = scenery[i];
-              return (
-                <li key={s}>
-                  <figure className="m-0">
-                    <div className="aspect-[4/3] overflow-hidden rounded-xl bg-wd-deep" style={blurStyle(p.src)}>
-                      {/* eslint-disable-next-line @next/next/no-img-element -- static export with unoptimised images; img() adds the basePath */}
-                      <img
-                        src={img(p.thumb)}
-                        srcSet={`${img(p.thumb)} ${p.thumbW}w, ${img(p.src)} ${p.w}w`}
-                        sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw"
-                        alt={p.alt}
-                        loading="lazy"
-                        decoding="async"
-                        className="h-full w-full object-cover"
-                      />
-                    </div>
-                    <figcaption className="mt-3">
-                      <span className="block leading-snug text-wd-ink">{s}</span>
-                      {(p.where || p.credit) && (
-                        <span className="mt-1 block text-xs text-wd-faint">
-                          {p.where && `${t('scenery.photographedAt', { where: p.where })} `}
-                          {p.credit && t('scenery.credit', { credit: p.credit })}
-                        </span>
-                      )}
-                    </figcaption>
-                  </figure>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </section>
-
       {/* ── Is this trip right for you? ──────────────────────────────────── */}
       <section id="fit" className="wd-section">
         <div className="wd-wrap">
@@ -390,25 +344,14 @@ export default async function TripDetailPage({ params }: PageArgs) {
             <h2 className="h-section">{t('itinerary.title')}</h2>
             <p>{t('itinerary.intro')}</p>
           </div>
-          <ol className="relative mx-auto max-w-3xl">
-            {trip.itinerary.map((d, i) => (
-              <li key={d.day} className="relative pl-12 pb-6 last:pb-0">
-                {i < trip.itinerary.length - 1 && (
-                  <span
-                    aria-hidden="true"
-                    className="absolute left-[calc(0.95rem-1px)] top-[2.9rem] -bottom-3 w-0.5 rounded-full bg-gradient-to-b from-wd-lime/60 to-wd-lime/15"
-                  />
-                )}
-                <span aria-hidden="true" className="wd-badge absolute left-0 top-3">{d.day}</span>
-                <article className="glass p-5 sm:p-6 card-3d">
-                  <h3 className="h-card">
-                    {t.rich('itinerary.dayTitle', { day: d.day, title: d.title, sr: (chunks) => <span className="sr-only">{chunks}</span> })}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-wd-muted">{d.description}</p>
-                </article>
-              </li>
-            ))}
-          </ol>
+          <RouteStory {...routeFor(trip, locale)} />
+          <p className="mt-10 text-xs text-wd-faint no-print">
+            {t.rich('itinerary.photoNote', {
+              link: (chunks) => (
+                <Link href="/credits/" className="underline underline-offset-2 hover:text-wd-ink">{chunks}</Link>
+              ),
+            })}
+          </p>
         </div>
       </section>
 

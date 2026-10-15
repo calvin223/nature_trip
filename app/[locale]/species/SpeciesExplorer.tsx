@@ -16,11 +16,12 @@ import {
   img,
   photoCategories,
   photoName,
+  creditText,
   photosForTab,
   speciesMatchesTab,
   speciesTabs,
   tabForPhotoCategory,
-  thumbWidth,
+  THUMB_WIDTH,
   type Photo,
 } from '@/lib/photos';
 
@@ -84,7 +85,7 @@ export default function SpeciesExplorer({
     <div ref={rootRef} className="scroll-mt-16 md:scroll-mt-[72px]">
       {/* Anchor targets for /species/#cat-<category>, clear of the fixed nav. */}
       {photoCategories.map((c) => (
-        <span key={c.id} id={`cat-${c.id}`} className="block scroll-mt-28" aria-hidden="true" />
+        <span key={c} id={`cat-${c}`} className="block scroll-mt-28" aria-hidden="true" />
       ))}
 
       {/* Sticks under the main nav on the same translucent paper, so the filter stays at hand. */}
@@ -146,7 +147,7 @@ export default function SpeciesExplorer({
           height: p.h,
           alt: photoName(p, locale),
           title: photoName(p, locale),
-          description: <SpeciesCaption facts={factsFor(p.slug, locale)} seenOn={seenOn[p.slug]} />,
+          description: <SpeciesCaption facts={factsFor(p.slug, locale)} seenOn={seenOn[p.slug]} credit={creditText(p)} />,
         }))}
       />
     </div>
@@ -155,13 +156,15 @@ export default function SpeciesExplorer({
 
 /* Photo on the left, its details on the right; autoplay, the arrows and the dots all move both.
    Autoplay is the active dot's fill (.focus__dot, 5 s linear): when it completes, the next species
-   shows. Hovering or focusing anywhere pauses the fill, and so the timer, exactly where it is; the
-   pause button beside the dots holds it until pressed again (touch has no hover to rely on); reduced
-   motion has no fill and so no autoplay (and no button). Changes are announced only while paused. */
+   shows. Keyboard focus anywhere pauses the fill, and so the timer, exactly where it is (a mouse
+   hovering or clicking does not: the owner wants it to keep running while people read); the pause
+   button beside the dots holds it until pressed again; reduced motion has no fill and so no
+   autoplay (and no button). Changes are announced only while paused. */
 function FocusCarousel({ list }: { list: FocusSpecies[] }) {
   const t = useTranslations('species');
+  const tf = useTranslations('common.facts');
   const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false); // hover or focus
+  const [paused, setPaused] = useState(false); // keyboard focus
   const [stopped, setStopped] = useState(false); // the pause button
   const held = paused || stopped;
 
@@ -169,9 +172,7 @@ function FocusCarousel({ list }: { list: FocusSpecies[] }) {
     <div
       className="grid gap-6 md:grid-cols-12 md:gap-10 md:items-center"
       data-paused={held || undefined}
-      onPointerEnter={() => setPaused(true)}
-      onPointerLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
+      onFocus={(e) => e.target.matches(':focus-visible') && setPaused(true)}
       onBlur={(e: FocusEvent<HTMLDivElement>) => {
         if (!e.currentTarget.contains(e.relatedTarget)) setPaused(false);
       }}
@@ -181,7 +182,7 @@ function FocusCarousel({ list }: { list: FocusSpecies[] }) {
         label={t('focus.title')}
         slides={list.map(({ photo: p, commonName }) => ({
           src: img(p.thumb),
-          srcSet: `${img(p.thumb)} ${thumbWidth(p)}w, ${img(p.src)} ${p.w}w`,
+          srcSet: `${img(p.thumb)} ${THUMB_WIDTH}w, ${img(p.src)} ${p.w}w`,
           alt: commonName,
         }))}
         sizes="(min-width: 1280px) 700px, (min-width: 768px) 56vw, 100vw"
@@ -210,6 +211,7 @@ function FocusCarousel({ list }: { list: FocusSpecies[] }) {
                 <p className="focus__label">{t('focus.fieldNote')}</p>
                 <p>{sp.fieldNote}</p>
               </div>
+              {sp.photo.credit && <p className="mt-4 text-xs text-wd-faint">{tf('credit', { credit: creditText(sp.photo) ?? '' })}</p>}
             </div>
           ))}
         </div>
@@ -234,8 +236,8 @@ function FocusCarousel({ list }: { list: FocusSpecies[] }) {
                 />
               ))}
             </div>
-            {/* Resuming clears the hover/focus pause too, so the press shows at once (the next
-                pointerenter or focus pauses again as usual). */}
+            {/* Resuming clears the focus pause too, so the press shows at once (the next keyboard
+                focus pauses again as usual). */}
             <button
               type="button"
               className="focus__toggle"

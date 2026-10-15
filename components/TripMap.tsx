@@ -61,39 +61,21 @@ const REGION_ACCENT: Record<TripMapId, string> = {
 /** Route draw-in duration, seconds. */
 const DRAW_SECONDS = 2.8;
 
-export interface TripMapProps {
-  tripId: TripMapId;
-  /** Classes for the outer wrapper (width, margins). The map fills the wrapper's width. */
-  className?: string;
-  /** Show the visible stop list with OpenStreetMap links under route maps. Default true. */
-  showStopList?: boolean;
-}
-
-export default function TripMap({ tripId, className, showStopList = true }: TripMapProps) {
+export default function TripMap({ tripId }: { tripId: TripMapId }) {
   const def = tripMaps[tripId];
   const geo = GEO[tripId];
   if (!def || !geo) throw new Error(`TripMap: no map is defined for trip "${tripId}"`);
   if (geo.version !== GEO_VERSION || geo.signature !== mapSignature(def) || geo.kind !== def.kind) throw staleError(tripId);
   return def.kind === 'route' ? (
-    <RouteMap def={def} geo={geo as RouteGeo} className={className} showStopList={showStopList} />
+    <RouteMap def={def} geo={geo as RouteGeo} />
   ) : (
-    <RegionMap def={def} geo={geo as RegionGeo} className={className} />
+    <RegionMap def={def} geo={geo as RegionGeo} />
   );
 }
 
 // ---------------------------------------------------------------------------------------------
 
-function RouteMap({
-  def,
-  geo,
-  className,
-  showStopList,
-}: {
-  def: RouteMapDef;
-  geo: RouteGeo;
-  className?: string;
-  showStopList: boolean;
-}) {
+function RouteMap({ def, geo }: { def: RouteMapDef; geo: RouteGeo }) {
   const t = useTranslations('maps');
   const locale = useLocale();
   const uid = `wdm-${def.id}`;
@@ -119,7 +101,7 @@ function RouteMap({
   };
 
   return (
-    <figure className={['m-0', className].filter(Boolean).join(' ')} style={cssVars({ '--wdm-ar': geo.width / geo.height })}>
+    <figure className="m-0" style={cssVars({ '--wdm-ar': geo.width / geo.height })}>
       <MapStyles />
       <MapEnhancer className="wdm wdm-routemap">
         <svg
@@ -239,9 +221,7 @@ function RouteMap({
           ))}
         </ol>
 
-        {showStopList && (
-          <StopList stops={stops} gateways={gateways} detail={detail} />
-        )}
+        <StopList stops={stops} gateways={gateways} detail={detail} />
         <MapKey />
       </MapEnhancer>
       <figcaption>
@@ -312,26 +292,26 @@ function StopList({ stops, gateways, detail }: { stops: MapStop[]; gateways: Map
         <li
           key={row.id}
           data-stop={row.kind === 'gateway' ? undefined : row.id}
-          className="flex items-start gap-3 rounded-lg px-1 py-1 transition-colors hover:bg-[color:var(--wd-forest,#134e2e)]/40 focus-within:bg-[color:var(--wd-forest,#134e2e)]/40"
+          className="flex items-start gap-3 rounded-lg px-1 py-1 transition-colors hover:bg-[color:var(--wd-forest)]/40 focus-within:bg-[color:var(--wd-forest)]/40"
         >
           <span
             aria-hidden="true"
             className={[
               'mt-0.5 inline-flex h-6 min-w-6 shrink-0 items-center justify-center rounded-full px-1.5 text-xs font-bold',
               row.kind === 'stop'
-                ? 'bg-[color:var(--wd-sun,#f2b134)] text-[color:var(--wd-night,#07140d)]'
+                ? 'bg-[color:var(--wd-sun)] text-[color:var(--wd-night)]'
                 : row.kind === 'base'
-                  ? 'border-2 border-[color:var(--wd-sun,#f2b134)] bg-[color:var(--wd-night,#07140d)] text-[color:var(--wd-sun,#f2b134)]'
-                  : 'bg-[color:var(--wd-sand,#efe6c8)] text-[color:var(--wd-night,#07140d)]',
+                  ? 'border-2 border-[color:var(--wd-sun)] bg-[color:var(--wd-night)] text-[color:var(--wd-sun)]'
+                  : 'bg-[color:var(--wd-sand)] text-[color:var(--wd-night)]',
             ].join(' ')}
           >
             {row.chip}
           </span>
           <span className="min-w-0 flex-1">
-            <span aria-hidden="true" className="block font-semibold text-[color:var(--wd-ink,#eaf3e3)]">
+            <span aria-hidden="true" className="block font-semibold text-[color:var(--wd-ink)]">
               {row.name}
             </span>
-            <span aria-hidden="true" className="block text-xs text-[color:var(--wd-ink,#eaf3e3)]/70">
+            <span aria-hidden="true" className="block text-xs text-[color:var(--wd-ink)]/70">
               {row.detail}
             </span>
             <a
@@ -339,7 +319,7 @@ function StopList({ stops, gateways, detail }: { stops: MapStop[]; gateways: Map
               target="_blank"
               rel="noopener noreferrer"
               aria-label={t('stopList.openLabel', { name: row.name })}
-              className="text-xs font-medium text-[color:var(--wd-lime,#9ad14b)] underline decoration-dotted underline-offset-2 hover:decoration-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--wd-lime,#9ad14b)]"
+              className="text-xs font-medium text-[color:var(--wd-lime)] underline decoration-dotted underline-offset-2 hover:decoration-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--wd-lime)]"
             >
               {t('stopList.open')}
             </a>
@@ -373,7 +353,7 @@ function MapKey() {
   return (
     <ul
       aria-label={t('label')}
-      className="wdm-key mt-3 flex list-none flex-wrap gap-x-4 gap-y-1.5 p-0 text-xs text-[color:var(--wd-ink,#eaf3e3)]/80"
+      className="wdm-key mt-3 flex list-none flex-wrap gap-x-4 gap-y-1.5 p-0 text-xs text-[color:var(--wd-ink)]/80"
     >
       <li className={item}>
         <svg aria-hidden="true" width="22" height="14" viewBox="0 0 22 14">
@@ -412,7 +392,7 @@ function MapKey() {
 
 // ---------------------------------------------------------------------------------------------
 
-function RegionMap({ def, geo, className }: { def: RegionMapDef; geo: RegionGeo; className?: string }) {
+function RegionMap({ def, geo }: { def: RegionMapDef; geo: RegionGeo }) {
   const t = useTranslations('maps');
   const locale = useLocale();
   const uid = `wdm-${def.id}`;
@@ -421,7 +401,7 @@ function RegionMap({ def, geo, className }: { def: RegionMapDef; geo: RegionGeo;
   const { regionLabel: rl } = geo;
   const diffuse = def.region.kind === 'ellipse';
   return (
-    <figure className={['m-0', className].filter(Boolean).join(' ')} style={cssVars({ '--wdm-ar': geo.width / geo.height })}>
+    <figure className="m-0" style={cssVars({ '--wdm-ar': geo.width / geo.height })}>
       <MapStyles />
       <div className="wdm">
         <svg className="wdm-svg" viewBox={`0 0 ${geo.width} ${geo.height}`} role="img" aria-label={t(`trips.${def.id}.ariaLabel`)}>

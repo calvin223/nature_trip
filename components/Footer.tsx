@@ -14,7 +14,6 @@ const COLS: { title: 'explore' | 'beforeYouTravel'; links: { href: string; label
     title: 'explore',
     links: [
       { href: '/trips/', label: 'trips' },
-      { href: '/journey/', label: 'journey' },
       { href: '/experts/', label: 'naturalists' },
       { href: '/species/', label: 'species' },
       { href: '/when-to-visit/', label: 'whenToVisit' },

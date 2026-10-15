@@ -5,7 +5,7 @@
   },
   "head": {
     "title": "Before you travel",
-    "lede": "What each trip includes, what you arrange and bring yourself, and the health and insurance details we need from every guest before booking."
+    "lede": "What to do at each step, from choosing a trip that suits your pace to packing your bag, and the health and insurance details we need from every guest."
   },
   "essentials": {
     "title": "Three things we need from every guest",
@@ -13,33 +13,44 @@
   },
   "nav": {
     "title": "Practical info",
-    "responsibilities": "Your responsibilities",
-    "health": "Health & insurance",
-    "difficulty": "Difficulty grades",
-    "packing": "Packing",
-    "included": "What is included",
+    "enquire": "When you enquire",
+    "book": "When you book",
+    "leave": "Before you leave home",
+    "trip": "On the trip",
     "faq": "More questions"
   },
-  "responsibilities": {
-    "title": "What you are responsible for",
-    "intro": "Each trip page lists what is included between its start and end points. These you arrange and bring yourself."
+  "stages": {
+    "enquire": {
+      "title": "When you enquire",
+      "intro": "Choose a trip that suits your pace. On a private departure we can set the pace around your group."
+    },
+    "book": {
+      "title": "When you book",
+      "intro": "Three conditions of booking for every guest. Many of our routes are remote, and the nearest hospital can be hours away, so we plan the pace and our emergency response around what you tell us."
+    },
+    "leave": {
+      "title": "Before you leave home",
+      "intro": "These you arrange and bring yourself. Each trip page lists what is included between its start and end points."
+    },
+    "trip": {
+      "title": "On the trip",
+      "intro": "We use wildlife lodges, guesthouses and nature stays chosen for comfort and for being close to the field. Meals are included on every trip; tell us about any allergy or dietary need when you book."
+    }
   },
   "health": {
-    "title": "Health, insurance & medical information",
-    "intro": "Many of our routes are remote, and the nearest hospital can be hours away, so we plan the pace and our emergency response around what you tell us.",
     "required": "Required at booking",
     "notSure": "Not sure whether a trip suits a health condition, an allergy or your mobility? Ask us before you book.",
     "ask": "Ask a health question",
     "whatsappMessage": "Hello Wildora, I have a health question before booking: "
   },
   "difficulty": {
-    "title": "Difficulty grades",
-    "intro": "Every trip page shows its grade. On a private departure we can set the pace around your group.",
+    "title": "Your pace",
     "none": "No current fixed departure is graded {grade}. A private route can be, on request."
   },
   "packing": {
     "title": "What to pack",
     "intro": "A general list for all our routes. Each <link>trip page</link> adds its own “What to bring” list for its season and terrain.",
+    "hint": "Tick things off as you pack. The ticks clear when you leave the page.",
     "essential": {
       "title": "Essential gear",
       "items": [
@@ -69,10 +80,10 @@
     }
   },
   "included": {
-    "title": "What each trip includes",
-    "intro": "We use wildlife lodges, guesthouses and nature stays chosen for comfort and for being close to the field. Meals are included on every trip; tell us about any allergy or dietary need when you book.",
+    "title": "What we arrange",
+    "seeTrip": "See the trip",
     "notIncluded": "Not included on any trip",
-    "notIncludedBody": "Travel medical insurance, and everything under <link>What you are responsible for</link>."
+    "notIncludedBody": "Travel medical insurance, and everything under <link>Before you leave home</link>."
   },
   "faq": {
     "title": "More questions",

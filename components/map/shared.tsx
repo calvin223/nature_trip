@@ -162,14 +162,15 @@ export const MAP_CSS = `
 .wdm-tip-b{fill:var(--wd-sand,#efe6c8);font-size:calc(var(--fs-tipBody) * 1px);font-weight:500}
 .wdm-scale-bar{fill:var(--wd-ink,#eaf3e3);fill-opacity:.85}
 .wdm-scale-txt{fill:var(--wd-ink,#eaf3e3);fill-opacity:.85;font-size:calc(var(--fs-scale) * 1px);stroke-width:3px}
-.wdm-ov-link{cursor:pointer}
+/* Region links are mouse shortcuts (tabindex -1, hidden from assistive tech; the real links sit
+   beside the map), so the browser's focus ring, drawn as a box round the region, never helps. */
+.wdm-ov-link{cursor:pointer;outline:none}
 .wdm-ov-link .wdm-halo{transition:opacity .2s}
 .wdm-ov-link:hover .wdm-halo,.wdm-ov-link[data-active] .wdm-halo{opacity:.8}
 .wdm-ov-route{fill:none;stroke:var(--wdm-accent,var(--wd-lime,#9ad14b));stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .wdm-ov-routehalo{fill:none;stroke:var(--wdm-accent,var(--wd-lime,#9ad14b));stroke-width:18;stroke-linecap:round;stroke-linejoin:round;opacity:.45}
 .wdm-ov-lbl{fill:var(--wdm-accent,var(--wd-lime,#9ad14b));font-size:calc(var(--fs-overview) * 1px);font-weight:700;stroke-width:4px}
 .wdm-ov-leader{stroke:var(--wdm-accent,var(--wd-lime,#9ad14b));stroke-width:1.3;stroke-opacity:.8}
-.wdm-ov-dim{opacity:.35}
 .wdm-pop{transform-box:fill-box;transform-origin:center}
 .wdm-key-route{stroke:var(--wd-lime,#9ad14b)}
 .wdm-key-leg{stroke:var(--wd-sand,#efe6c8)}

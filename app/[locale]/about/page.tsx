@@ -6,21 +6,16 @@ import { Link } from '@/i18n/navigation';
 import type { Metadata } from 'next';
 import { getContent } from '@/lib/content';
 import type { Trip } from '@/lib/data';
-import { findPhoto, img, photoName, type Photo } from '@/lib/photos';
+import { img, photoName, photoOrThrow } from '@/lib/photos';
+import { findPlace } from '@/lib/placePhotos';
 import { blurStyle } from '@/lib/placeholders';
 import IndiaOverviewMap from '@/components/IndiaOverviewMap';
+import HeroImage from '@/components/HeroImage';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'about.meta' });
   return { title: t('title'), description: t('description'), alternates: alternates(locale, '/about/') };
-}
-
-/** Look up a photo by slug, failing the build if it has gone missing from lib/photos.ts. */
-function photo(slug: string): Photo {
-  const p = findPhoto(slug);
-  if (!p) throw new Error(`about/page.tsx: photo "${slug}" not found in lib/photos.ts`);
-  return p;
 }
 
 /* The three regions we run trips in (text: about.regions.items). Text only restates what the
@@ -32,21 +27,21 @@ const REGIONS = [
 ] as const;
 
 /* Habitats along the Western Ghats Endemics Expedition, in route order. Places are only those
-   named in that trip's itinerary in lib/data.ts; the day-by-day detail lives on /journey/.
+   named in that trip's itinerary in lib/data.ts; the day-by-day detail lives on that trip's page.
    Photos show the habitat type, not necessarily the place named. */
 const HABITATS = ([
   { key: 'lowland', photo: 'evergreen-forest' },
   { key: 'shola', photo: 'montane-shola-forest' },
   { key: 'rainShadow', photo: 'dry-deciduous-forest' },
-  { key: 'fragments', photo: 'indian-giant-squirrel' },
+  { key: 'fragments', photo: 'indian-gaur' },
   { key: 'nilgiris', photo: 'nilgiri-rhododendron' },
   { key: 'tigerCountry', photo: 'asian-elephant-herd' },
-] as const).map((h) => ({ ...h, img: photo(h.photo) }));
+] as const).map((h) => ({ ...h, img: photoOrThrow(h.photo) }));
 
 /* Species found only in the Western Ghats and named as targets on the Endemics route. */
 const ENDEMIC_SLUGS = [
   'lion-tailed-macaque',
-  'nilgiri-tahr-male',
+  'nilgiri-tahr-female',
   'malabar-grey-hornbill',
   'nilgiri-flycatcher',
   'nilgiri-pipit',
@@ -64,7 +59,9 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
     if (!found) throw new Error(`about/page.tsx: trip "${id}" not found in lib/data.ts`);
     return found;
   };
-  const hero = photo('grassland-shola-mosaic');
+  /* A credited place photo, so the hero differs from the home page's shola photo. */
+  const hero = findPlace('pampadum-shola', locale);
+  if (!hero) throw new Error('about/page.tsx: place photo "pampadum-shola" not found in lib/placePhotos.ts');
   const endemics = trip('western-ghats-endemics');
 
   return (
@@ -75,9 +72,12 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           <p className="lede mt-6 max-w-2xl">{t('hero.lede')}</p>
           <figure className="mt-8 sm:mt-10">
             <div className="aspect-[4/3] sm:aspect-[21/9] overflow-hidden rounded-2xl bg-wd-deep" style={blurStyle(hero.src)}>
-              <img src={img(hero.src)} alt={photoName(hero, locale)} width={hero.w} height={hero.h} decoding="async" fetchPriority="high" className="h-full w-full object-cover" />
+              <HeroImage src={img(hero.src)} alt={hero.alt} width={hero.w} height={hero.h} decoding="async" fetchPriority="high" className="h-full w-full object-cover" />
             </div>
-            <figcaption className="mt-3 text-sm text-wd-muted">{t('hero.caption')}</figcaption>
+            <figcaption className="mt-3 text-sm text-wd-muted">
+              {t('hero.caption')}{' '}
+              <span className="text-wd-faint">{tc('facts.credit', { credit: `${hero.credit.author}, ${hero.credit.licence}` })}</span>
+            </figcaption>
           </figure>
         </div>
       </section>
@@ -125,7 +125,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
               ))}
             </ul>
           </div>
-          <IndiaOverviewMap showLegend={false} />
+          <IndiaOverviewMap />
         </div>
       </section>
 
@@ -148,7 +148,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
             ))}
           </ul>
           <p className="mt-8">
-            <Link href="/journey/" className="link-arrow">{t('habitats.link')}</Link>
+            <Link href="/trips/western-ghats-endemics/#itinerary" className="link-arrow">{t('habitats.link')}</Link>
           </p>
         </div>
       </section>
@@ -162,13 +162,13 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           </div>
           <ul className="grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3">
             {ENDEMIC_SLUGS.map((slug) => {
-              const p = photo(slug);
+              const p = photoOrThrow(slug);
               const name = photoName(p, locale);
               return (
                 <li key={slug}>
                   <figure className="m-0">
                     <div className="aspect-[4/3] overflow-hidden rounded-xl bg-wd-deep" style={blurStyle(p.wide ?? p.src)}>
-                      <img src={img(p.wide ?? p.src)} alt={name} loading="lazy" decoding="async" className="h-full w-full object-cover" />
+                      <img src={img(p.wide ?? p.src)} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
                     </div>
                     {/* ponytail: strips only the English "(Male)"/"(Female)" suffix; a translated photo name keeps its own. */}
                     <figcaption className="mt-2.5 text-sm font-medium text-wd-ink">{name.replace(/ \((Male|Female)\)$/, '')}</figcaption>

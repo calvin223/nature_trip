@@ -1,5 +1,5 @@
 /* Wildora mark: a single leaf with its midrib, in the canopy gradient. */
-export default function LeafMark({ className = 'w-8 h-8', id = 'wdmark' }: { className?: string; id?: string }) {
+export default function LeafMark({ className, id }: { className: string; id: string }) {
   return (
     <svg className={className} viewBox="0 0 64 64" aria-hidden="true">
       <defs>

@@ -16,14 +16,14 @@ const photosDir = join(root, 'public', 'photos');
 const originals = join(root, 'Website Photos', 'z wildlife photos');
 
 /* Crops are fractions of the auto-rotated original, so they survive a re-export at another size.
-   Lion-tailed macaque (5184 x 3456, portrait after EXIF rotation): face centre ≈ (45%, 24%). */
+   Young Bengal tiger (6000 x 4000): ears at ≈ 10% down, paws at ≈ 88%, face centre ≈ 51% across. */
 const HEROES = [
   {
-    src: 'Mammals/Lion tailed macque.JPG',
-    name: 'macaque',
+    src: 'Mammals/Tiger cub (2).JPG',
+    name: 'tiger',
     crops: {
-      wide: { left: 0, top: 0.097, width: 1, height: 0.375, widths: [1280, 2400] },   // 16:9
-      tall: { left: 0.019, top: 0, width: 0.844, height: 1, widths: [720, 1080] },     // 9:16
+      wide: { left: 0, top: 0.05, width: 1, height: 0.84375, widths: [1280, 2400] },    // 16:9
+      tall: { left: 0.3225, top: 0, width: 0.375, height: 1, widths: [720, 1080] },     // 9:16
     },
   },
 ];
@@ -47,7 +47,8 @@ async function buildHeroes() {
       };
       for (const w of c.widths) {
         const file = join(out, `${h.name}-${kind}-${w}.webp`);
-        const info = await base.clone().extract(region).resize({ width: w }).webp({ quality: 80 }).toFile(file);
+        // 72: indistinguishable from 80 at full size on the tiger's fur, and about a fifth smaller.
+        const info = await base.clone().extract(region).resize({ width: w }).webp({ quality: 72 }).toFile(file);
         console.log(`hero: ${relative(root, file)} ${info.width}x${info.height} ${Math.round(info.size / 1024)} KB`);
       }
     }

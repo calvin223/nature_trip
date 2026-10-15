@@ -31,28 +31,51 @@ const REQUIRED_INDEXES = REQUIRED_MATCHERS.map((re) => {
   return i;
 });
 
-const GRADE_TONE: Record<Trip['difficulty'], string> = { Easy: 'text-wd-ink', Moderate: 'text-wd-sun', Challenging: 'text-wd-trogon' };
-const LEVELS = ['Easy', 'Moderate', 'Challenging'] as const;
+/* Each grade's place on a three-step scale, and the colour of its filled steps. */
+const LEVELS = [
+  { level: 'Easy', steps: 1, tone: 'text-wd-ink', fill: 'bg-wd-fern' },
+  { level: 'Moderate', steps: 2, tone: 'text-wd-sun', fill: 'bg-[var(--wd-sun-soft)]' },
+  { level: 'Challenging', steps: 3, tone: 'text-wd-trogon', fill: 'bg-wd-trogon' },
+] as const satisfies readonly { level: Trip['difficulty']; steps: number; tone: string; fill: string }[];
 const PACKING_LISTS = ['essential', 'extras'] as const;
 
-/** A titled row: the term on the left, its detail on the right, ruled above. */
-function Row({ title, mark, children }: { title: string; mark?: string; children: ReactNode }) {
+/* The page follows the order a guest acts in: enquire, book, prepare, travel. Ids keep the old
+   anchors working: #health (trip pages, custom groups), #difficulty and #packing (trip pages). */
+type StageKey = 'enquire' | 'book' | 'leave' | 'trip';
+const STAGES: { key: StageKey; id: string; icon: ReactNode }[] = [
+  { key: 'enquire', id: 'enquire', icon: <path d="M4 5h16v11H9l-5 4V5Z" /> },
+  { key: 'book', id: 'health', icon: <path d="M12 3 5 6v5c0 4.4 3 8.3 7 10 4-1.7 7-5.6 7-10V6l-7-3Zm-3 9 2.2 2.2L15.5 10" /> },
+  { key: 'leave', id: 'before', icon: <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M5 7h14a1 1 0 0 1 1 1v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a1 1 0 0 1 1-1Zm3 6h8" /> },
+  { key: 'trip', id: 'on-trip', icon: <path d="M6.5 20a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm11 0a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM10 16.5h4M5 13.5 7 5h3l1 8M19 13.5 17 5h-3l-1 8" /> },
+];
+
+/** One stage on the trail: its marker and heading on the left (sticky on wide screens), the content on the right. */
+function Stage({ id, icon, title, intro, children }: { id: string; icon: ReactNode; title: string; intro: string; children: ReactNode }) {
   return (
-    <div className="grid gap-2 border-t border-[var(--wd-line)] py-6 md:grid-cols-[minmax(0,4fr)_minmax(0,7fr)] md:gap-10">
-      <dt>
-        <span className="font-semibold text-wd-ink">{title}</span>
-        {mark && <span className="mt-1 block text-sm font-semibold text-wd-trogon">{mark}</span>}
-      </dt>
-      <dd className="max-w-[65ch] leading-relaxed text-wd-muted">{children}</dd>
-    </div>
+    <section id={id} className="trail__stage" aria-labelledby={`${id}-title`}>
+      <div className="trail__head">
+        <span className="trail__marker" aria-hidden="true">
+          {/* Sized here as well as in CSS, so a missing stylesheet cannot blow the icon up to the column width. */}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+            {icon}
+          </svg>
+        </span>
+        <div>
+          <h2 id={`${id}-title`} className="h-section">{title}</h2>
+          <p className="mt-3 max-w-md leading-relaxed text-wd-muted">{intro}</p>
+        </div>
+      </div>
+      <div className="trail__body">{children}</div>
+    </section>
   );
 }
 
-function SectionHead({ title, children }: { title: string; children?: ReactNode }) {
+/** A short titled note: the page's text block inside a stage. */
+function Note({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <div className="wd-head">
-      <h2 className="h-section">{title}</h2>
-      {children && <p>{children}</p>}
+    <div>
+      <h3 className="h-card">{title}</h3>
+      <p className="mt-2 leading-relaxed text-wd-muted">{children}</p>
     </div>
   );
 }
@@ -65,9 +88,134 @@ export default async function PracticalPage({ params }: { params: Promise<{ loca
   const { trips, guestResponsibilities, healthAndSafety } = getContent(locale);
   const requiredHealth = REQUIRED_INDEXES.map((i) => healthAndSafety[i]);
   const otherHealth = healthAndSafety.filter((_, i) => !REQUIRED_INDEXES.includes(i));
-  const grades = LEVELS.map((level) => ({ level, label: difficulty(level), tone: GRADE_TONE[level], body: gradeText(level, locale) }));
   const faqGroups = groupFaqs(locale);
   const faqTotal = faqGroups.reduce((n, g) => n + g.items.length, 0);
+
+  const content: Record<StageKey, ReactNode> = {
+    enquire: (
+      <>
+        <div id="difficulty" className="grid gap-x-10 gap-y-10 md:grid-cols-3">
+          {LEVELS.map((g) => {
+            const graded = trips.filter((tr) => tr.difficulty === g.level);
+            const label = difficulty(g.level);
+            return (
+              <article key={g.level}>
+                <span className="flex gap-1" aria-hidden="true">
+                  {[1, 2, 3].map((s) => (
+                    <span key={s} className={`h-1.5 w-8 rounded-full ${s <= g.steps ? g.fill : 'bg-wd-canopy'}`} />
+                  ))}
+                </span>
+                <h3 className={`h-card mt-4 ${g.tone}`}>{label}</h3>
+                <p className="mt-2 leading-relaxed text-wd-muted">{gradeText(g.level, locale)}</p>
+                {graded.length > 0 ? (
+                  <ul className="mt-4 space-y-1.5 text-sm">
+                    {graded.map((tr) => (
+                      <li key={tr.id}>
+                        <Link href={`/trips/${tr.id}/`} className="font-medium text-wd-ink underline decoration-[var(--wd-line-strong)] underline-offset-4 hover:text-wd-lime hover:decoration-current">
+                          {tr.title}
+                        </Link>
+                        <span className="text-wd-faint">, {tr.duration}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="mt-4 text-sm text-wd-faint">{t('difficulty.none', { grade: label })}</p>
+                )}
+              </article>
+            );
+          })}
+        </div>
+        <div className="mt-10 flex flex-col gap-4 rounded-2xl bg-wd-deep p-5 sm:flex-row sm:items-center sm:p-6">
+          <p className="max-w-xl text-wd-ink">{t('health.notSure')}</p>
+          <a href={waLink(t('health.whatsappMessage'))} target="_blank" rel="noopener noreferrer" className="btn btn-wa self-start sm:ml-auto sm:self-center no-print">
+            <WhatsAppIcon /> {t('health.ask')}
+          </a>
+        </div>
+      </>
+    ),
+    book: (
+      <dl className="border-b border-[var(--wd-line)]">
+        {requiredHealth.map((item) => (
+          <div key={item.title} className="grid gap-2 border-t border-[var(--wd-line)] py-6 first:pt-0 first:border-t-0 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-8">
+            <dt>
+              <span className="h-card">{item.title}</span>
+              <span className="mt-1 block text-sm font-semibold text-wd-trogon">{t('health.required')}</span>
+            </dt>
+            <dd className="leading-relaxed text-wd-muted">{item.detail}</dd>
+          </div>
+        ))}
+      </dl>
+    ),
+    leave: (
+      <>
+        <div className="grid gap-x-10 gap-y-8 md:grid-cols-2">
+          {guestResponsibilities.map((item) => (
+            <Note key={item.title} title={item.title}>{item.detail}</Note>
+          ))}
+        </div>
+        <div id="packing" className="mt-12 border-t border-[var(--wd-line-strong)] pt-8">
+          <h3 className="font-display text-2xl font-semibold tracking-tight text-wd-ink">{t('packing.title')}</h3>
+          <p className="mt-2 max-w-2xl leading-relaxed text-wd-muted">
+            {t.rich('packing.intro', { link: (chunks) => <Link href="/trips/" className="link-arrow">{chunks}</Link> })}
+          </p>
+          <p className="mt-1 text-sm text-wd-faint no-print">{t('packing.hint')}</p>
+          <div className="mt-6 grid gap-x-10 gap-y-8 md:grid-cols-2">
+            {PACKING_LISTS.map((list) => (
+              <fieldset key={list}>
+                <legend className="h-card">{t(`packing.${list}.title`)}</legend>
+                <ul className="mt-3">
+                  {(t.raw(`packing.${list}.items`) as string[]).map((item) => (
+                    <li key={item}>
+                      <label className="pack-item">
+                        <input type="checkbox" />
+                        <span>{item}</span>
+                      </label>
+                    </li>
+                  ))}
+                </ul>
+              </fieldset>
+            ))}
+          </div>
+        </div>
+      </>
+    ),
+    trip: (
+      <>
+        <h3 className="h-card">{t('included.title')}</h3>
+        {/* One trip open at a time (details sharing a name); the first starts open. All print open. */}
+        <div className="mt-3 border-t border-[var(--wd-line)]">
+          {trips.map((tr, i) => (
+            <details key={tr.id} name="included" open={i === 0} className="wd-acc">
+              <summary>{tr.title}</summary>
+              <div>
+                <ul className="grid gap-x-8 gap-y-1.5 sm:grid-cols-2">
+                  {tr.included.map((inc) => (
+                    <li key={inc} className="flex items-start gap-2.5">
+                      <span aria-hidden="true" className="mt-[0.7rem] h-px w-2.5 flex-none bg-wd-faint" />
+                      <span>{inc}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Link href={`/trips/${tr.id}/`} className="link-arrow mt-4 text-sm no-print">{t('included.seeTrip')}</Link>
+              </div>
+            </details>
+          ))}
+        </div>
+        <div className="mt-10 grid gap-x-10 gap-y-8 md:grid-cols-2">
+          {otherHealth.map((item) => (
+            <Note key={item.title} title={item.title}>{item.detail}</Note>
+          ))}
+          <div>
+            <h3 className="h-card">{t('included.notIncluded')}</h3>
+            <p className="mt-2 leading-relaxed text-wd-muted">
+              {t.rich('included.notIncludedBody', { link: (chunks) => <a href="#before" className="link-arrow">{chunks}</a> })}
+            </p>
+          </div>
+        </div>
+      </>
+    ),
+  };
+
   return (
     <>
       <section className="wd-page-head">
@@ -79,14 +227,14 @@ export default async function PracticalPage({ params }: { params: Promise<{ loca
 
           <aside className="rounded-2xl bg-wd-deep p-6 sm:p-7" aria-labelledby="essentials-title">
             <h2 id="essentials-title" className="h-card">{t('essentials.title')}</h2>
-            <ol className="mt-4 space-y-2.5">
-              {requiredHealth.map((item, i) => (
+            <ul className="mt-4 space-y-2.5">
+              {requiredHealth.map((item) => (
                 <li key={item.title} className="flex items-baseline gap-3">
-                  <span className="w-4 flex-none font-display text-lg font-semibold text-wd-sun tabular-nums">{i + 1}</span>
+                  <span aria-hidden="true" className="h-1.5 w-1.5 flex-none -translate-y-0.5 rounded-full bg-wd-trogon" />
                   <span className="font-medium text-wd-ink">{item.title}</span>
                 </li>
               ))}
-            </ol>
+            </ul>
             <a href="#health" className="link-arrow mt-5 text-sm">{t('essentials.link')}</a>
           </aside>
         </div>
@@ -94,144 +242,19 @@ export default async function PracticalPage({ params }: { params: Promise<{ loca
 
       <PageNav
         title={t('nav.title')}
-        links={[
-          { href: '#responsibilities', label: t('nav.responsibilities') },
-          { href: '#health', label: t('nav.health') },
-          { href: '#difficulty', label: t('nav.difficulty') },
-          { href: '#packing', label: t('nav.packing') },
-          { href: '#included', label: t('nav.included') },
-          { href: '#faq', label: t('nav.faq') },
-        ]}
+        links={[...STAGES.map((s) => ({ href: `#${s.id}`, label: t(`nav.${s.key}`) })), { href: '#faq', label: t('nav.faq') }]}
       />
 
-      {/* (a) What you are responsible for */}
-      <section id="responsibilities" className="wd-section">
-        <div className="wd-wrap">
-          <SectionHead title={t('responsibilities.title')}>{t('responsibilities.intro')}</SectionHead>
-          <dl className="border-b border-[var(--wd-line)]">
-            {guestResponsibilities.map((item) => (
-              <Row key={item.title} title={item.title}>{item.detail}</Row>
-            ))}
-          </dl>
-        </div>
-      </section>
+      <div className="wd-wrap trail">
+        {STAGES.map((s) => (
+          <Stage key={s.key} id={s.id} icon={s.icon} title={t(`stages.${s.key}.title`)} intro={t(`stages.${s.key}.intro`)}>
+            {content[s.key]}
+          </Stage>
+        ))}
+      </div>
 
-      {/* (b) Health, insurance & medical information */}
-      <section id="health" className="wd-section bg-wd-deep">
-        <div className="wd-wrap">
-          <SectionHead title={t('health.title')}>{t('health.intro')}</SectionHead>
-          <dl className="border-b border-[var(--wd-line)]">
-            {requiredHealth.map((item) => (
-              <Row key={item.title} title={item.title} mark={t('health.required')}>{item.detail}</Row>
-            ))}
-            {otherHealth.map((item) => (
-              <Row key={item.title} title={item.title}>{item.detail}</Row>
-            ))}
-          </dl>
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
-            <p className="text-wd-muted max-w-xl">{t('health.notSure')}</p>
-            <a
-              href={waLink(t('health.whatsappMessage'))}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-wa self-start sm:ml-auto"
-            >
-              <WhatsAppIcon /> {t('health.ask')}
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* (c) Difficulty grades */}
-      <section id="difficulty" className="wd-section">
-        <div className="wd-wrap">
-          <SectionHead title={t('difficulty.title')}>{t('difficulty.intro')}</SectionHead>
-          <div className="grid gap-x-10 gap-y-10 md:grid-cols-3">
-            {grades.map((g) => {
-              const graded = trips.filter((t) => t.difficulty === g.level);
-              return (
-                <article key={g.level} className="border-t border-[var(--wd-line-strong)] pt-5">
-                  <h3 className={`h-card ${g.tone}`}>{g.label}</h3>
-                  <p className="mt-3 leading-relaxed text-wd-muted">{g.body}</p>
-                  {graded.length > 0 ? (
-                    <ul className="mt-5 space-y-1.5 text-sm">
-                      {graded.map((t) => (
-                        <li key={t.id}>
-                          <Link href={`/trips/${t.id}/`} className="font-medium text-wd-ink underline decoration-[var(--wd-line-strong)] underline-offset-4 hover:text-wd-lime hover:decoration-current">
-                            {t.title}
-                          </Link>
-                          <span className="text-wd-faint">, {t.duration}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="mt-5 text-sm text-wd-faint">{t('difficulty.none', { grade: g.label })}</p>
-                  )}
-                </article>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* (c) Packing */}
-      <section id="packing" className="wd-section !pt-0">
-        <div className="wd-wrap">
-          <SectionHead title={t('packing.title')}>
-            {t.rich('packing.intro', { link: (chunks) => <Link href="/trips/" className="link-arrow">{chunks}</Link> })}
-          </SectionHead>
-          <div className="grid gap-x-10 gap-y-10 md:grid-cols-2">
-            {PACKING_LISTS.map((list) => (
-              <article key={list} className="border-t border-[var(--wd-line-strong)] pt-5">
-                <h3 className="h-card">{t(`packing.${list}.title`)}</h3>
-                <ul className="mt-4 space-y-2.5">
-                  {(t.raw(`packing.${list}.items`) as string[]).map((item) => (
-                    <li key={item} className="flex items-start gap-3 leading-relaxed text-wd-muted">
-                      <span aria-hidden="true" className="mt-[0.7rem] h-px w-3 flex-none bg-wd-faint" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* (c) What is included, and (d) the wildlife disclaimer */}
-      <section id="included" className="wd-section bg-wd-deep">
-        <div className="wd-wrap">
-          <SectionHead title={t('included.title')}>{t('included.intro')}</SectionHead>
-
-          <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2 xl:grid-cols-4">
-            {trips.map((t) => (
-              <article key={t.id} className="flex flex-col border-t border-[var(--wd-line-strong)] pt-5">
-                <h3 className="h-card">
-                  <Link href={`/trips/${t.id}/`} className="hover:text-wd-lime transition-colors">{t.title}</Link>
-                </h3>
-                <ul className="mt-3 space-y-1.5 text-sm text-wd-muted">
-                  {t.included.map((inc) => (
-                    <li key={inc} className="flex items-start gap-2.5">
-                      <span aria-hidden="true" className="mt-[0.6rem] h-px w-2.5 flex-none bg-wd-faint" />
-                      <span>{inc}</span>
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
-
-          <div className="mt-10 grid gap-2 border-t border-[var(--wd-line-strong)] pt-6 md:grid-cols-[minmax(0,4fr)_minmax(0,7fr)] md:gap-10">
-            <h3 className="h-card">{t('included.notIncluded')}</h3>
-            <p className="max-w-[65ch] leading-relaxed text-wd-muted">
-              {t.rich('included.notIncludedBody', { link: (chunks) => <a href="#responsibilities" className="link-arrow">{chunks}</a> })}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* (e) FAQ teaser: the full list lives on /faq/ */}
-      <section id="faq" className="wd-section">
+      {/* The full list lives on /faq/ */}
+      <section id="faq" className="wd-section bg-wd-deep">
         <div className="wd-wrap">
           <div className="wd-head">
             <h2 className="h-section">{t('faq.title')}</h2>

@@ -1,6 +1,6 @@
 /* Landscape photographs from Wikimedia Commons under CC0 / CC BY / CC BY-SA: the places on the
    Western Ghats Endemics route, and example scenery for the other trips. Credit them wherever they
-   are shown (the route page and trip pages do, under each photo) and on /credits/. Chosen and licence-checked 2026-10-14; replace with the client's own
+   are shown (the trip page itineraries do, on each photo) and on /credits/. Chosen and licence-checked 2026-10-14; replace with the client's own
    photos when they arrive (CLIENT_QUESTIONS.md item 30).
    Captions, alt text and `credit.changes` are English; translations overlay them from
    content/<locale>/places.json by slug (findPlace with a locale, or localize() from i18n/content). */
@@ -96,7 +96,7 @@ export const placePhotos: PlacePhoto[] = [
   }),
 ];
 
-/* Example scenery for trips whose bases are set at booking (trip pages, "Scenery along the way").
+/* Example scenery for trips whose bases are set at booking (their trip page itineraries).
    Chosen and licence-checked 2026-10-14. */
 export const exampleScenery: PlacePhoto[] = [
   place('ci-meadow', 1440, 810, {

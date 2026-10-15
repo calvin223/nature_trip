@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element -- static export with images.unoptimized: plain <img> with img() adds the basePath, as across the site. */
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { Locale } from '@/i18n/locales';
 import { alternates } from '@/i18n/metadata';
@@ -8,6 +7,7 @@ import { getContent } from '@/lib/content';
 import { img } from '@/lib/photos';
 import { waLink } from '@/lib/site';
 import { WhatsAppIcon } from '@/components/FloatingCTA';
+import HeroImage from '@/components/HeroImage';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -56,7 +56,7 @@ export default async function ExpertsPage({ params }: { params: Promise<{ locale
                 >
                   <div className={`relative aspect-square md:aspect-auto md:min-h-[26rem] bg-wd-deep ${flip ? 'md:order-2' : ''}`}>
                     {expert.imageUrl ? (
-                      <img
+                      <HeroImage
                         src={img(expert.imageUrl)}
                         alt={t('card.portraitAlt', { name: expert.name })}
                         width={600}
@@ -91,11 +91,11 @@ export default async function ExpertsPage({ params }: { params: Promise<{ locale
 
                     <dl className="grid gap-3 sm:grid-cols-2">
                       <div className="rounded-xl border border-[var(--wd-line)] bg-wd-deep p-4">
-                        <dt className="text-sm font-semibold text-wd-faint mb-1.5">{t('card.specialism')}</dt>
+                        <dt className="text-sm font-semibold text-wd-muted mb-1.5">{t('card.specialism')}</dt>
                         <dd className="text-sm text-wd-ink leading-relaxed">{expert.specialization}</dd>
                       </div>
                       <div className="rounded-xl border border-[var(--wd-line)] bg-wd-deep p-4">
-                        <dt className="text-sm font-semibold text-wd-faint mb-1.5">{t('card.experience')}</dt>
+                        <dt className="text-sm font-semibold text-wd-muted mb-1.5">{t('card.experience')}</dt>
                         <dd className="text-sm text-wd-ink leading-relaxed">{expert.experience}</dd>
                       </div>
                     </dl>

@@ -26,16 +26,6 @@
   "status": "Least Concern (IUCN)",
   "range": "Breeds in Central Asia; winters in South Asia, south to peninsular India"
  },
- "waterbird-flock": {
-  "name": "Waterbird flock",
-  "about": "India's lakes and wetlands hold mixed flocks of ducks, storks, herons and waders, swelled in winter by migrants from northern Asia. Early morning, when birds are feeding, is the best time to watch.",
-  "latin": null
- },
- "birds-in-flight": {
-  "name": "Birds in flight",
-  "about": "Flight style is often the quickest way to name a bird at a distance: the steady flap of a duck, the soaring glide of a raptor or the bounding flight of a woodpecker.",
-  "latin": null
- },
  "blue-bearded-bee-eater": {
   "name": "Blue-bearded bee-eater",
   "latin": "Nyctyornis athertoni",
@@ -66,15 +56,6 @@
   "size": "48–53 cm long",
   "status": "Least Concern (IUCN)",
   "range": "Pakistan and India east to South-east Asia"
- },
- "great-indian-bustard": {
-  "name": "Great Indian bustard",
-  "latin": "Ardeotis nigriceps",
-  "about": "Among the heaviest flying birds, it has vanished from about 90% of its former range in India's grasslands. Collisions with overhead power lines are a serious current threat.",
-  "size": "Stands about 1 m tall; males are much larger than females",
-  "status": "Critically Endangered (IUCN)",
-  "range": "Isolated grasslands of western and peninsular India; also Pakistan",
-  "endemicTo": "Indian subcontinent"
  },
  "himalayan-whistling-thrush": {
   "name": "Blue whistling thrush",
@@ -204,14 +185,6 @@
   "status": "Least Concern (IUCN)",
   "range": "Indian subcontinent, south of the Himalaya"
  },
- "northern-shoveler": {
-  "name": "Northern shoveler",
-  "latin": "Spatula clypeata",
-  "about": "A winter visitor that crosses the Himalaya to reach Indian wetlands. Comb-like plates along the edge of its broad, spoon-shaped bill sieve crustaceans and plankton from the water surface.",
-  "size": "44–52 cm long; wingspan 70–84 cm",
-  "status": "Least Concern (IUCN)",
-  "range": "Breeds across northern Eurasia and North America; winters south to the Indian subcontinent"
- },
  "sri-lanka-bay-owl": {
   "name": "Sri Lanka bay owl",
   "latin": "Phodilus assimilis",
@@ -331,7 +304,7 @@
  "nilgiri-tahr": {
   "name": "Nilgiri tahr",
   "latin": "Nilgiritragus hylocrius",
-  "about": "A wild mountain goat of the grassy slopes and cliffs of the southern Western Ghats. Herds feed in the mornings and evenings and rest on ridges by day; Eravikulam holds the largest population.",
+  "about": "A wild mountain goat of the grassy slopes and cliffs of the southern Western Ghats. Herds feed in the mornings and evenings and rest on ridges by day; Eravikulam holds the largest population. Adult males like this one are darker than females, with a pale saddle patch on the back, which is why they are called 'saddlebacks'.",
   "size": "Males about 100 cm at the shoulder",
   "status": "Endangered (IUCN, 2008)",
   "range": "Nilgiri and Anamalai hills, southern Western Ghats",
@@ -370,23 +343,6 @@
   "status": "Endangered (IUCN, 2020)",
   "range": "Western Ghats",
   "endemicTo": "Western Ghats"
- },
- "asiatic-lion": {
-  "name": "Asiatic lion",
-  "latin": "Panthera leo leo",
-  "about": "The only wild lions outside Africa live in and around Gir in Gujarat. Males have shorter, sparser manes than African lions, and both sexes have a fold of skin along the belly.",
-  "size": "Males 107–120 cm at the shoulder, about 160 kg",
-  "status": "Endangered (IUCN, 2024)",
-  "range": "Saurashtra, Gujarat"
- },
- "one-horned-rhinoceros": {
-  "name": "Greater one-horned rhinoceros",
-  "latin": "Rhinoceros unicornis",
-  "about": "A mostly solitary grazer of tall floodplain grassland, with thick folded skin and a single horn usually about 25 cm long. It survives in about a dozen protected areas in northern India and southern Nepal.",
-  "size": "Bulls 163–193 cm at the shoulder, about 2.1–2.2 tonnes",
-  "status": "Vulnerable (IUCN, 2019)",
-  "range": "Northern India and southern Nepal",
-  "endemicTo": "Indian subcontinent"
  },
  "slender-loris": {
   "name": "Slender loris",
@@ -434,7 +390,7 @@
  "tiger-cub-resting": {
   "name": "Bengal tiger",
   "latin": "Panthera tigris tigris",
-  "about": "Cubs are born in a shelter of tall grass, thick bush or a cave. They can follow their mother from about two months old and are fully weaned at around six months.",
+  "about": "Young tigers stay with their mother for up to about two years, learning to hunt, before leaving to find territories of their own.",
   "size": "Adults 90–110 cm at the shoulder",
   "status": "Endangered (IUCN, 2022)",
   "range": "India, Nepal, Bhutan and Bangladesh"
@@ -463,14 +419,6 @@
   "status": "Endangered (IUCN, 2022)",
   "range": "India, Nepal, Bhutan and Bangladesh"
  },
- "wild-buffalo": {
-  "name": "Wild water buffalo",
-  "latin": "Bubalus arnee",
-  "about": "The wild ancestor of the domestic water buffalo, with the largest horns of any living bovid. In India it survives mainly in Assam, and many herds have interbred with domestic buffalo.",
-  "size": "Shoulder height 150–190 cm; 600–1,200 kg",
-  "status": "Endangered (IUCN, 2019)",
-  "range": "India, Nepal, Bhutan, Thailand and Cambodia"
- },
  "atlas-moth": {
   "name": "Atlas moth",
   "latin": "Attacus atlas",
@@ -483,13 +431,6 @@
   "latin": "Actias selene",
   "about": "Adults have no working mouthparts and live only about a week. Its caterpillars feed on many trees and shrubs, including rhododendron, cherry, walnut and sweetgum.",
   "range": "India east to Japan, south to Sri Lanka and Borneo"
- },
- "avicennia-mangrove": {
-  "name": "Avicennia mangrove",
-  "latin": "Avicennia sp.",
-  "about": "Avicennia sends up pencil-like breathing roots (pneumatophores) from the oxygen-poor mud and gets rid of excess salt through its leaves.",
-  "range": "Tidal coasts and estuaries of India, including the Andaman and Nicobar Islands",
-  "feature": "Three species occur in India: Avicennia alba, A. marina and A. officinalis"
  },
  "bamboo-forest": {
   "name": "Bamboo forest",
@@ -543,13 +484,6 @@
   "feature": "Pollen from Nilgiri bogs suggests the mosaic existed 35,000 years ago",
   "latin": null
  },
- "mangrove-creek": {
-  "name": "Mangrove creek",
-  "about": "Tidal creeks through mangrove are nurseries for young fish and crustaceans, and the trees protect the coast from storm surge and erosion.",
-  "range": "India's coasts; largest areas in West Bengal (Sundarbans), Gujarat and the Andaman and Nicobar Islands",
-  "feature": "India has about 4,992 km² of mangrove (Forest Survey of India, 2023)",
-  "latin": null
- },
  "montane-shola-forest": {
   "name": "Montane shola forest",
   "about": "Patches of stunted evergreen forest in sheltered high valleys. Sholas hold water well and are the source of many Western Ghats streams and rivers.",
@@ -557,14 +491,6 @@
   "endemicTo": "Western Ghats",
   "feature": "Stunted montane forest, mostly above 2,000 m, locally down to about 1,600 m",
   "latin": null
- },
- "palmyra-palms": {
-  "name": "Palmyra palm",
-  "latin": "Borassus flabellifer",
-  "about": "The state tree of Tamil Nadu. Its sap is tapped for toddy and boiled down to palm jaggery, and a tree can stay productive for more than 100 years.",
-  "size": "Height 20–30 m",
-  "status": "Least Concern (IUCN)",
-  "range": "South and Southeast Asia"
  },
  "nilgiri-rhododendron": {
   "name": "Nilgiri rhododendron",
@@ -633,18 +559,6 @@
   "about": "Named for the face-like pattern on its back. It gathers in large groups on shrubs; in the northern Western Ghats such groups have been recorded on Ixora and other forest plants.",
   "range": "South and Southeast Asia"
  },
- "sea-star": {
-  "name": "Sea star",
-  "about": "Sea stars walk on hundreds of hydraulic tube feet, and many can push their stomach out of the body to digest prey. Some can regrow lost arms.",
-  "range": "All oceans, from the shore down to abyssal depths",
-  "latin": null
- },
- "shore-crab": {
-  "name": "Shore crab",
-  "about": "A general name for crabs of the shoreline rather than a single species. Many run sideways at speed and shelter in burrows or rock crevices between tides.",
-  "range": "Coasts worldwide, including India's",
-  "latin": null
- },
  "bronze-frog": {
   "name": "Bronze frog",
   "latin": "Indosylvirana sp.",
@@ -655,14 +569,6 @@
   "latin": "Indosylvirana sp.",
   "about": "One of several closely similar golden-backed frogs of southern India and Sri Lanka, usually found near water. Several were only described in 2014, and many are hard to name in the field.",
   "range": "South and Southeast Asia"
- },
- "asian-openbill-stork": {
-  "name": "Asian openbill",
-  "latin": "Anastomus oscitans",
-  "about": "Named for the gap between its mandibles, which develops only with age. It feeds mainly on large apple snails, pulling the body from the shell with the tip of its bill.",
-  "size": "About 81 cm long; stands about 68 cm tall",
-  "status": "Least Concern (IUCN)",
-  "range": "Indian subcontinent and South-east Asia"
  },
  "broad-tailed-grassbird": {
   "name": "Broad-tailed grassbird",
@@ -822,15 +728,6 @@
   "latin": "Nilgiritragus hylocrius",
   "about": "Females are smaller than males and stay paler. Both sexes have curved horns, up to about 30 cm long in females, and the young are usually born in January or February.",
   "size": "Horns up to about 30 cm in females",
-  "status": "Endangered (IUCN, 2008)",
-  "range": "Nilgiri and Anamalai hills, southern Western Ghats",
-  "endemicTo": "Western Ghats"
- },
- "nilgiri-tahr-male": {
-  "name": "Nilgiri tahr",
-  "latin": "Nilgiritragus hylocrius",
-  "about": "Adult males are larger and darker than females, with a bristly mane and a distinctive saddle patch on the back, which is why they are called 'saddlebacks'. Their horns reach about 40 cm.",
-  "size": "About 100 cm at the shoulder; 80–100 kg",
   "status": "Endangered (IUCN, 2008)",
   "range": "Nilgiri and Anamalai hills, southern Western Ghats",
   "endemicTo": "Western Ghats"

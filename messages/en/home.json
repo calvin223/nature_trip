@@ -1,12 +1,12 @@
 {
   "journeyCta": "Follow the 10-day route",
   "hero": {
-    "imageAlt": "A lion-tailed macaque looks straight at the camera from the rainforest",
+    "imageAlt": "A young Bengal tiger lies on the forest floor, looking straight at the camera",
     "title": "Walk into a forest older than the Himalaya.",
     "lede": "Small-group journeys through the rainforest, cloud grassland and tiger country of South India's Western Ghats, guided by the naturalists who study them.",
     "tripsCta": "See trips & dates",
-    "captionName": "Lion-tailed macaque, <i>{latin}</i>",
-    "captionNote": "Found only in the Western Ghats"
+    "captionName": "Bengal tiger, <i>{latin}</i>",
+    "captionNote": "Near-adult, resting on the forest floor"
   },
   "stats": {
     "label": "Wildora in numbers",

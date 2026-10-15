@@ -9,7 +9,7 @@ import { WhatsAppIcon } from '@/components/FloatingCTA';
 import IndiaOverviewMap from '@/components/IndiaOverviewMap';
 import { getContent } from '@/lib/content';
 import type { Trip } from '@/lib/data';
-import { findPhoto, img, photoName, tripPhotoSlugs } from '@/lib/photos';
+import { img, photoName, tripPhoto } from '@/lib/photos';
 import { formatDate, getDepartures } from '@/lib/schedule';
 import { SITE, waLink } from '@/lib/site';
 
@@ -44,17 +44,12 @@ const DIFFICULTY_CHIP: Record<Trip['difficulty'], string> = {
   Challenging: 'chip chip-trogon',
 };
 
-const tripPhoto = (trip: Trip) => {
-  const slug = tripPhotoSlugs[trip.id];
-  return slug ? findPhoto(slug) : undefined;
-};
-
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'trips.meta' });
   const trips = orderedTrips(locale);
   const description = t('description', { count: trips.length });
-  const ogPhoto = tripPhoto(trips[0]);
+  const ogPhoto = tripPhoto(trips[0].id);
   return {
     title: t('title'),
     description,
@@ -107,7 +102,7 @@ export default async function TripsPage({ params }: { params: Promise<{ locale: 
               <p className="lede">{t('where.body')}</p>
             </div>
             <div className="glass p-3 sm:p-5">
-              <IndiaOverviewMap showLegend={false} />
+              <IndiaOverviewMap />
             </div>
           </div>
         </div>
@@ -174,7 +169,7 @@ function TripCard({ trip }: { trip: Trip }) {
   const t = useTranslations('trips.card');
   const difficulty = useTranslations('tripDetail.difficulty');
   const locale = useLocale();
-  const photo = tripPhoto(trip);
+  const photo = tripPhoto(trip.id);
   // Computed at build time in this server component, never in client code.
   const dates = getDepartures(trip, CARD_DEPARTURES);
   const href = `/trips/${trip.id}/`;

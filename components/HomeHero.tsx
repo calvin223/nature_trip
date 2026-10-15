@@ -4,9 +4,9 @@ import { img } from '@/lib/photos';
 import { blurStyle } from '@/lib/placeholders';
 
 /* Full-bleed hero: one photograph, the headline anchored bottom-left.
-   Art-directed crops from the client's 5184 px original (scripts/build-images.mjs):
+   Art-directed crops from the client's 6000 px original (scripts/build-images.mjs):
    16:9 on landscape screens, 9:16 on phones. */
-const WIDE = '/photos/hero/macaque-wide-2400.webp';
+const WIDE = '/photos/hero/tiger-wide-2400.webp';
 
 export default function HomeHero() {
   const t = useTranslations('home');
@@ -15,13 +15,13 @@ export default function HomeHero() {
       <picture>
         <source
           media="(min-aspect-ratio: 4/5)"
-          srcSet={`${img('/photos/hero/macaque-wide-1280.webp')} 1280w, ${img(WIDE)} 2400w`}
+          srcSet={`${img('/photos/hero/tiger-wide-1280.webp')} 1280w, ${img(WIDE)} 2400w`}
           sizes="100vw"
         />
         <img
           className="home-hero__img"
-          src={img('/photos/hero/macaque-tall-1080.webp')}
-          srcSet={`${img('/photos/hero/macaque-tall-720.webp')} 720w, ${img('/photos/hero/macaque-tall-1080.webp')} 1080w`}
+          src={img('/photos/hero/tiger-tall-1080.webp')}
+          srcSet={`${img('/photos/hero/tiger-tall-720.webp')} 720w, ${img('/photos/hero/tiger-tall-1080.webp')} 1080w`}
           sizes="100vw"
           alt={t('hero.imageAlt')}
           fetchPriority="high"
@@ -35,12 +35,12 @@ export default function HomeHero() {
         <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/90">{t('hero.lede')}</p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Link href="/trips/" className="btn btn-light btn-lg">{t('hero.tripsCta')}</Link>
-          <Link href="/journey/" className="btn btn-glass btn-lg">{t('journeyCta')}</Link>
+          <Link href="/trips/western-ghats-endemics/#itinerary" className="btn btn-glass btn-lg">{t('journeyCta')}</Link>
         </div>
       </div>
 
       <p className="home-hero__caption">
-        {t.rich('hero.captionName', { latin: 'Macaca silenus', i: (chunks) => <i className="font-display">{chunks}</i> })}
+        {t.rich('hero.captionName', { latin: 'Panthera tigris tigris', i: (chunks) => <i className="font-display">{chunks}</i> })}
         <br />
         {t('hero.captionNote')}
       </p>

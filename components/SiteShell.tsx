@@ -10,7 +10,9 @@ import { SITE, SITE_URL } from '@/lib/site';
 
 /* One family for everything (variable weight, with italics for Latin names): headings are set
    large, bold and tight; the photographs carry the character. */
-const hanken = Hanken_Grotesk({ variable: '--font-hanken', subsets: ['latin', 'latin-ext'], style: ['normal', 'italic'] });
+/* `subsets` only chooses what is preloaded: Latin covers English. Accented letters (latin-ext, for the
+   planned languages) still load on demand through the font's unicode ranges. */
+const hanken = Hanken_Grotesk({ variable: '--font-hanken', subsets: ['latin'], style: ['normal', 'italic'] });
 
 /* The document around every page in one language: <html lang>, the header, footer and floating
    WhatsApp button, and the business's structured data. Used by the [locale] layout and by the

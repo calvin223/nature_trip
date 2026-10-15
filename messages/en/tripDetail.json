@@ -40,27 +40,6 @@
     "previous": "Previous photos",
     "next": "Next photos"
   },
-  "scenery": {
-    "title": "Scenery along the way",
-    "intro": "Landscapes and places named in the itinerary.",
-    "photographedAt": "Photographed at {where}.",
-    "credit": "Photo: {credit}",
-    "where": {
-      "kettiValley": "the Ketti Valley, just outside Ooty",
-      "kanha": "Kanha Tiger Reserve, Madhya Pradesh",
-      "sondarLake": "Sondar Lake, Kanha Tiger Reserve",
-      "bandhavgarh": "Bandhavgarh Tiger Reserve, Madhya Pradesh",
-      "kanhaVillage": "a buffer-zone village at Kanha",
-      "jogFalls": "Jog Falls, Karnataka, in July",
-      "cardamomHills": "the Cardamom Hills, Kerala",
-      "wayanad": "Wayanad, Kerala",
-      "kausani": "Kausani, Uttarakhand",
-      "cranksRidge": "Crank’s Ridge, near Almora, Uttarakhand",
-      "sandakphu": "the Sandakphu trail, Darjeeling hills",
-      "binsar": "Binsar Wildlife Sanctuary, Uttarakhand",
-      "singalila": "Singalila National Park, Darjeeling hills"
-    }
-  },
   "fit": {
     "title": "Is this trip right for you?",
     "pace": "Pace",
@@ -121,7 +100,25 @@
   "itinerary": {
     "title": "The itinerary",
     "intro": "Day 1 is the departure date.",
-    "dayTitle": "<sr>Day {day}: </sr>{title}"
+    "dayTitle": "<sr>Day {day}: </sr>{title}",
+    "day": "Day {day}",
+    "photographedAt": "Photographed at {where}.",
+    "credit": "Photo: {credit}",
+    "photoNote": "Place photographs from Wikimedia Commons, used under their open licences. <link>Full credits and licences</link>",
+    "where": {
+      "kanha": "Kanha Tiger Reserve, Madhya Pradesh",
+      "sondarLake": "Sondar Lake, Kanha Tiger Reserve",
+      "bandhavgarh": "Bandhavgarh Tiger Reserve, Madhya Pradesh",
+      "kanhaVillage": "a buffer-zone village at Kanha",
+      "jogFalls": "Jog Falls, Karnataka, in July",
+      "cardamomHills": "the Cardamom Hills, Kerala",
+      "wayanad": "Wayanad, Kerala",
+      "kausani": "Kausani, Uttarakhand",
+      "cranksRidge": "Crank’s Ridge, near Almora, Uttarakhand",
+      "sandakphu": "the Sandakphu trail, Darjeeling hills",
+      "binsar": "Binsar Wildlife Sanctuary, Uttarakhand",
+      "singalila": "Singalila National Park, Darjeeling hills"
+    }
   },
   "map": {
     "route": "Follow the route",
@@ -155,7 +152,7 @@
     "form": "Send an enquiry form",
     "whyMonths": "Why these months",
     "askDate": "Ask about this date",
-    "askDateLabel": "Ask about the departure on {date}"
+    "askDateLabel": "Ask about this date: {date}"
   },
   "seo": {
     "western-ghats-endemics": {

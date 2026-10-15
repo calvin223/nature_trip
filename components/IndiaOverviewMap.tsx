@@ -1,7 +1,6 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { overlayEntry } from '@/i18n/content';
 import { Link } from '@/i18n/navigation';
-import { getContent } from '@/lib/content';
 import overviewGeo from '@/lib/geo/india-overview.json';
 import { mapSignature, overviewMap, tripMaps, type OverviewRegion, type TripMapId } from '@/lib/mapData';
 import {
@@ -22,48 +21,34 @@ import {
  * IndiaOverviewMap: India (Natural Earth, India point-of-view boundaries) with the four trip
  * regions, each linking to its trip page. Static inline SVG (server component).
  *
- * Accessibility: the SVG is one image (role="img"); its region links are a pointer
- * convenience hidden from assistive technology. The visible list under the map carries the
- * real, focusable links.
+ * Accessibility: the SVG is hidden from assistive technology and described in text beside it; its
+ * region links are a pointer convenience (an image role may not contain links). The page around it carries the real,
+ * focusable links (About's region list, the trip cards on /trips/).
  *
- * Text: `maps` messages; each region's link text is its trip's title (lib/content), and its
- * on-map label can be translated in content/<locale>/places.json by trip id (`label`).
+ * Text: `maps` messages; each region's on-map label can be translated in
+ * content/<locale>/places.json by trip id (`label`).
  */
 
 const geo = overviewGeo as OverviewGeo;
 const UID = 'wdm-india-overview';
 
-export interface IndiaOverviewMapProps {
-  /** Classes for the outer wrapper (width, margins). The map fills the wrapper's width. */
-  className?: string;
-  /** Emphasise one trip and dim the others (e.g. on that trip's page). */
-  highlight?: TripMapId;
-  /** Show the list of trip links under the map. Default true. */
-  showLegend?: boolean;
-}
-
 const href = (id: TripMapId) => `/trips/${id}/`;
 
-export default function IndiaOverviewMap({ className, highlight, showLegend = true }: IndiaOverviewMapProps) {
+export default function IndiaOverviewMap() {
   const t = useTranslations('maps.overview');
   const locale = useLocale();
   if (geo.version !== GEO_VERSION || geo.signature !== mapSignature(overviewMap)) throw staleError('india-overview');
   for (const r of overviewMap.regions) {
     if (!geo.regions[r.tripId] || !tripMaps[r.tripId]) throw staleError('india-overview');
   }
-  const { trips } = getContent(locale);
   const label = (r: OverviewRegion) => overlayEntry<OverviewRegion>(locale, 'places', r.tripId)?.label ?? r.label;
-  const tripTitle = (id: TripMapId) => {
-    const trip = trips.find((x) => x.id === id);
-    if (!trip) throw new Error(`IndiaOverviewMap: no trip "${id}" in lib/data.ts`);
-    return trip.title;
-  };
 
   return (
-    <figure className={['m-0', className].filter(Boolean).join(' ')} style={cssVars({ '--wdm-ar': geo.width / geo.height })}>
+    <figure className="m-0" style={cssVars({ '--wdm-ar': geo.width / geo.height })}>
       <MapStyles />
       <div className="wdm">
-        <svg className="wdm-svg" viewBox={`0 0 ${geo.width} ${geo.height}`} role="img" aria-label={t('ariaLabel')}>
+        <p className="sr-only">{t('ariaLabel')}</p>
+        <svg className="wdm-svg" viewBox={`0 0 ${geo.width} ${geo.height}`} aria-hidden="true">
           <defs>
             <SoftFilter id={`${UID}-soft`} blur={5} width={geo.width} height={geo.height} />
             <SoftFilter id={`${UID}-diffuse`} blur={11} width={geo.width} height={geo.height} />
@@ -74,15 +59,13 @@ export default function IndiaOverviewMap({ className, highlight, showLegend = tr
             const g = geo.regions[r.tripId];
             const def = tripMaps[r.tripId];
             const diffuse = def.kind === 'region' && def.region.kind === 'ellipse';
-            const dim = highlight && highlight !== r.tripId;
             return (
               <Link
                 key={r.tripId}
                 href={href(r.tripId)}
                 tabIndex={-1}
                 aria-hidden="true"
-                className={['wdm-ov-link', dim ? 'wdm-ov-dim' : ''].filter(Boolean).join(' ')}
-                data-active={highlight === r.tripId ? '' : undefined}
+                className="wdm-ov-link"
                 style={cssVars({ '--wdm-accent': r.colour })}
               >
                 {g.shape && (
@@ -121,26 +104,6 @@ export default function IndiaOverviewMap({ className, highlight, showLegend = tr
         </svg>
       </div>
       <figcaption>
-        {showLegend && (
-          <ul aria-label={t('legendLabel')} className="mt-4 grid list-none gap-2 p-0 text-sm sm:grid-cols-2">
-            {overviewMap.regions.map((r) => (
-              <li key={r.tripId}>
-                <Link
-                  href={href(r.tripId)}
-                  aria-current={highlight === r.tripId ? 'page' : undefined}
-                  className="group inline-flex items-center gap-2.5 rounded-md py-1 pr-2 text-[color:var(--wd-ink,#eaf3e3)] hover:text-[color:var(--wd-lime,#9ad14b)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--wd-lime,#9ad14b)]"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="inline-block h-3 w-3 shrink-0 rounded-full"
-                    style={{ background: r.colour, outline: "1px solid rgba(27, 33, 27, 0.25)" }}
-                  />
-                  <span className="font-medium underline-offset-4 group-hover:underline">{tripTitle(r.tripId)}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
         <Attribution>{t('note')}</Attribution>
       </figcaption>
     </figure>

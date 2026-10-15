@@ -31,12 +31,7 @@ const DAY_MS = 86_400_000;
 const ISO_DATE = /^(\d{4})-(\d{2})-(\d{2})$/;
 
 const WEEKDAY_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;
-const WEEKDAY_LONG = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] as const;
 const MONTH_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as const;
-const MONTH_LONG = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
-] as const;
 
 /** Search horizon. Any valid rule yields a departure well within this. */
 const HORIZON_MONTHS = 60;
@@ -79,13 +74,8 @@ function daysInMonth(y: number, m: number): number {
   return new Date(Date.UTC(y, m, 0)).getUTCDate();
 }
 
-function pad2(n: number): string {
-  return n < 10 ? `0${n}` : String(n);
-}
-
 function toIso(day: number): string {
-  const { y, m, d } = ymdOf(day);
-  return `${y}-${pad2(m)}-${pad2(d)}`;
+  return new Date(day * DAY_MS).toISOString().slice(0, 10);
 }
 
 /** Validate an ISO date string without converting it. Throws if invalid. */
@@ -106,18 +96,8 @@ export function addDays(iso: string, n: number): string {
 
 /** Today's date in `timeZone` as YYYY-MM-DD, independent of the host's zone. */
 export function todayIn(timeZone: string, now: Date = new Date()): string {
-  const parts = new Intl.DateTimeFormat('en-US', {
-    timeZone,
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  }).formatToParts(now);
-  const get = (type: string): string => {
-    const part = parts.find((p) => p.type === type);
-    if (!part) throw new Error(`todayIn: Intl did not return a "${type}" part for ${timeZone}`);
-    return part.value;
-  };
-  return assertIsoDate(`${get('year')}-${get('month')}-${get('day')}`, `todayIn(${timeZone})`);
+  /* Canadian English writes dates as YYYY-MM-DD; the check still guards against an odd ICU build. */
+  return assertIsoDate(new Intl.DateTimeFormat('en-CA', { timeZone }).format(now), `todayIn(${timeZone})`);
 }
 
 /**
@@ -143,7 +123,7 @@ function nthWeekday(y: number, m: number, weekday: number, nth: number): number 
   }
   const first = dayOf(y, m, 1);
   const date = 1 + ((weekday - weekdayOf(first) + 7) % 7) + (nth - 1) * 7;
-  if (date > daysInMonth(y, m)) throw new Error(`nthWeekday: no ${nth}th weekday ${weekday} in ${y}-${pad2(m)}`);
+  if (date > daysInMonth(y, m)) throw new Error(`nthWeekday: no ${nth}th weekday ${weekday} in month ${m} of ${y}`);
   return first + date - 1;
 }
 
@@ -231,8 +211,8 @@ export function departureEnd(trip: Trip, startIso: string): string {
   return addDays(startIso, trip.durationDays - 1);
 }
 
-/* English keeps its fixed names and order (no Intl, so no drift such as "Sept"); other languages
-   use Intl with the locale's own conventions. Dates are calendar days, so formatted in UTC. */
+/* English short dates keep fixed names and order (no Intl, so no drift such as "Sept"); other
+   languages, and every language's long names, use Intl with the locale's own conventions. Dates are calendar days, so formatted in UTC. */
 const DATE_OPTS: Intl.DateTimeFormatOptions = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' };
 const utcDate = (iso: string) => new Date(`${iso}T00:00:00Z`);
 const tag = (locale: Locale) => LOCALE_META[locale].htmlLang;
@@ -265,8 +245,8 @@ export function describeDepartureRule(trip: Trip, locale: Locale = DEFAULT_LOCAL
   const list = new Intl.ListFormat(tag(locale), { type: 'conjunction' });
   const name = (opts: Intl.DateTimeFormatOptions, date: Date) => new Intl.DateTimeFormat(tag(locale), { ...opts, timeZone: 'UTC' }).format(date);
   /* 4 Jan 1970 was a Sunday: weekday 0. */
-  const weekdayName = locale === 'en' ? WEEKDAY_LONG[weekday] : name({ weekday: 'long' }, new Date(Date.UTC(1970, 0, 4 + weekday)));
-  const months = trip.seasonMonths.map((mo) => (locale === 'en' ? MONTH_LONG[mo - 1] : name({ month: 'long' }, new Date(Date.UTC(2000, mo - 1, 1)))));
+  const weekdayName = name({ weekday: 'long' }, new Date(Date.UTC(1970, 0, 4 + weekday)));
+  const months = trip.seasonMonths.map((mo) => name({ month: 'long' }, new Date(Date.UTC(2000, mo - 1, 1))));
   const which = list.format(nth.map((n) => t(`nth.${String(n) as '1' | '2' | '3' | '4' | '-1'}`)));
   return t('departureRule', { which, weekday: weekdayName, months: list.format(months) });
 }

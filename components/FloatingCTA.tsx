@@ -30,7 +30,8 @@ export default function FloatingCTA() {
 
   if (pathname.startsWith('/contact')) return null;
   return (
-    <div
+    <aside
+      aria-label="WhatsApp"
       className="floating-cta fixed z-50"
       data-covered={covered || undefined}
       inert={covered}
@@ -39,13 +40,12 @@ export default function FloatingCTA() {
         href={waLink(t('default'))}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={t('floatingLabel')}
         className="btn btn-wa !px-3.5 sm:!pl-3.5 sm:!pr-5 !py-3.5 shadow-xl"
       >
         <WhatsAppIcon className="w-6 h-6" />
-        <span className="hidden sm:inline text-sm">{t('floatingText')}</span>
+        <span className="sr-only sm:not-sr-only text-sm">{t('floatingText')}</span>
       </a>
-    </div>
+    </aside>
   );
 }
 

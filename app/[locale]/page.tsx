@@ -8,7 +8,7 @@ import { Link } from '@/i18n/navigation';
 import type { Messages } from '@/messages';
 import { getContent } from '@/lib/content';
 import type { Trip } from '@/lib/data';
-import { findPhoto, img, type Photo } from '@/lib/photos';
+import { creditText, img, photoOrThrow } from '@/lib/photos';
 import { blurStyle, blurUrl } from '@/lib/placeholders';
 import { factsFor } from '@/lib/speciesFacts';
 import { getDepartures, formatDate } from '@/lib/schedule';
@@ -23,12 +23,6 @@ import SeasonLegend from '@/components/SeasonLegend';
    Hero → numbers → species index → naturalists → trips → guest reviews → seasons → contact. */
 
 type HomeMessages = Messages['home'];
-
-function photo(slug: string): Photo {
-  const p = findPhoto(slug);
-  if (!p) throw new Error(`app/page.tsx: photo "${slug}" not found in lib/photos.ts`);
-  return p;
-}
 
 /* "Endemic" only where the species lives nowhere outside the Western Ghats. Names and "where"
    (which repeats only what the itineraries in lib/data.ts name) are in messages home.species.items. */
@@ -60,7 +54,7 @@ const SEASON_ORDER: (keyof HomeMessages['seasons']['shortTitles'])[] = [
 
 const FEATURED: { id: keyof HomeMessages['trips']['lines']; photo: string }[] = [
   { id: 'western-ghats-endemics', photo: 'grassland-shola-mosaic' },
-  { id: 'monsoon-rainforest-nights', photo: 'evergreen-forest' },
+  { id: 'monsoon-rainforest-nights', photo: 'bronze-frog' },
 ];
 
 /* The other two trips, smaller: photo beside the facts, with the trip's own description. */
@@ -92,7 +86,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
   const months = t.raw('seasons.months') as string[];
   const monthInitials = t.raw('seasons.monthInitials') as string[];
   const index: IndexSpecies[] = INDEX.map((s) => {
-    const p = photo(s.slug);
+    const p = photoOrThrow(s.slug);
     return {
       ...s,
       name: t(`species.items.${s.slug}.name`),
@@ -103,6 +97,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
       h: p.h,
       blur: blurUrl(p.src),
       facts: factsFor(s.slug, locale),
+      credit: creditText(p),
     };
   });
 
@@ -178,7 +173,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
           <div className="grid gap-x-8 gap-y-10 md:grid-cols-2">
             {FEATURED.map((f) => {
               const tr = trip(f.id);
-              const p = photo(f.photo);
+              const p = photoOrThrow(f.photo);
               const dates = getDepartures(tr, 2);
               return (
                 <Link key={tr.id} href={`/trips/${tr.id}/`} className="group block">
@@ -215,7 +210,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
           <div className="mt-10 grid gap-x-8 gap-y-8 md:grid-cols-2">
             {MORE.map((m) => {
               const tr = trip(m.id);
-              const p = photo(m.photo);
+              const p = photoOrThrow(m.photo);
               const dates = getDepartures(tr, 2);
               return (
                 <Link key={tr.id} href={`/trips/${tr.id}/`} className="group grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] items-center gap-5">
@@ -252,7 +247,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
             })}
           </div>
           <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 border-t border-[var(--wd-line)] pt-6 text-wd-muted">
-            <Link href="/journey/" className="link-arrow shrink-0">{t('journeyCta')}</Link>
+            <Link href="/trips/western-ghats-endemics/#itinerary" className="link-arrow shrink-0">{t('journeyCta')}</Link>
           </div>
         </div>
       </section>

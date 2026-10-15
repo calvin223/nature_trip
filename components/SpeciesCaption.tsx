@@ -2,10 +2,12 @@ import { useTranslations } from 'next-intl';
 import type { SpeciesFacts } from '@/lib/speciesFacts';
 
 /* The text panel under a full-screen photo: Latin name, a line from the naturalist's
-   notebook, then the facts. Used as the lightbox slide description. */
-export default function SpeciesCaption({ facts, seenOn }: { facts?: SpeciesFacts; seenOn?: string }) {
+   notebook, then the facts, and the photographer for a photo that is not the team's own.
+   Used as the lightbox slide description. */
+export default function SpeciesCaption({ facts, seenOn, credit }: { facts?: SpeciesFacts; seenOn?: string; credit?: string }) {
   const t = useTranslations('common.facts');
-  if (!facts) return seenOn ? <p className="wd-lb__about">{seenOn}</p> : null;
+  const creditLine = credit && <p className="wd-lb__credit">{t('credit', { credit })}</p>;
+  if (!facts) return seenOn || credit ? <div className="wd-lb">{seenOn && <p className="wd-lb__about">{seenOn}</p>}{creditLine}</div> : null;
   const rows = (
     [
       [t('size'), facts.size],
@@ -31,6 +33,7 @@ export default function SpeciesCaption({ facts, seenOn }: { facts?: SpeciesFacts
           ))}
         </dl>
       )}
+      {creditLine}
     </div>
   );
 }

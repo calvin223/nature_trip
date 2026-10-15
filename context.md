@@ -21,7 +21,19 @@ branch served by GitHub Pages (enabled on the fork 2026-10-14). The owner asked 
   advisories remain (e.g. `sharp` for `npm run build:images`, `braces`); fixing them needs breaking
   upgrades, and they only run locally on your own files.
 - **Design:** "Field Notes" (`DESIGN.md`). Header: Trips ▾ · Species · About ▾ · Travel info ▾ ·
-  Plan a Trip. Footer has a row with every legal page.
+  Plan a Trip · 🌐 EN ▾ (language menu, also on phones beside the burger; unpublished languages are
+  listed as "coming soon", not links). Footer has a row with every legal page.
+- **Custom groups page (redesigned 2026-10-15):** was seven same-shaped text sections; now hero photo,
+  six photo-led group entries (schools folded in), the sample day as a dawn-to-night colour band,
+  customise options as short columns (logistics merged in), academic options, and one closing
+  block holding the health condition (detail stays on Practical Info).
+- **Itineraries:** the separate 10-day route page (`/journey/`) was removed; every trip page's
+  itinerary is now that scroll story (sticky place photo cross-fading per day, `RouteStory`). Which
+  photo goes with which days: `ROUTE` in `lib/routePhotos.ts`. Trips without named places use
+  example photos, captioned "Photographed at …". "Scenery along the way" was removed from trip pages
+  (it repeated the same photos); `sceneryHighlights` stays in `lib/data.ts` as tripFit evidence.
+  Home/About "10-day route" links go to `/trips/western-ghats-endemics/#itinerary`, and the static
+  404 forwards old `/journey/` links there (`MOVED` in `app/not-found.tsx`).
 - **Languages, step 1:** every page under `app/[locale]/`, only English published (`/nature_trip/en/...`).
   Bare `/nature_trip/` picks the language; the 404 forwards old unprefixed links. Wording in
   `messages/en/*.json`; long-form content in `lib/` behind overlays; legal docs per language in
@@ -36,9 +48,29 @@ branch served by GitHub Pages (enabled on the fork 2026-10-14). The owner asked 
   `lib/site.ts` (`searchVerification`).
 - **Conversion bits:** "Ask about this date" on every departure opens the enquiry form with the trip
   and dates filled in; printed itineraries include "You arrange" and Wildora's contact line.
-- **Species page:** focus-species carousel (autoplay with pause button), drifting "All" gallery,
+- **Practical info (redesigned 2026-10-15):** four stages along one trail (When you enquire → When you
+  book → Before you leave home → On the trip); stage heads stick beside a rail on wide screens. Pace
+  scale for the grades, the three booking conditions once, a tickable packing list (ticks not saved),
+  one-trip-at-a-time inclusions. Old anchors #health, #difficulty, #packing still land.
+- **Photo audit (2026-10-15, second pass):** no photo repeats across home, About and custom groups
+  except the Nilgiri flycatcher (only photo of a key endemic). Osprey re-cropped from its 6000 px
+  original, langur trimmed (car window frame), Asian openbill removed (tiny original). "GMV
+  Photography" (watermark on the saw-scaled viper) is one of the clients: full permission, keep it.
+  Owner questions open: painted background on the rock eagle-owl, low-res originals (treepie,
+  grassbird, spiny lizard, hornbill, barbet, paradise flycatcher, sloth bear), bay owl's face away.
+- **Home hero (2026-10-15):** a young Bengal tiger (`Tiger cub (2).JPG`), crops in
+  `scripts/build-images.mjs` (WebP quality 72). The share image is still the lion-tailed macaque.
+- **Accessibility & speed pass (2026-10-15):** axe on all 21 pages, phone and desktop: everything
+  fixed except the itinerary's faded inactive days (contrast; kept as flair by owner request).
+  Lighthouse (phone, gzip): home 95, practical 99, trips 94, trip page 90, species ~87, schools 86,
+  about 85; accessibility, best practice and SEO 100. Main fix: hero images go through
+  `components/HeroImage.tsx` (a client component), because an eager `<img>` in a server component
+  becomes a preload hint in the page's prefetch data, so every page linking to it downloaded it.
+  Only basic Latin fonts are preloaded; portrait thumbnails are 480 × 720 (`THUMB_WIDTH`). Left:
+  the focus-species carousel loads its four photos full size on phones (part of its cross-fade).
+- **Species page:** focus-species carousel (autoplay with pause button; keyboard focus pauses it, mouse hover does not, by owner request), drifting "All" gallery,
   still grids for groups, a collapsed full species list.
-- Build: **25 HTML pages + sitemap + robots**, type check and lint clean; word-level comparison with
+- Build: **24 HTML pages + sitemap + robots** (after the route page's removal), type check and lint clean; word-level comparison with
   the pre-migration English shows only intended changes. Headless Edge (1440 px, 390 px touch):
   redirects, menus, dropdowns, carousel, pause, form prefill, print view and client-side navigation
   (0 failed requests) all work. VERIFIED 2026-10-14.
