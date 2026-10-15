@@ -437,21 +437,28 @@ button.photo-tile:active { transform: scale(0.98); }
    after dark: across on wide screens, downwards on phones. Text stays ink on the light slots (the
    muted grey is too faint on gold) and turns pale after dark. */
 /* Printed with its colours: without them the pale after-dark text would vanish on paper. */
-.day-band { display: grid; border-radius: 1rem; overflow: hidden; border: 1px solid var(--wd-line); print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-.day-band__slot { --dir: to bottom; display: grid; grid-template-columns: 7.25rem minmax(0, 1fr); gap: 1rem; padding: 1.1rem 1.25rem; color: var(--wd-ink); background: linear-gradient(var(--dir), var(--from), var(--to)); }
-.day-band__time { font-weight: 650; font-variant-numeric: tabular-nums; }
-.day-band__what { line-height: 1.5; }
-.day-band__slot:nth-child(1) { --from: #ecc472; --to: #f3dea6; }
-.day-band__slot:nth-child(2) { --from: #f3dea6; --to: #f5ecd0; }
-.day-band__slot:nth-child(3) { --from: #f5ecd0; --to: #f6f2e2; }
-.day-band__slot:nth-child(4) { --from: #f6f2e2; --to: #f2e4bd; }
-.day-band__slot:nth-child(5) { --from: #f2e4bd; --to: #dc9f55; }
-.day-band__slot:nth-child(6) { --from: #2b3727; --to: #17211a; color: #eef0e6; }
+/* The sample group day (Custom groups): a thin rail of the day's light, dawn gold through midday
+   paper to dusk amber and night green, with the six slots hung off it on their own rules. The rail
+   runs down the left on phones and across the top from 64rem. */
+.day-band { --day-light: #e9b54a 0%, #f3dea6 17%, #f7f3e4 40%, #f2e4bd 62%, #dc9f55 80%, #2b3727 85%, #17211a 100%; position: relative; display: grid; padding-left: 0.5rem; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+.day-band::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 0.5rem; border-radius: 999px; background: linear-gradient(to bottom, var(--day-light)); }
+.day-band__slot { display: grid; gap: 0.3rem; padding: 1rem 0 1.1rem 1.1rem; border-top: 1px solid var(--wd-line-strong); }
+.day-band__slot:last-child { border-bottom: 1px solid var(--wd-line-strong); }
+.day-band__time { font-size: 1.2rem; line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: var(--wd-ink); }
+.day-band__what { line-height: 1.5; color: var(--wd-muted); }
 @media (min-width: 64rem) {
-  .day-band { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-  .day-band__slot { --dir: to right; grid-template-columns: none; align-content: start; gap: 0.75rem; min-height: 12rem; padding: 1.5rem 1.25rem; }
-  .day-band__time { font-size: 1.05rem; }
+  .day-band { grid-template-columns: repeat(6, minmax(0, 1fr)); column-gap: 1.25rem; padding: 0.5rem 0 0; }
+  .day-band::before { right: 0; bottom: auto; width: auto; height: 0.5rem; background: linear-gradient(to right, var(--day-light)); }
+  .day-band__slot { align-content: start; gap: 0.5rem; padding: 1rem 0 0 0.9rem; border-top: 0; border-left: 1px solid var(--wd-line-strong); }
+  .day-band__slot:last-child { border-bottom: 0; }
+  .day-band__time { font-size: 1.35rem; }
 }
+
+/* "What can be customised": a row's options flow as one line of text. The middle dot stays with
+   the item before it (no-break space), so a wrapped line never starts with a dot. */
+.opt-list { line-height: 1.6; color: var(--wd-muted); }
+.opt-list li { display: inline; }
+.opt-list li + li::before { content: '\00a0· '; }
 
 /* ── Maps keep their own dark palette, as an inset on the paper page ───────── */
 .wdm {

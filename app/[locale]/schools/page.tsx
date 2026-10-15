@@ -7,7 +7,7 @@ import type { Metadata } from 'next';
 import { Link } from '@/i18n/navigation';
 import { WhatsAppIcon } from '@/components/FloatingCTA';
 import type { Messages } from '@/messages';
-import { img, photoName, photoOrThrow, THUMB_WIDTH } from '@/lib/photos';
+import { img, photoName, photoOrThrow } from '@/lib/photos';
 import { blurStyle } from '@/lib/placeholders';
 import { waLink } from '@/lib/site';
 import HeroImage from '@/components/HeroImage';
@@ -20,16 +20,19 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 
 type GroupKey = keyof Messages['schools']['groupTypes']['items'];
 
-/* Each kind of group with a field photo of the sort of thing it comes for. None of these photos is
-   used on the home or About page, so the three pages never show the same picture. */
-const GROUPS: { key: GroupKey; photo: string }[] = [
-  { key: 'families', photo: 'smooth-coated-otter' },
-  { key: 'friends', photo: 'black-faced-langur' },
-  { key: 'clubs', photo: 'white-throated-kingfisher' },
-  { key: 'companies', photo: 'flame-of-the-forest' },
-  { key: 'international', photo: 'bengal-tiger-on-the-move' },
-  { key: 'schools', photo: 'indian-moon-moth' },
+/* Each kind of group led by one of the team's own field-course photos (public/photos/field, built
+   by scripts/build-images.mjs): people having the sort of day the entry describes. Home and About
+   reuse some of them; the two under Academic options below (lecture, shore-notes) are not repeated
+   here, so this page never shows a photo twice. */
+const GROUPS: { key: GroupKey; photo: string; widths: number[] }[] = [
+  { key: 'families', photo: 'mangrove-boat', widths: [700, 1200] },
+  { key: 'friends', photo: 'shared-lunch', widths: [700, 1200] },
+  { key: 'clubs', photo: 'lake-birding', widths: [700, 1200] },
+  { key: 'companies', photo: 'shola-walk', widths: [800, 1400, 2400] },
+  { key: 'international', photo: 'roadside-birding', widths: [800, 1400, 2400] },
+  { key: 'schools', photo: 'forest-notes', widths: [700, 1200] },
 ];
+const fieldSrc = (name: string, w: number) => `/photos/field/${name}-${w}.webp`;
 
 const HERO_PHOTO = 'chital-herd';
 
@@ -78,22 +81,21 @@ export default async function CustomGroupsPage({ params }: { params: Promise<{ l
             <p>{t('groupTypes.intro')}</p>
           </div>
           <ul className="grid gap-x-6 gap-y-7 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-3">
-            {GROUPS.map(({ key, photo: slug }) => {
-              const p = photoOrThrow(slug);
+            {GROUPS.map(({ key, photo, widths }) => {
               return (
                 <li key={key} className="grid grid-cols-[6rem_minmax(0,1fr)] items-start gap-4 sm:block">
-                  <figure className="relative m-0 aspect-square overflow-hidden rounded-xl bg-wd-deep sm:aspect-[4/3]" style={blurStyle(p.src)}>
+                  <figure className="relative m-0 aspect-square overflow-hidden rounded-xl bg-wd-deep sm:aspect-[4/3]" style={blurStyle(fieldSrc(photo, widths[0]))}>
                     <img
-                      src={img(p.thumb)}
-                      srcSet={`${img(p.thumb)} ${THUMB_WIDTH}w, ${img(p.src)} ${p.w}w`}
+                      src={img(fieldSrc(photo, widths[1]))}
+                      srcSet={widths.map((w) => `${img(fieldSrc(photo, w))} ${w}w`).join(', ')}
                       sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 6rem"
-                      alt={photoName(p, locale)}
+                      alt={t(`groupTypes.items.${key}.photo.alt`)}
                       loading="lazy"
                       decoding="async"
-                      className="h-full w-full object-cover"
+                      className="absolute inset-0 h-full w-full object-cover"
                     />
                     <figcaption className="photo-scrim hidden sm:block" aria-hidden="true">
-                      <span className="photo-label">{photoName(p, locale)}</span>
+                      <span className="photo-label">{t(`groupTypes.items.${key}.photo.caption`)}</span>
                     </figcaption>
                   </figure>
                   <div className="sm:mt-4">
@@ -108,7 +110,7 @@ export default async function CustomGroupsPage({ params }: { params: Promise<{ l
         </div>
       </section>
 
-      {/* The page's one bold element: the day laid under the light it happens in, dawn to after dark. */}
+      {/* The page's one bold element: the six slots hung off a thin rail of the day's light, dawn to after dark. */}
       <section className="wd-section">
         <div className="wd-wrap">
           <div className="wd-head">
@@ -126,25 +128,29 @@ export default async function CustomGroupsPage({ params }: { params: Promise<{ l
         </div>
       </section>
 
+      {/* A planning sheet: the heading beside ruled rows, each term left and its options flowing as one
+          line of text right (.opt-list), in the same rows as Academic options below. */}
       <section className="wd-section bg-wd-deep">
-        <div className="wd-wrap">
-          <div className="wd-head">
+        <div className="wd-wrap grid gap-8 lg:grid-cols-[minmax(0,4fr)_minmax(0,7fr)] lg:gap-16">
+          <div>
             <h2 className="h-section">{t('customise.title')}</h2>
-            <p>{t('customise.intro')}</p>
+            <p className="mt-4 leading-relaxed text-wd-muted">{t('customise.intro')}</p>
           </div>
-          <div className="grid grid-cols-2 gap-x-6 gap-y-9 md:grid-cols-3 md:gap-x-10">
+          <dl className="border-b border-[var(--wd-line-strong)]">
             {(t.raw('customise.options') as { term: string; items: string[]; note?: string }[]).map(({ term, items, note }) => (
-              <div key={term} className="border-t border-[var(--wd-line-strong)] pt-4">
-                <h3 className="h-card">{term}</h3>
-                <ul className="mt-3 space-y-1.5 leading-snug text-wd-muted">
-                  {items.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-                {note && <p className="mt-3 text-sm text-wd-muted">{note}</p>}
+              <div key={term} className="grid gap-1.5 border-t border-[var(--wd-line-strong)] py-5 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-6">
+                <dt className="font-semibold text-wd-ink">{term}</dt>
+                <dd>
+                  <ul className="opt-list">
+                    {items.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                  {note && <p className="mt-2 text-sm text-wd-muted">{note}</p>}
+                </dd>
               </div>
             ))}
-          </div>
+          </dl>
         </div>
       </section>
 
@@ -170,10 +176,10 @@ export default async function CustomGroupsPage({ params }: { params: Promise<{ l
           <ul className="grid gap-4 sm:grid-cols-2 lg:col-span-2">
             {(['lecture', 'shore-notes'] as const).map((name) => (
               <li key={name}>
-                <figure className="relative m-0 aspect-[3/2] overflow-hidden rounded-xl bg-wd-deep" style={blurStyle(`/photos/field/${name}-1200.webp`)}>
+                <figure className="relative m-0 aspect-[3/2] overflow-hidden rounded-xl bg-wd-deep" style={blurStyle(fieldSrc(name, 1200))}>
                   <img
-                    src={img(`/photos/field/${name}-1200.webp`)}
-                    srcSet={`${img(`/photos/field/${name}-700.webp`)} 700w, ${img(`/photos/field/${name}-1200.webp`)} 1200w`}
+                    src={img(fieldSrc(name, 1200))}
+                    srcSet={`${img(fieldSrc(name, 700))} 700w, ${img(fieldSrc(name, 1200))} 1200w`}
                     sizes="(min-width: 640px) 50vw, 100vw"
                     alt={t(`academic.photos.${name}.alt`)}
                     loading="lazy"

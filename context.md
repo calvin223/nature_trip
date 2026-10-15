@@ -24,8 +24,8 @@ branch served by GitHub Pages (enabled on the fork 2026-10-14). The owner asked 
   Plan a Trip · 🌐 EN ▾ (language menu, also on phones beside the burger; unpublished languages are
   listed as "coming soon", not links). Footer has a row with every legal page.
 - **Custom groups page (redesigned 2026-10-15):** was seven same-shaped text sections; now hero photo,
-  six photo-led group entries (schools folded in), the sample day as a dawn-to-night colour band,
-  customise options as short columns (logistics merged in), academic options, and one closing
+  six group entries led by the team's field-course photos (schools folded in), the sample day as six slots on a dawn-to-night rail of daylight,
+  customise options as ruled rows (logistics merged in), academic options, and one closing
   block holding the health condition (detail stays on Practical Info).
 - **Itineraries:** the separate 10-day route page (`/journey/`) was removed; every trip page's
   itinerary is now that scroll story (sticky place photo cross-fading per day, `RouteStory`). Which

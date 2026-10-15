@@ -19,27 +19,51 @@
     "items": {
       "families": {
         "title": "Families",
-        "body": "Gentle-paced nature days with safaris, short walks, birding, viewpoints, local food and enough downtime for mixed ages."
+        "body": "Gentle-paced nature days with safaris, short walks, birding, viewpoints, local food and enough downtime for mixed ages.",
+        "photo": {
+          "alt": "A group in a wooden boat poled slowly through the mangroves",
+          "caption": "Through the mangroves by boat, January 2012"
+        }
       },
       "friends": {
         "title": "Friends & private groups",
-        "body": "Your own departure on your dates, with a dedicated guide, a route shaped around your interests and a daily rhythm you choose."
+        "body": "Your own departure on your dates, with a dedicated guide, a route shaped around your interests and a daily rhythm you choose.",
+        "photo": {
+          "alt": "A group shares a South Indian lunch on banana leaves at a long table",
+          "caption": "Lunch on the road, January 2012"
+        }
       },
       "clubs": {
         "title": "Clubs & societies",
-        "body": "Birding, photography and natural-history groups: target birds, mammals, butterflies or macro subjects, low-light rainforest sessions and patient field support."
+        "body": "Birding, photography and natural-history groups: target birds, mammals, butterflies or macro subjects, low-light rainforest sessions and patient field support.",
+        "photo": {
+          "alt": "Birders with binoculars, a spotting scope and notebooks along a lakeside wall",
+          "caption": "Birding at a lake, January 2012"
+        }
       },
       "companies": {
         "title": "Companies & retreats",
-        "body": "Nature immersion, team days, lodge-based wildlife, landscape trails and guided forest walks, planned around your schedule."
+        "body": "Nature immersion, team days, lodge-based wildlife, landscape trails and guided forest walks, planned around your schedule.",
+        "photo": {
+          "alt": "A group walks a grassland ridge above shola forest, with mountains behind",
+          "caption": "A walk above the shola forest, January 2012"
+        }
       },
       "international": {
         "title": "International visitors",
-        "body": "Route notes, comfort planning and guided wildlife time shaped around your flights."
+        "body": "Route notes, comfort planning and guided wildlife time shaped around your flights.",
+        "photo": {
+          "alt": "Visitors from abroad birding from a quiet forest road at dawn, with a guide and a spotting scope",
+          "caption": "Birding by the road at dawn, January 2012"
+        }
       },
       "schools": {
         "title": "Schools & universities",
-        "body": "Short modules, field courses and youth camps, led by naturalists who have taught environmental science."
+        "body": "Short modules, field courses and youth camps, led by naturalists who have taught environmental science.",
+        "photo": {
+          "alt": "Students sit and stand on a forest track writing field notes with their teachers",
+          "caption": "Field notes on a forest track, January 2010"
+        }
       }
     }
   },
