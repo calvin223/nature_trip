@@ -172,8 +172,8 @@
   },
   "reviews": {
     "title": "What our guests say",
+    "lede": "From the university field courses our team led in South India before Wildora.",
     "preview": "Development preview: these are layout samples, not real reviews. The live site hides this section until real guest reviews are added to lib/data.ts.",
-    "rated": "Rated {rating} out of 5",
-    "quote": "“{text}”"
+    "rated": "Rated {rating} out of 5"
   }
 }

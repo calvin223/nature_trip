@@ -1024,14 +1024,38 @@ export const services: Service[] = [
 // live site.
 export interface Review {
   name: string;
+  /** Who they are, e.g. "Lecturer, University of Wolverhampton". Shown in place of country. */
+  role?: string;
   country: string;
   trip: string;
+  /** Word for word. Separate the guest's own paragraphs with a blank line ("\n\n"). */
   text: string;
-  /** Out of 5, as the guest gave it. */
-  rating: number;
+  /** Out of 5, as the guest gave it. Leave out when they gave none; never invent one. */
+  rating?: number;
   /** Month of travel, e.g. "November 2026". */
   travelled?: string;
 }
 
-export const reviews: Review[] = [];
+// The first review is shown large; put the strongest one first.
+export const reviews: Review[] = [
+  // Written for us by email to Daisy, 19 October 2026, with permission ("Please use if you
+  // think it is useful"). His four paragraphs, word for word, except his typo "India Ocean"
+  // corrected to "Indian Ocean" (owner's call, 2026-11-15).
+  {
+    name: 'Dr Christopher Young',
+    role: 'Lecturer, University of Wolverhampton',
+    country: 'United Kingdom',
+    trip: 'University field course in South India',
+    text: 'A truly memorable experience seeing India first hand with people who clearly know and love what they do.\n\nAs a university lecturer bringing students to a new place it was a fantastic experience. We were looked after superbly by Daisy, Relton and the team from the meeting at the airport to the last goodbyes.\n\nWe experienced it all from the shores of the Indian Ocean to the top of the Western Ghats. A bird and butterfly-lovers’ delight throughout with some elephants and tigers thrown in for good measure.\n\nSeeing a Great Indian Hornbill flying over the tops of the trees high in the Western Ghats as the sky turned red and the sun set that will always be a special memory for me.',
+  },
+  // From the student's written course work, sent to us by Dr Young in the same email.
+  // Owner chose to publish it (2026-11-15). Word for word, including the unclosed ‘.
+  {
+    name: 'Kirsty Gough',
+    role: 'Student, University of Wolverhampton',
+    country: 'United Kingdom',
+    trip: 'University field course in South India',
+    text: 'This course enabled me and the other students to gain firsthand experience of the ‘real India…It also enabled us to see how people react and interact with the biodiversity around them and gave us unique insight to places that we would never be able to see in a tourist destination…I have learnt about a culture very different to the western culture and have been lucky enough to experience it firsthand',
+  },
+];
 

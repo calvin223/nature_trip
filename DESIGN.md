@@ -74,7 +74,7 @@ These read as template defaults, so they are gone and should stay gone:
 | `components/PageNav.tsx` | Sticky in-page nav under the main bar (Practical info, Trips) |
 | `components/SpeciesCaption.tsx` | Lightbox notes panel: Latin name, description, size, IUCN status, range |
 | `lib/speciesFacts.json` | Notes for every field photo; sources and doubts in `SPECIES_FACTS_REVIEW.md` |
-| `components/GuestReviews.tsx` | "What our guests say": hidden on the live site until `reviews` in `lib/data.ts` has real entries |
+| `components/GuestReviews.tsx` | "What our guests say": first review featured large, the rest beside it; hidden on the live site if `reviews` in `lib/data.ts` is empty |
 | `components/SeasonLegend.tsx` | Key for the month charts (green runs, grey no departures) |
 | `components/PhotoStrip.tsx` | "What you might see" strip on trip pages (Embla) |
 | `lib/placePhotos.ts`, `lib/routePhotos.ts` | Credited Wikimedia landscape photos and which days of each trip's itinerary show them ("Photographed at …" when it is an example from elsewhere) |

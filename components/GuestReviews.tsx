@@ -40,42 +40,68 @@ function Stars({ n }: { n: number }) {
   );
 }
 
-/* "What our guests say": quotes set large, separated by rules rather than boxed in cards.
-   Stars are ink, not gold (gold stars read as cheap in travel). */
+/* One quote: a large green opening mark, the guest's own paragraphs, then who said it.
+   In the featured quote the first paragraph is set large as the lead. */
+function Quote({ r, featured }: { r: Review; featured?: boolean }) {
+  const [lead, ...rest] = r.text.split('\n\n');
+  return (
+    <figure className="m-0">
+      {/* Serif mark: the display face draws “ as two straight slashes. */}
+      <span aria-hidden="true" className="block h-8 font-serif text-7xl leading-none text-wd-lime select-none">“</span>
+      {r.rating != null && <div className="mt-4"><Stars n={r.rating} /></div>}
+      <blockquote className="mt-4 text-wd-ink">
+        <p className={featured ? 'font-display text-2xl md:text-[1.75rem] font-semibold leading-snug tracking-[-0.015em]' : 'text-lg leading-relaxed'}>
+          {lead}
+        </p>
+        {rest.map((p, i) => (
+          <p key={i} className="mt-4 text-lg leading-relaxed">{p}</p>
+        ))}
+      </blockquote>
+      <figcaption className="mt-6 flex items-start gap-3 text-sm">
+        <span aria-hidden="true" className="mt-[0.6rem] h-px w-8 shrink-0 bg-wd-lime" />
+        <span>
+          <span className="block font-semibold text-wd-ink">{r.name}</span>
+          <span className="block text-wd-muted">
+            {/* With a role, the section lede already names the trip. */}
+            {(r.role ? [r.role, r.travelled] : [r.country, r.trip, r.travelled]).filter(Boolean).join(' · ')}
+          </span>
+        </span>
+      </figcaption>
+    </figure>
+  );
+}
+
+/* "What our guests say": the first review featured in a wide column, the rest stacked beside
+   it under rules. No cards. Stars, when a guest gave a rating, are ink, not gold. */
 export default function GuestReviews({ reviews }: { reviews: Review[] }) {
   const t = useTranslations('home.reviews');
   const sample = reviews.length === 0;
   if (sample && process.env.NODE_ENV === 'production') return null;
-  const shown = sample ? SAMPLES : reviews;
+  const [first, ...rest] = sample ? SAMPLES : reviews;
 
   return (
     <section className="wd-section" aria-labelledby="reviews-title">
       <div className="wd-wrap">
         <div className="wd-head">
           <h2 id="reviews-title" className="h-section">{t('title')}</h2>
-          {sample && (
-            <p className="!text-wd-trogon !text-sm font-medium">{t('preview')}</p>
+          {sample
+            ? <p className="!text-wd-trogon !text-sm font-medium">{t('preview')}</p>
+            : <p>{t('lede')}</p>}
+        </div>
+        <div className="grid gap-12 border-t border-[var(--wd-line-strong)] pt-10 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-7">
+            <Quote r={first} featured />
+          </div>
+          {rest.length > 0 && (
+            <ul className="space-y-10 border-t border-[var(--wd-line)] pt-10 lg:col-span-5 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-12">
+              {rest.map((r, i) => (
+                <li key={`${r.name}-${i}`} className={i > 0 ? 'border-t border-[var(--wd-line)] pt-10' : ''}>
+                  <Quote r={r} />
+                </li>
+              ))}
+            </ul>
           )}
         </div>
-        <ul className="grid gap-x-12 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
-          {shown.map((r, i) => (
-            <li key={`${r.name}-${i}`} className="border-t border-[var(--wd-line-strong)] pt-6">
-              <figure className="m-0 flex h-full flex-col">
-                <Stars n={r.rating} />
-                <blockquote className="mt-4 flex-1 font-display text-xl leading-snug text-wd-ink">
-                  {t('quote', { text: r.text })}
-                </blockquote>
-                <figcaption className="mt-6 text-sm">
-                  <span className="block font-semibold text-wd-ink">{r.name}</span>
-                  <span className="block text-wd-muted">
-                    {r.country}, {r.trip}
-                    {r.travelled ? `, ${r.travelled}` : ''}
-                  </span>
-                </figcaption>
-              </figure>
-            </li>
-          ))}
-        </ul>
       </div>
     </section>
   );
